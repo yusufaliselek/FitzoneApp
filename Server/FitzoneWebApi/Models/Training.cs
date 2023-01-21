@@ -1,8 +1,11 @@
-﻿namespace FitzoneWebApi.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FitzoneWebApi.Models
 {
     public class Training
     {
-        public int Id { get; set; }
+        [Key]
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public List<string> Exercises { get; set; }
         public int Duration { get; set; }
