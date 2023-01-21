@@ -24,9 +24,9 @@ namespace FitzoneWebApi.Controllers
 
         [HttpGet]
         [Route("{id:guid}")]
-        public async Task<IActionResult> GetGetTrainingsById([FromRoute] Guid id)
+        public async Task<IActionResult> GetTrainingById([FromRoute] Guid id)
         {
-            var Training = await dbContext.Trainings.Where(w => w.Id == id).ToListAsync();
+            var Training = await dbContext.Trainings.Where(w => w.Id == id).FirstOrDefaultAsync();
             if (Training == null)
             {
                 return NotFound();
@@ -59,7 +59,7 @@ namespace FitzoneWebApi.Controllers
 
         [HttpPut]
         [Route("{id:guid}")]
-        public async Task<IActionResult> UpdateInentoryItems([FromRoute] Guid id, Training IncomeUpdateTrainingItem)
+        public async Task<IActionResult> UpdateTraining([FromRoute] Guid id, Training IncomeUpdateTrainingItem)
         {
             var UpdateTrainingEntity = await dbContext.Trainings.FindAsync(id);
 
@@ -87,7 +87,7 @@ namespace FitzoneWebApi.Controllers
 
         [HttpDelete]
         [Route("{id:guid}")]
-        public async Task<IActionResult> DeleteInventoryItems([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteTraining([FromRoute] Guid id)
         {
             var DeleteTrainingItem = await dbContext.Trainings.Where(w => w.Id == id).FirstAsync();
 
