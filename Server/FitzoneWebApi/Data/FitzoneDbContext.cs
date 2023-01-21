@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FitzoneWebApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitzoneWebApi.Data
 {
@@ -8,5 +9,12 @@ namespace FitzoneWebApi.Data
         {
 
         }
+
+        public DbSet<Coach> Coaches{ get; set; }
+        public DbSet<Equipment> Equipments { get; set; }
+        public DbSet<Food> Foods { get; set; }
+        public DbSet<Member> Members { get; set; }
+        public DbSet<Training> Trainings { get; set; }
+
     }
 }
