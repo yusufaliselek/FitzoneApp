@@ -9,15 +9,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(options =>
+builder.Services.AddCors(optios =>
 {
-
-    options.AddDefaultPolicy(
-        policy =>
+    optios.AddPolicy("CORSPolicy",
+        builder =>
         {
-            policy.WithOrigins("http://localhost:3000")
-                .AllowAnyHeader()
-                .AllowAnyMethod();
+            builder
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .WithOrigins("http://localhost:3000", "https://appname.azurestaticapps.net");
         });
 });
 
@@ -30,7 +30,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors();
+app.UseCors("CORSPolicy");
 
 app.UseHttpsRedirection();
 
