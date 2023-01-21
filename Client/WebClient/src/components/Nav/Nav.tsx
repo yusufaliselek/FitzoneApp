@@ -16,38 +16,38 @@ const Nav: React.FC<{}> = () => {
         {
             title: "Dashboard",
             icon: <RxDashboard className='h-6 w-6'/>,
-            link: "/"
+            link: "/dashboard"
         },
         {
             title: "Kullanıcılar",
             icon: <RiAccountCircleLine className='h-6 w-6'/>,
-            link: "/"
+            link: "/users"
         },
         {
             title: "Takvim",
             icon: <BsCalendar3 className='h-6 w-6'/>,
-            link: "/"
+            link: "/calendar"
         },
         {
             title: "Analizler",
             icon: <MdOutlineAnalytics className='h-6 w-6'/>,
-            link: "/"
+            link: "/analystics"
         },
         {
             title: "Dosyalar",
             icon: <VscFileSubmodule className='h-6 w-6'/>,
-            link: "/"
+            link: "/files"
         },
         {
             title: "Ayarlar",
             icon: <RiSettings4Line className='h-6 w-6'/>,
-            link: "/"
+            link: "/settings"
         },
     ];
     return (
             <aside
                 className={` ${open ? "w-72" : "w-20"
-                    } h-screen p-5  pt-8 relative duration-500 bg-gray-700`}
+                    } h-screen p-5  pt-8 relative duration-500 bg-gray-900`}
             >
                 <div className="flex gap-x-4 items-center">
                     

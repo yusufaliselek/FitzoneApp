@@ -3,3 +3,8 @@ export interface IMenu {
     icon?: JSX.Element;
     link: string;
 }
+
+export interface Account {
+    user: string;
+    password: string;
+}
