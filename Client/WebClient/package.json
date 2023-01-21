@@ -45,7 +45,11 @@
     "autoprefixer": "^10.4.13",
     "axios": "^1.2.3",
     "postcss": "^8.4.21",
+    "react-charts": "^3.0.0-beta.51",
+    "react-loader-spinner": "^5.3.4",
     "react-router-dom": "^6.7.0",
+    "sweetalert2": "^11.7.0",
+    "sweetalert2-react-content": "^5.0.7",
     "tailwindcss": "^3.2.4"
   }
 }

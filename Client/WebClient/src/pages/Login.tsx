@@ -1,27 +1,52 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import cardio from "../assets/cardio.jpg";
+import fitzonebg from '../assets/fitzonebg.gif'
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import Spinner from '../components/Spinner/Spinner';
+
+const MySwal = withReactContent(Swal);
+const Toast = MySwal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 2000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener("mouseenter", Swal.stopTimer);
+    toast.addEventListener("mouseleave", Swal.resumeTimer);
+  },
+});
 
 const Login = () => {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
         e.preventDefault();
-        if (username == "admin" && password == "admin") {
-            navigate("/signup");
+        if (username === "admin" && password === "admin") {
+            setLoading(true);
+            setTimeout(()=> {
+                navigate("/dashboard");
+            },1500)
         }
         else {
-            alert("Please enter a username and password")
+            Toast.fire({
+                icon: "error",
+                title: "Lütfen bilgilerinizi kontrol ediniz!",
+              });
         }
     }
 
     return (
         <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
-            <img src={cardio} alt="description of" className={`object-cover w-full h-full absolute`} />
-            <div className="w-full p-6 m-auto bg-black/[0.4] rounded-md shadow-md lg:max-w-xl relative">
-                <h1 className="text-3xl font-semibold text-center text-white">
+            <img src={fitzonebg} alt="description of" className={`object-cover w-full h-full absolute`} />
+            {
+                !loading ? 
+                <div className="w-full p-6 m-auto bg-black/[0.6] rounded-md shadow-md lg:max-w-xl relative">
+                <h1 className="text-3xl font-semibold text-center text-white tracking-widest">
                     FIT<span className='text-orange-500'>Z</span>ONE
                 </h1>
                 <form className="mt-6">
@@ -54,7 +79,7 @@ const Login = () => {
                         />
                     </div>
                     <a
-                        href="#"
+                        href="/"
                         className="text-xs text-blue-600 hover:underline"
                     >
                         Şifreyi unuttun mu?
@@ -69,7 +94,7 @@ const Login = () => {
                     </div>
                 </form>
 
-                <p className="mt-8 text-xs font-light text-center text-gray-700">
+                <p className="mt-8 text-xs font-light text-center text-gray-300">
                     {" "}
                     Hesabınız yok mu?{" "}
                     <a
@@ -80,6 +105,10 @@ const Login = () => {
                     </a>
                 </p>
             </div>
+            : 
+            <Spinner color='white'/>
+            }
+
         </div>
     )
 }
