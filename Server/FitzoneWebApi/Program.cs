@@ -1,8 +1,16 @@
+using FitzoneWebApi.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
 
+var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
 
+var connectionString = configuration.GetConnectionString("DBContext");
 
 builder.Services.AddControllers();
 
@@ -20,6 +28,8 @@ builder.Services.AddCors(optios =>
             .WithOrigins("http://localhost:3000", "https://appname.azurestaticapps.net");
         });
 });
+
+builder.Services.AddDbContext<FitzoneDbContext>(options => options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 
