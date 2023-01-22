@@ -10,7 +10,7 @@ import { IMenu } from '../../types/Types';
 
 
 
-const Nav: React.FC<{}> = () => {
+const Nav = ({ pageName }: { pageName: string }) => {
     const [open, setOpen] = useState(true);
     const Menus: IMenu[] = [
         {
@@ -46,7 +46,7 @@ const Nav: React.FC<{}> = () => {
     ];
     return (
         <aside
-            className={` ${open ? "w-72" : "w-20"
+            className={` ${open ? "w-72 min-w-72" : "w-20 min-w-20"
                 } h-screen p-5  pt-8 relative duration-500 bg-gray-900`}
         >
             <div className="flex gap-x-4 items-center">
@@ -63,8 +63,8 @@ const Nav: React.FC<{}> = () => {
             <ul className="pt-6">
                 {Menus.map((Menu, index) => (
                     <Link to={Menu.link} key={index}
-                        className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 
-                            text-sm items-center gap-x-4 mt-2 ${index === 0 && "bg-light-white"} `}>
+                        className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white 
+                            text-sm items-center gap-x-4 mt-2 ${pageName == Menu.title ? "bg-gray-300 text-black" : "text-gray-300"}`}>
                         {Menu.icon}
                         <span className={`${!open && "hidden"} origin-left duration-200`}>
                             {Menu.title}
