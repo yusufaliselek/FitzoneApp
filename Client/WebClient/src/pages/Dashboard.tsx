@@ -59,9 +59,9 @@ const Dashboard = () => {
         <div className='flex w-screen h-screen'>
             {
                 loading ?
-                    <div className='flex max-w-screen-lg'>
-                        <Nav pageName='Dashboard'/>
-                            <ResponsiveContainer width="100%" height="100%">
+                    <div className='flex'>
+                        <Nav pageName='Dashboard' />
+                            <div className='grid grid-cols-3 gap-4 w-full h-auto px-6 py-10'>
                                 <BarChart
                                     width={500}
                                     height={300}
@@ -81,7 +81,9 @@ const Dashboard = () => {
                                     <Bar dataKey="pv" fill="#8884d8" />
                                     <Bar dataKey="uv" fill="#82ca9d" />
                                 </BarChart>
-                            </ResponsiveContainer>
+                                
+
+                            </div>
                         </div>
                     :
                     <Spinner color='blue' />

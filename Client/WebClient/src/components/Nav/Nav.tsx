@@ -64,7 +64,7 @@ const Nav = ({ pageName }: { pageName: string }) => {
                 {Menus.map((Menu, index) => (
                     <Link to={Menu.link} key={index}
                         className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white 
-                            text-sm items-center gap-x-4 mt-2 ${pageName == Menu.title ? "bg-gray-300 text-black" : "text-gray-300"}`}>
+                            text-sm items-center gap-x-4 mt-2 ${pageName === Menu.title ? "bg-gray-300 text-black" : "text-gray-300"}`}>
                         {Menu.icon}
                         <span className={`${!open && "hidden"} origin-left duration-200`}>
                             {Menu.title}
