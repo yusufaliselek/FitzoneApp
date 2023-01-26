@@ -20,14 +20,14 @@ const Nav = ({ pageName }: { pageName: string }) => {
             link: "/dashboard"
         },
         {
-            title: "Kullanıcılar",
+            title: "Üyeler",
             icon: <RiAccountCircleLine size={24} />,
-            link: "/users"
+            link: "/members"
         },
         {
-            title: "Takvim",
-            icon: <BsCalendar3 size={24} />,
-            link: "/calendar"
+            title: "Antrenörler",
+            icon: <RiAccountCircleLine size={24} />,
+            link: "/coaches"
         },
         {
             title: "Analizler",
@@ -48,7 +48,7 @@ const Nav = ({ pageName }: { pageName: string }) => {
     return (
         <aside
             className={`${open ? "w-60" : "w-20"} h-screen p-5  pt-8 relative bg-gray-500 transition-all duration-500`}>
-            <div className="flex gap-x-4 items-center">
+            <div className="flex items-center gap-x-4">
                 {/* <img
                         src={logo}
                         onClick={() => setOpen(!open)}
@@ -62,16 +62,18 @@ const Nav = ({ pageName }: { pageName: string }) => {
                 {Menus.map((Menu, index) => (
                     <Link to={Menu.link} key={index}
                         className={`flex  rounded-md p-2 cursor-pointer ${pageName === Menu.title ? "bg-gray-300 text-black" : "text-gray-300"} hover:bg-gray-100 hover:text-black transition-all text-sm items-center gap-x-4 mt-2`}>
-                        {Menu.icon}
-                        <span className={`${!open ? "hidden w-0" : "w-full"} origin-left `}>
+                        <div>
+                            {Menu.icon}
+                        </div>
+                        <span className={`origin-left transition-[opacity] duration-200 delay-75 ${!open && "opacity-0"}`}>
                             {Menu.title}
                         </span>
                     </Link>
                 ))}
             </ul>
-            <Link to={"/"} className={`flex  rounded-md p-2 text-sm gap-x-4 mt-2 items-center cursor-pointer absolute bottom-5  hover:bg-gray-100 hover:text-black text-gray-300  transition duration-500`}>
-                <CiLogout className='h-6 w-6' />
-                <span className={`${!open ? "hidden" : "whitespace-nowrap"} origin-left`}>
+            <Link to={"/"} className={`flex  rounded-md p-2 text-sm gap-x-4 items-center cursor-pointer absolute bottom-5  hover:bg-gray-100 hover:text-black text-gray-300  transition duration-500`}>
+                <CiLogout size={24} />
+                <span className={`${!open ? "invisible" : "visible"} origin-left whitespace-nowrap transition-[visibility] delay-75 duration-200`}>
                     Çıkış Yap
                 </span>
             </Link>
