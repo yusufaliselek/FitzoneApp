@@ -1,67 +1,64 @@
 import React, { useState, useEffect } from 'react'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import Header from '../components/Header/Header';
 import Nav from '../components/Nav/Nav';
 import Spinner from '../components/Spinner/Spinner';
+
 
 const data = [
     {
         name: 'Makine 10',
         uv: 4000,
         pv: 2400,
-        amt: 2400,
     },
     {
         name: 'Makine 11',
         uv: 3000,
         pv: 1398,
-        amt: 2210,
     },
     {
         name: 'Makine 8',
         uv: 2000,
         pv: 9800,
-        amt: 2290,
     },
     {
         name: 'Makine 6',
         uv: 2780,
         pv: 3908,
-        amt: 2000,
     },
     {
         name: 'Makine 9',
         uv: 1890,
         pv: 4800,
-        amt: 2181,
     },
     {
         name: 'Makine 12',
         uv: 2390,
         pv: 3800,
-        amt: 2500,
     },
     {
         name: 'Makine 3',
         uv: 3490,
         pv: 4300,
-        amt: 2100,
     },
 ];
 
 const Dashboard = () => {
-    const [loading, setLoading] = useState(false);
-    useEffect(() => {
-        setTimeout(() => {
-            setLoading(true);
-        }, 1500)
-    })
+    const [loading, setLoading] = useState(true);
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         setLoading(true);
+    //     }, 1500)
+    // })
     return (
-        <div className='flex w-screen h-screen'>
+        <>
             {
                 loading ?
-                    <div className='flex'>
+                    <div className='flex w-full h-full'>
                         <Nav pageName='Dashboard' />
-                            <div className='grid grid-cols-3 gap-4 w-full h-auto px-6 py-10'>
+                        <div className='flex-row w-full h-full'>
+                            <Header pageName='Dashboard'/>
+                            <div className='grid grid-cols-3 gap-4 w-full h-auto py-10'>
                                 <BarChart
                                     width={500}
                                     height={300}
@@ -78,17 +75,19 @@ const Dashboard = () => {
                                     <YAxis />
                                     <Tooltip />
                                     <Legend />
-                                    <Bar dataKey="pv" fill="#8884d8" />
-                                    <Bar dataKey="uv" fill="#82ca9d" />
+                                    <Bar dataKey="pv" fill="gray" />
+                                    <Bar dataKey="uv" fill="gray" />
                                 </BarChart>
-                                
+
 
                             </div>
                         </div>
+
+                    </div>
                     :
                     <Spinner color='blue' />
             }
-        </div>
+        </>
     )
 }
 
