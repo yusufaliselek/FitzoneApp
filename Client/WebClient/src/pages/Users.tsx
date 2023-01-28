@@ -1,4 +1,4 @@
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRenderCellParams, GridValueGetterParams } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header/Header';
 import Nav from '../components/Nav/Nav';
@@ -43,13 +43,25 @@ const columns: GridColDef[] = [
         type: 'Date',
         width: 200,
     },
+    // {
+    //     field: 'id',
+    //     headerName: 'Aksiyonlar',
+    //     renderCell: (params: GridRenderCellParams<Date>) => (
+    //       <strong>
+    //         <button>
+    //           Open
+    //         </button>
+    //       </strong>
+    //     ),
+    //     width: 200,
+    //   },
 ];
 const rows = [
     { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35, weight: 120, height: 180, memberType: 'Premium', renewalDate: "22/10/2023" },
     { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42, weight: 120, height: 180, memberType: 'Basic', renewalDate: "22/10/2023" },
     { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45, weight: 120, height: 180, memberType: 'Premium', renewalDate: "22/10/2023" },
     { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16, weight: 120, height: 180, memberType: 'Basic', renewalDate: "22/10/2023" },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null, weight: 120, height: 180, memberType: 'Premium', renewalDate: "22/10/2023" },
+    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: 132, weight: 120, height: 180, memberType: 'Premium', renewalDate: "22/10/2023" },
     { id: 6, lastName: 'Melisandre', firstName: null, age: 150, weight: 120, height: 180, memberType: 'Basic', renewalDate: "22/10/2023" },
     { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44, weight: 120, height: 180, memberType: 'Premium', renewalDate: "22/10/2023" },
     { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36, weight: 120, height: 180, memberType: 'Basic', renewalDate: "22/10/2023" },

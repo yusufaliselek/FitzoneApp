@@ -29,13 +29,23 @@ const Nav = ({ pageName }: { pageName: string }) => {
             icon: <RiAccountCircleLine size={24} />,
             link: "/coaches"
         },
-        {
-            title: "Analizler",
-            icon: <MdOutlineAnalytics size={24} />,
-            link: "/analystics"
-        },
+        // {
+        //     title: "Analizler",
+        //     icon: <MdOutlineAnalytics size={24} />,
+        //     link: "/analystics"
+        // },
         {
             title: "Dosyalar",
+            icon: <VscFileSubmodule size={24} />,
+            link: "/files"
+        },
+        {
+            title: "Makineler",
+            icon: <VscFileSubmodule size={24} />,
+            link: "/files"
+        },
+        {
+            title: "Antrenmanlar",
             icon: <VscFileSubmodule size={24} />,
             link: "/files"
         },
