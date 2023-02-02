@@ -5,6 +5,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { FitzoneApi } from '../services/fitzoneApi';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -39,10 +40,6 @@ function a11yProps(index: number) {
     };
 }
 
-function submitForm({ name, value }: { name: string, value: string }) {
-    alert(name + " " + value)
-}
-
 const Settings = () => {
     const [value, setValue] = React.useState(0);
 
@@ -50,7 +47,7 @@ const Settings = () => {
         setValue(newValue);
     };
     const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     return (
         <div className='flex w-screen h-screen'>
             {/* Navbar */}
@@ -65,40 +62,42 @@ const Settings = () => {
                         <Tab label="Bildirimler" {...a11yProps(2)} />
                     </Tabs>
                     <TabPanel value={value} index={0}>
-                        <div className="mb-2">
-                            <label
-                                form="username"
-                                className="block text-sm font-semibold text-gray-600"
-                            >
-                                Kullanıcı Adı
-                            </label>
-                            <input
-                                type="text"
-                                value={username} onChange={e => setUsername(e.target.value)}
-                                className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                        <div className='w-1/3 h-auto items-center gap-x-4'>
+                            <div className="mb-2 w-full">
+                                <label
+                                    form="username"
+                                    className="block text-sm font-semibold text-gray-600"
+                                >
+                                    Kullanıcı Adı
+                                </label>
+                                <input
+                                    type="text"
+                                    value={username} onChange={e => setUsername(e.target.value)}
+                                    className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                            />
+                                />
+                            </div>
                         </div>
-                        <div className="mb-2">
-                            <label
-                                form="email"
-                                className="block text-sm font-semibold text-gray-600"
-                            >
-                                Email
-                            </label>
-                            <input
-                                type="text"
-                                value={email} onChange={e => setEmail(e.target.value)}
-                                className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                            />
-                        </div>
-                        <button onClick={() => submitForm({ name: username, value: email })}>
-                            Ekle
-                        </button>
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        Item Two
+                        <div className='w-1/3 h-auto items-center gap-x-4'>
+                            <div className="mb-2 w-full">
+                                <label
+                                    form="password"
+                                    className="block text-sm font-semibold text-gray-600"
+                                >
+                                    Şifre
+                                </label>
+                                <input
+                                    type="password"
+                                    spellCheck='true'
+                                    value={password} onChange={e => setPassword(e.target.value)}
+                                    className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                />
+                            </div>
+                        </div>
+                        
                     </TabPanel>
                     <TabPanel value={value} index={2}>
                         Item Three

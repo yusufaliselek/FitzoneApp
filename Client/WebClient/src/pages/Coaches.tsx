@@ -163,7 +163,7 @@ const Coaches = () => {
       <div className='flex flex-col w-full h-screen'>
         {/* Header */}
         <Header pageName='Antrenörler' />
-        <div className='grid grid-cols-3 justify-items-center gap-4 w-full h-auto py-10' style={{ height: 'auto', overflowY: 'scroll' }}>
+        <div className='p-10 flex flex-wrap gap-16 justify-center' style={{ height: 'auto', overflowY: 'scroll' }}>
           {coachData.map(coach =>
             <CoachCard name={coach.name} profession={coach.profession} />
           )}

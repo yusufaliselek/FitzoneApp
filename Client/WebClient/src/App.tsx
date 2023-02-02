@@ -6,6 +6,7 @@ import Signup from './pages/Signup';
 import Users from './pages/Users';
 import Coaches from './pages/Coaches';
 import Settings from './pages/Settings';
+import CoachDetail from './pages/CoachDetail';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/members' element={<Users />} />
           <Route path='/coaches' element={<Coaches />} />
+          <Route path='/coach/:id' element={<CoachDetail />} />
           <Route path='/settings' element={<Settings />} />
 
         </Routes>
