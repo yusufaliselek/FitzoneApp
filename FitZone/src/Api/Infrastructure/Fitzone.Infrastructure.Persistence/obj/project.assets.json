@@ -1917,9 +1917,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Freelance\\Fittness\\FitZone\\src\\Api\\Infrastructure\\Fitzone.Infrastructure.Persistence\\Fitzone.Infrastructure.Persistence.csproj",
-      "projectName": "Fitzone.Infrastructure.Persistence",
-      "projectPath": "D:\\Freelance\\Fittness\\FitZone\\src\\Api\\Infrastructure\\Fitzone.Infrastructure.Persistence\\Fitzone.Infrastructure.Persistence.csproj",
+      "projectUniqueName": "D:\\Freelance\\Fittness\\FitZone\\src\\Api\\Infrastructure\\Fitzone.Infrastructure.Persistence\\Fitzone.Api.Infrastructure.Persistence.csproj",
+      "projectName": "Fitzone.Api.Infrastructure.Persistence",
+      "projectPath": "D:\\Freelance\\Fittness\\FitZone\\src\\Api\\Infrastructure\\Fitzone.Infrastructure.Persistence\\Fitzone.Api.Infrastructure.Persistence.csproj",
       "packagesPath": "C:\\Users\\enesc\\.nuget\\packages\\",
       "outputPath": "D:\\Freelance\\Fittness\\FitZone\\src\\Api\\Infrastructure\\Fitzone.Infrastructure.Persistence\\obj\\",
       "projectStyle": "PackageReference",

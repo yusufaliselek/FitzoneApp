@@ -69,6 +69,16 @@ namespace Fitzone.Api.Infrastructure.Persistence.Context
                 entity.CreateTime = DateTime.Now;
             }
         }
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                var ConnString = "Server=(local)\\**** ;Database=**** ;User Id=****;Password=****; Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;MultiSubnetFailover=False;";
+                optionsBuilder.UseSqlServer(ConnString, opt =>
+                {
+                    opt.EnableRetryOnFailure();
+                });
+            }
+        }
     }
 }

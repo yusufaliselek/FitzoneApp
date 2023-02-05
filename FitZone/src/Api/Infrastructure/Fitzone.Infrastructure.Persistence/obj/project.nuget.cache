@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "DT5OYO/zjo4mtw2ABg8grR3EBQ/hdbkSEJAmABI00AD9ANCEapTw2z/Y9CS86SE8VQT97uo1VONm32sdpd15pA==",
+  "dgSpecHash": "AEmSR97MiYcR24Kg9i6Px1h33rXVn4Rj41LAwocAc4NcKkUjmofqgrjCjTOWty0w64bjouz93eDHEc1SVLxiJg==",
   "success": true,
-  "projectFilePath": "D:\\Freelance\\Fittness\\FitZone\\src\\Api\\Infrastructure\\Fitzone.Infrastructure.Persistence\\Fitzone.Infrastructure.Persistence.csproj",
+  "projectFilePath": "D:\\Freelance\\Fittness\\FitZone\\src\\Api\\Infrastructure\\Fitzone.Infrastructure.Persistence\\Fitzone.Api.Infrastructure.Persistence.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\enesc\\.nuget\\packages\\bogus\\34.0.2\\bogus.34.0.2.nupkg.sha512",
     "C:\\Users\\enesc\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitzone.Api.Core.Domain", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitzone.Api.Core.Application", "src\Api\Core\Fitzone.Api.Application\Fitzone.Api.Application\Fitzone.Api.Core.Application.csproj", "{C0A45CD5-2042-4BCB-AC56-FF56F686737B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitzone.Infrastructure.Persistence", "src\Api\Infrastructure\Fitzone.Infrastructure.Persistence\Fitzone.Infrastructure.Persistence.csproj", "{9012423C-363C-4B0A-A402-3873E8F0CA77}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitzone.Api.Infrastructure.Persistence", "src\Api\Infrastructure\Fitzone.Infrastructure.Persistence\Fitzone.Api.Infrastructure.Persistence.csproj", "{9012423C-363C-4B0A-A402-3873E8F0CA77}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fitzone.Api.WebApi", "src\Api\WebApi\Fitzone.Api.WebApi\Fitzone.Api.WebApi.csproj", "{420C2330-8EB2-4B00-8982-16487F85791F}"
 EndProject

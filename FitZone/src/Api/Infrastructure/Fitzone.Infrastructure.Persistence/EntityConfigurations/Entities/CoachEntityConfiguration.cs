@@ -3,7 +3,7 @@ using Fitzone.Api.Infrastructure.Persistence.EntityConfigurations;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 
-namespace Fitzone.Infrastructure.Persistence.EntityConfigurations.Entities
+namespace Fitzone.Api.Infrastructure.Persistence.EntityConfigurations.Entities
 {
     public class CoachEntityConfiguration : BaseEntityConfiguration<Coach>
     {
