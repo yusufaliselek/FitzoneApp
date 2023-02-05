@@ -1,0 +1,12 @@
+D:\Freelance\Fittness\FitZone\src\Common\Fitzone.Common\bin\Debug\net6.0\Fitzone.Common.deps.json
+D:\Freelance\Fittness\FitZone\src\Common\Fitzone.Common\bin\Debug\net6.0\Fitzone.Common.dll
+D:\Freelance\Fittness\FitZone\src\Common\Fitzone.Common\bin\Debug\net6.0\Fitzone.Common.pdb
+D:\Freelance\Fittness\FitZone\src\Common\Fitzone.Common\obj\Debug\net6.0\Fitzone.Common.csproj.AssemblyReference.cache
+D:\Freelance\Fittness\FitZone\src\Common\Fitzone.Common\obj\Debug\net6.0\Fitzone.Common.GeneratedMSBuildEditorConfig.editorconfig
+D:\Freelance\Fittness\FitZone\src\Common\Fitzone.Common\obj\Debug\net6.0\Fitzone.Common.AssemblyInfoInputs.cache
+D:\Freelance\Fittness\FitZone\src\Common\Fitzone.Common\obj\Debug\net6.0\Fitzone.Common.AssemblyInfo.cs
+D:\Freelance\Fittness\FitZone\src\Common\Fitzone.Common\obj\Debug\net6.0\Fitzone.Common.csproj.CoreCompileInputs.cache
+D:\Freelance\Fittness\FitZone\src\Common\Fitzone.Common\obj\Debug\net6.0\Fitzone.Common.dll
+D:\Freelance\Fittness\FitZone\src\Common\Fitzone.Common\obj\Debug\net6.0\refint\Fitzone.Common.dll
+D:\Freelance\Fittness\FitZone\src\Common\Fitzone.Common\obj\Debug\net6.0\Fitzone.Common.pdb
+D:\Freelance\Fittness\FitZone\src\Common\Fitzone.Common\obj\Debug\net6.0\ref\Fitzone.Common.dll

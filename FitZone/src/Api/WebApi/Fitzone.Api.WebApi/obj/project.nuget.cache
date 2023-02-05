@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "Jd9ZgihAEG844vSuXt9++EtmhYJ3RsRXi+mJ+Qz3ElG8lZz7Tx2PpuL4iRPYX3LPideiaiILze9Kd1CEcnn8Iw==",
+  "success": true,
+  "projectFilePath": "D:\\Freelance\\Fittness\\FitZone\\src\\Api\\WebApi\\Fitzone.Api.WebApi\\Fitzone.Api.WebApi.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\enesc\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\enesc\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\enesc\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\enesc\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\enesc\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\enesc\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
