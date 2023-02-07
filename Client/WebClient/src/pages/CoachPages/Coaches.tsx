@@ -1,7 +1,8 @@
 import React from 'react'
-import CoachCard from '../components/CoachCard/CoachCard'
-import Header from '../components/Header/Header'
-import Nav from '../components/Nav/Nav'
+import { RiAccountCircleLine } from 'react-icons/ri'
+import CoachCard from '../../components/CoachCard/CoachCard'
+import AddContentHeader from '../../components/Header/AddContentHeader'
+import Nav from '../../components/Nav/Nav'
 
 interface coachData {
   name: string,
@@ -162,7 +163,7 @@ const Coaches = () => {
       <Nav pageName='Antrenörler' />
       <div className='flex flex-col w-full h-screen'>
         {/* Header */}
-        <Header pageName='Antrenörler' />
+        <AddContentHeader pageName='Antrenörler' addContent='Antrenör Ekle' addContentIcon={<RiAccountCircleLine className='h-8 w-8' />} addContentAction={() => console.log("123")}/>
         <div className='p-10 flex flex-wrap gap-16 justify-center' style={{ height: 'auto', overflowY: 'scroll' }}>
           {coachData.map(coach =>
             <CoachCard name={coach.name} profession={coach.profession} />

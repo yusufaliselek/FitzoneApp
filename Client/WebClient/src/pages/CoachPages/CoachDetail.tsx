@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import Nav from '../components/Nav/Nav';
+import Nav from '../../components/Nav/Nav';
 
 interface Param {
     id: string;

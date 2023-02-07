@@ -1,5 +1,5 @@
 import React from 'react';
-import cardio from '../assets/cardio.jpg'
+import cardio from '../../assets/cardio.jpg'
 
 const Signup = () => {
     return (

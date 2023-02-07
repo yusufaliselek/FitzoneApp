@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { RiAccountCircleLine } from 'react-icons/ri';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import Header from '../components/Header/Header';
+import Header from '../components/Header/AddContentHeader';
+import DefaultHeader from '../components/Header/DefaultHeader';
 import Nav from '../components/Nav/Nav';
 import Spinner from '../components/Spinner/Spinner';
 
@@ -57,7 +59,7 @@ const Dashboard = () => {
                     <div className='flex w-full h-full'>
                         <Nav pageName='Dashboard' />
                         <div className='flex-row w-full h-full'>
-                            <Header pageName='Dashboard'/>
+                            <DefaultHeader pageName='Dashboard' DefaultName='Yusuf Ali Selek' DefaultIcon={<RiAccountCircleLine className='h-8 w-8' />}/>
                             <div className='grid grid-cols-3 gap-4 w-full h-auto py-10'>
                                 <BarChart
                                     width={500}

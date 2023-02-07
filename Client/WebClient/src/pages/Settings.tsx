@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
-import Header from '../components/Header/Header'
-import Nav from '../components/Nav/Nav'
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import { FitzoneApi } from '../services/fitzoneApi';
+import React, { useState } from 'react';
+import { RiAccountCircleLine } from 'react-icons/ri';
+
+import AddContentHeader from '../components/Header/AddContentHeader';
+import DefaultHeader from '../components/Header/DefaultHeader';
+import Nav from '../components/Nav/Nav';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -54,7 +56,7 @@ const Settings = () => {
             <Nav pageName='Ayarlar' />
             <div className='flex flex-col w-full h-screen'>
                 {/* Header */}
-                <Header pageName='Ayarlar' />
+                <DefaultHeader pageName='Ayarlar' DefaultName='Yusuf Ali Selek' DefaultIcon={<RiAccountCircleLine className='h-8 w-8' />}/>
                 <Box sx={{ width: '100%', paddingX: 2 }}>
                     <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                         <Tab label="Kullanıcı Bilgisi" {...a11yProps(0)} />
@@ -97,7 +99,7 @@ const Settings = () => {
                                 />
                             </div>
                         </div>
-                        
+
                     </TabPanel>
                     <TabPanel value={value} index={2}>
                         Item Three

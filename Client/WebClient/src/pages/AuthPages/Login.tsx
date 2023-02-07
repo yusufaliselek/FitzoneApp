@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import fitzonebg from '../assets/fitzonebg.gif'
+import fitzonebg from '../../assets/fitzonebg.gif'
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import Spinner from '../components/Spinner/Spinner';
+import Spinner from '../../components/Spinner/Spinner';
 
 const MySwal = withReactContent(Swal);
 const Toast = MySwal.mixin({

@@ -1,7 +1,10 @@
-import { DataGrid, GridColDef, GridRenderCellParams, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
-import Header from '../components/Header/Header';
-import Nav from '../components/Nav/Nav';
+import { RiAccountCircleLine } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
+
+import AddContentHeader from '../../components/Header/AddContentHeader';
+import Nav from '../../components/Nav/Nav';
 
 const columns: GridColDef[] = [
     {
@@ -68,20 +71,26 @@ const rows = [
     { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65, weight: 120, height: 180, memberType: 'Premium', renewalDate: "22/10/2023" },
 ];
 
-const Users = () => {
+const Members = () => {
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate()
     useEffect(() => {
         setTimeout(() => {
             setLoading(true);
         }, 1500)
     })
+
+    function simple() {
+        navigate("/members/addmember");
+    }
+
     return (
         <div className='flex w-screen h-screen'>
             {/* Navbar */}
             <Nav pageName='Üyeler' />
             <div className='flex flex-col w-full h-screen'>
                 {/* Header */}
-                <Header pageName='Üyeler' />
+                <AddContentHeader pageName='Üyeler' addContent='Üye ekle' addContentIcon={<RiAccountCircleLine className='h-8 w-8' />} addContentAction={simple} />
                 {/* Content */}
                 <div className='flex items-center p-5 grow'>
                     <DataGrid
@@ -96,4 +105,4 @@ const Users = () => {
     )
 }
 
-export default Users
+export default Members
