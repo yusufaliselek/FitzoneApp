@@ -1,5 +1,5 @@
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { RiAccountCircleLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 
@@ -72,16 +72,15 @@ const rows = [
 ];
 
 const Members = () => {
-    const [loading, setLoading] = useState(false);
     const navigate = useNavigate()
-    useEffect(() => {
-        setTimeout(() => {
-            setLoading(true);
-        }, 1500)
-    })
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         setLoading(true);
+    //     }, 1500)
+    // })
 
     function simple() {
-        navigate("/members/addmember");
+        navigate("/members/add");
     }
 
     return (

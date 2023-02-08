@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { BsCalendar3 } from 'react-icons/bs';
-import { MdOutlineAnalytics } from 'react-icons/md';
-import { RiAccountCircleLine, RiSettings4Line } from 'react-icons/ri';
+import { BsPersonBadgeFill } from 'react-icons/bs';
+import { CgGym } from 'react-icons/cg';
 import { CiLogout } from 'react-icons/ci';
+import { RiAccountCircleLine, RiSettings4Line } from 'react-icons/ri';
 import { RxDashboard } from 'react-icons/rx';
 import { VscFileSubmodule } from 'react-icons/vsc';
 import { Link } from 'react-router-dom';
+
 import { IMenu } from '../../types/Types';
 
 
@@ -26,7 +27,7 @@ const Nav = ({ pageName }: { pageName: string }) => {
         },
         {
             title: "Antrenörler",
-            icon: <RiAccountCircleLine size={24} />,
+            icon: <BsPersonBadgeFill size={24} />,
             link: "/coaches"
         },
         // {
@@ -35,9 +36,9 @@ const Nav = ({ pageName }: { pageName: string }) => {
         //     link: "/analystics"
         // },
         {
-            title: "Dosyalar",
-            icon: <VscFileSubmodule size={24} />,
-            link: "/files"
+            title: "Antrenmanlar",
+            icon: <CgGym size={24} />,
+            link: "/training"
         },
         {
             title: "Makineler",
@@ -45,7 +46,7 @@ const Nav = ({ pageName }: { pageName: string }) => {
             link: "/files"
         },
         {
-            title: "Antrenmanlar",
+            title: "Dosyalar",
             icon: <VscFileSubmodule size={24} />,
             link: "/files"
         },

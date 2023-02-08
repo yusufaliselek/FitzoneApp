@@ -65,7 +65,7 @@ const AddMember = () => {
                 Telefon Numarası
               </label>
               <input
-                name="telphone" placeholder="888 888 8888" pattern="[0-9]{3} [0-9]{3} [0-9]{4}"  title="Ten digits code" required
+                name="telphone" placeholder="888 888 8888" pattern="[0-9]{3} [0-9]{3} [0-9]{4}" title="Ten digits code" required
                 value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)}
                 className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"

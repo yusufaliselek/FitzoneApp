@@ -8,6 +8,8 @@ import Coaches from './pages/CoachPages/Coaches';
 import Settings from './pages/Settings';
 import CoachDetail from './pages/CoachPages/CoachDetail';
 import AddMember from './pages/MemberPages/AddMember';
+import AddCoach from './pages/CoachPages/AddCoach';
+import Training from './pages/TrainingPages/Training';
 
 function App() {
   return (
@@ -18,9 +20,11 @@ function App() {
           <Route path='/signup' element={<Signup />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/members' element={<Users />} />
-          <Route path='/members/addmember' element={<AddMember />} />
+          <Route path='/members/add' element={<AddMember />} />
           <Route path='/coaches' element={<Coaches />} />
+          <Route path='/coaches/add' element={<AddCoach />} />
           <Route path='/coach/:id' element={<CoachDetail />} />
+          <Route path='/training' element={<Training />} />
           <Route path='/settings' element={<Settings />} />
         </Routes>
       </Router>

@@ -1,6 +1,4 @@
-import React from 'react'
-import { IconType } from 'react-icons/lib'
-import { RiAccountCircleLine } from 'react-icons/ri'
+import React from 'react';
 
 const AddContentHeader = ({ pageName, addContent, addContentIcon, addContentAction }: { pageName: string, addContent: string, addContentIcon: JSX.Element, addContentAction: any }) => {
   return (

@@ -1,15 +1,17 @@
-import React from 'react'
-import { RiAccountCircleLine } from 'react-icons/ri'
-import CoachCard from '../../components/CoachCard/CoachCard'
-import AddContentHeader from '../../components/Header/AddContentHeader'
-import Nav from '../../components/Nav/Nav'
+import React from 'react';
+import { RiAccountCircleLine } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 
-interface coachData {
+import CoachCard from '../../components/CoachCard/CoachCard';
+import AddContentHeader from '../../components/Header/AddContentHeader';
+import Nav from '../../components/Nav/Nav';
+
+interface ICoachData {
   name: string,
   profession: string
 }
 
-const coachData: coachData[] = [
+const coachData: ICoachData[] = [
   {
     "name": "Ona Bailey",
     "profession": "Electrical Engineering Technician"
@@ -157,13 +159,19 @@ const coachData: coachData[] = [
 ]
 
 const Coaches = () => {
+
+  const navigate = useNavigate()
+  function simple() {
+    navigate("/coaches/add");
+  }
+
   return (
     <div className='flex w-screen h-screen'>
       {/* Navbar */}
       <Nav pageName='Antrenörler' />
       <div className='flex flex-col w-full h-screen'>
         {/* Header */}
-        <AddContentHeader pageName='Antrenörler' addContent='Antrenör Ekle' addContentIcon={<RiAccountCircleLine className='h-8 w-8' />} addContentAction={() => console.log("123")}/>
+        <AddContentHeader pageName='Antrenörler' addContent='Antrenör Ekle' addContentIcon={<RiAccountCircleLine className='h-8 w-8' />} addContentAction={simple} />
         <div className='p-10 flex flex-wrap gap-16 justify-center' style={{ height: 'auto', overflowY: 'scroll' }}>
           {coachData.map(coach =>
             <CoachCard name={coach.name} profession={coach.profession} />

@@ -1,6 +1,4 @@
-import React from 'react'
-import { IconType } from 'react-icons/lib'
-import { RiAccountCircleLine } from 'react-icons/ri'
+import React from 'react';
 
 const DefaultHeader = ({ pageName, DefaultName, DefaultIcon }: { pageName: string, DefaultName: string, DefaultIcon: JSX.Element }) => {
     return (
