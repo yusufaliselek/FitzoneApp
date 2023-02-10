@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BsPersonBadgeFill } from 'react-icons/bs';
+import { BsCalendar2, BsPersonBadgeFill } from 'react-icons/bs';
 import { CgGym } from 'react-icons/cg';
 import { CiLogout } from 'react-icons/ci';
 import { RiAccountCircleLine, RiSettings4Line } from 'react-icons/ri';
@@ -49,6 +49,11 @@ const Nav = ({ pageName }: { pageName: string }) => {
             title: "Dosyalar",
             icon: <VscFileSubmodule size={24} />,
             link: "/files"
+        },
+        {
+            title: "Takvim",
+            icon: <BsCalendar2 size={24} />,
+            link: "/calendar"
         },
         {
             title: "Ayarlar",

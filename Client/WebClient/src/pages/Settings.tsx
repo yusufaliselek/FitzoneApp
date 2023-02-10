@@ -60,12 +60,12 @@ const Settings = () => {
                     <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                         <Tab label="Antrenör Bilgisi" {...a11yProps(0)} />
                         <Tab label="Güvenlik" {...a11yProps(1)} />
-                        <Tab label="Bildirimler" {...a11yProps(2)} />
+                        {true && <Tab label="Yetkiler" {...a11yProps(2)} />}
                     </Tabs>
                     <TabPanel value={value} index={0}>
                         <div className='flex h-auto justify-center'>
                             <div className='flex flex-col w-1/2 pr-5 gap-y-2'>
-                                <p className='text-sm text-gray-600 pb-1 border-b'>Hesap Bilgileri</p>
+                                <p className='text-sm text-gray-600 mb-2 pb-1 border-b'>Hesap Bilgileri</p>
                                 <div className="mb-2 w-full">
                                     <label
                                         form="username"
@@ -82,7 +82,7 @@ const Settings = () => {
                                 </div>
                             </div>
                             <div className='flex flex-col w-1/2 pl-5 gap-y-2'>
-                                <p className='text-sm text-gray-600 pb-1 border-b'>Kişisel Bilgiler</p>
+                                <p className='text-sm text-gray-600 mb-2 pb-1 border-b'>Kişisel Bilgiler</p>
                                 <div className="mb-2 w-full">
                                     <label
                                         form="username"
@@ -149,7 +149,7 @@ const Settings = () => {
 
                     </TabPanel>
                     <TabPanel value={value} index={2}>
-                        Item Three
+                        Antrenör Yetkileri
                     </TabPanel>
                 </Box>
 

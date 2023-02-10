@@ -10,6 +10,7 @@ import CoachDetail from './pages/CoachPages/CoachDetail';
 import AddMember from './pages/MemberPages/AddMember';
 import AddCoach from './pages/CoachPages/AddCoach';
 import Training from './pages/TrainingPages/Training';
+import Calendar from './pages/CalendarPages/Calendar';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path='/coaches/add' element={<AddCoach />} />
           <Route path='/coach/:id' element={<CoachDetail />} />
           <Route path='/training' element={<Training />} />
+          <Route path='/calendar' element={<Calendar />} />
           <Route path='/settings' element={<Settings />} />
         </Routes>
       </Router>
