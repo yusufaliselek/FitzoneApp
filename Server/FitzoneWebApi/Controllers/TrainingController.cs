@@ -42,7 +42,6 @@ namespace FitzoneWebApi.Controllers
             {
                 Id = IncomeAddTraining.Id,
                 Name = IncomeAddTraining.Name,
-                Exercises = IncomeAddTraining.Exercises,
                 Duration = IncomeAddTraining.Duration,
                 Sets = IncomeAddTraining.Sets,
                 Repetitions = IncomeAddTraining.Repetitions,
@@ -67,7 +66,6 @@ namespace FitzoneWebApi.Controllers
             {
                 UpdateTrainingEntity.Id = IncomeUpdateTrainingItem.Id;
                 UpdateTrainingEntity.Name = IncomeUpdateTrainingItem.Name;
-                UpdateTrainingEntity.Exercises = IncomeUpdateTrainingItem.Exercises;
                 UpdateTrainingEntity.Duration = IncomeUpdateTrainingItem.Duration;
                 UpdateTrainingEntity.Sets = IncomeUpdateTrainingItem.Sets;
                 UpdateTrainingEntity.Repetitions = IncomeUpdateTrainingItem.Repetitions;

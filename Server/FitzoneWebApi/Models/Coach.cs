@@ -11,7 +11,7 @@
         public bool IsInPerson { get; set; }
         public string Contact { get; set; }
         public double Rate { get; set; }
-        public List<string> Services { get; set; }
+        //public List<string> Services { get; set; }
 
     }
 }

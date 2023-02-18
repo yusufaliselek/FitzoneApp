@@ -7,7 +7,7 @@ namespace FitzoneWebApi.Models
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public List<string> Exercises { get; set; }
+        //public List<string> Exercises { get; set; }
         public int Duration { get; set; }
         public int Sets { get; set; }
         public int Repetitions { get; set; }
