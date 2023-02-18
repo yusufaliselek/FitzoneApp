@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Web\\FitzoneWebApp\\Server\\FitzoneWebApi\\FitzoneWebApi.csproj": {}
+    "D:\\Freelance\\Fitzone\\Server\\FitzoneWebApi\\FitzoneWebApi.csproj": {}
   },
   "projects": {
-    "D:\\Web\\FitzoneWebApp\\Server\\FitzoneWebApi\\FitzoneWebApi.csproj": {
+    "D:\\Freelance\\Fitzone\\Server\\FitzoneWebApi\\FitzoneWebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Web\\FitzoneWebApp\\Server\\FitzoneWebApi\\FitzoneWebApi.csproj",
+        "projectUniqueName": "D:\\Freelance\\Fitzone\\Server\\FitzoneWebApi\\FitzoneWebApi.csproj",
         "projectName": "FitzoneWebApi",
-        "projectPath": "D:\\Web\\FitzoneWebApp\\Server\\FitzoneWebApi\\FitzoneWebApi.csproj",
-        "packagesPath": "C:\\Users\\Yusuf\\.nuget\\packages\\",
-        "outputPath": "D:\\Web\\FitzoneWebApp\\Server\\FitzoneWebApi\\obj\\",
+        "projectPath": "D:\\Freelance\\Fitzone\\Server\\FitzoneWebApi\\FitzoneWebApi.csproj",
+        "packagesPath": "C:\\Users\\enesc\\.nuget\\packages\\",
+        "outputPath": "D:\\Freelance\\Fitzone\\Server\\FitzoneWebApi\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Yusuf\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\enesc\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -71,8 +75,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -84,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     }
