@@ -14,7 +14,10 @@ var configuration = new ConfigurationBuilder()
 var connectionString = configuration.GetConnectionString("DBContext");
 
 builder.Services.AddControllers();
-
+//builder.Services.AddDbContext<FitzoneDbContext>(opt =>
+//{
+//    opt.UseSqlServer(connectionString);
+//}) 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -61,6 +64,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseSerilogRequestLogging();
 
 app.UseAuthentication();
 
