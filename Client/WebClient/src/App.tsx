@@ -13,11 +13,12 @@ import Training from './pages/TrainingPages/Training';
 import Calendar from './pages/CalendarPages/Calendar';
 
 function App() {
+
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/members' element={<Users />} />
@@ -28,6 +29,7 @@ function App() {
           <Route path='/training' element={<Training />} />
           <Route path='/calendar' element={<Calendar />} />
           <Route path='/settings' element={<Settings />} />
+          <Route path='*' element={<Login />} />
         </Routes>
       </Router>
     </>

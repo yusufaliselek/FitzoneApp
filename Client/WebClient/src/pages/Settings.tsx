@@ -2,10 +2,11 @@ import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import React, { useState } from 'react';
-import { RiAccountCircleLine } from 'react-icons/ri';
+import React, { useState, useEffect } from 'react';
 import DefaultHeader from '../components/Header/DefaultHeader';
 import Nav from '../components/Nav/Nav';
+import Cookies from 'js-cookie';
+import * as jose from 'jose'
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -40,22 +41,38 @@ function a11yProps(index: number) {
     };
 }
 
+interface UserProps {
+    username: string;
+    email: string;
+    currentPassword: string;
+    newPassword: string;
+    newPasswordConfirm: string;
+    biography: string;
+}
+
 const Settings = () => {
     const [value, setValue] = React.useState(0);
+
+    const [userProps, setUserProps] = useState<UserProps>({biography: '', email: '', newPassword: '', newPasswordConfirm: "", currentPassword: "", username: ''});
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [biography, setBiography] = useState('');
+
+    useEffect(() => {
+        const token: any = Cookies.get('token');
+        token ? console.log('Token var') : window.location.href = '/';
+        const claims: any = jose.decodeJwt(token)
+        setUserProps({...userProps, email: claims.email, username: String(localStorage.getItem('username'))});
+    }, [userProps]);
+
     return (
         <div className='flex w-screen h-screen'>
             {/* Navbar */}
             <Nav pageName='Ayarlar' />
             <div className='flex flex-col w-full h-screen'>
                 {/* Header */}
-                <DefaultHeader pageName='Ayarlar' DefaultName='Yusuf Ali Selek' DefaultIcon={<RiAccountCircleLine className='h-8 w-8' />} />
+                <DefaultHeader pageName='Ayarlar' />
                 <Box sx={{ width: '100%', paddingX: 2 }}>
                     <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                         <Tab label="Antrenör Bilgisi" {...a11yProps(0)} />
@@ -75,7 +92,21 @@ const Settings = () => {
                                     </label>
                                     <input
                                         type="text"
-                                        value={username} onChange={e => setUsername(e.target.value)}
+                                        value={userProps.username} onChange={e => setUserProps({...userProps, username: e.target.value})}
+                                        className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                    />
+                                </div>
+                                <div className="mb-2 w-full">
+                                    <label
+                                        form="email"
+                                        className="block text-sm font-semibold text-gray-600"
+                                    >
+                                        Email
+                                    </label>
+                                    <input
+                                        type="email"
+                                        value={userProps.email} onChange={e => setUserProps({...userProps, email: e.target.value})}
                                         className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                     />
@@ -92,7 +123,7 @@ const Settings = () => {
                                     </label>
                                     <input
                                         type="text"
-                                        value={username} onChange={e => setUsername(e.target.value)}
+                                        value={userProps.username} onChange={e => setUserProps({...userProps, username: e.target.value})}
                                         className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                     />
@@ -106,7 +137,7 @@ const Settings = () => {
                                     </label>
                                     <input
                                         type="text"
-                                        value={username} onChange={e => setUsername(e.target.value)}
+                                        value={userProps.username} onChange={e => setUserProps({...userProps, username: e.target.value})}
                                         className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                     />
@@ -119,7 +150,7 @@ const Settings = () => {
                                         Biyografi
                                     </label>
                                     <textarea
-                                        value={biography} onChange={e => setBiography(e.target.value)}
+                                        value={userProps.username} onChange={e => setUserProps({...userProps, username: e.target.value})}
                                         className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                     />
@@ -132,21 +163,50 @@ const Settings = () => {
                         <div className='w-1/3 h-auto items-center gap-x-4'>
                             <div className="mb-2 w-full">
                                 <label
-                                    form="password"
+                                    form="currentPassword"
                                     className="block text-sm font-semibold text-gray-600"
                                 >
-                                    Şifre
+                                    Mevcut Şifre
                                 </label>
                                 <input
                                     type="password"
                                     spellCheck='true'
-                                    value={password} onChange={e => setPassword(e.target.value)}
+                                    value={userProps.currentPassword} onChange={e => setUserProps({...userProps, currentPassword: e.target.value})}
+                                    className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                />
+                            </div>
+                            <div className="mb-2 w-full">
+                                <label
+                                    form="newPassword"
+                                    className="block text-sm font-semibold text-gray-600"
+                                >
+                                    Yeni Şifre
+                                </label>
+                                <input
+                                    type="password"
+                                    spellCheck='true'
+                                    value={userProps.newPassword} onChange={e => setUserProps({...userProps, newPassword: e.target.value})}
+                                    className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                />
+                            </div>
+                            <div className="mb-2 w-full">
+                                <label
+                                    form="newPasswordConfirm"
+                                    className="block text-sm font-semibold text-gray-600"
+                                >
+                                    Yeni Şifreyi Tekrar Giriniz
+                                </label>
+                                <input
+                                    type="password"
+                                    spellCheck='true'
+                                    value={userProps.newPasswordConfirm} onChange={e => setUserProps({...userProps, newPasswordConfirm: e.target.value})}
                                     className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 />
                             </div>
                         </div>
-
                     </TabPanel>
                     <TabPanel value={value} index={2}>
                         Antrenör Yetkileri

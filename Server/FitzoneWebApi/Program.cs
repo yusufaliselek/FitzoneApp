@@ -14,10 +14,6 @@ var configuration = new ConfigurationBuilder()
 var connectionString = configuration.GetConnectionString("DBContext");
 
 builder.Services.AddControllers();
-//builder.Services.AddDbContext<FitzoneDbContext>(opt =>
-//{
-//    opt.UseSqlServer(connectionString);
-//}) 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -34,25 +30,6 @@ builder.Services.AddCors(optios =>
 });
 
 builder.Host.UseSerilog((ctx, loggerConfiguration) => loggerConfiguration.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));
-
-//services.AddAuthentication(options =>
-//{
-//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//})
-//.AddJwtBearer(options =>
-//{
-//    options.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ValidateLifetime = true,
-//        ValidateIssuerSigningKey = true,
-//        ValidIssuer = Configuration["Jwt:Issuer"],
-//        ValidAudience = Configuration["Jwt:Audience"],
-//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-//    };
-//});
 
 builder.Services.AddDbContext<FitzoneDbContext>(options => options.UseSqlServer(connectionString));
 

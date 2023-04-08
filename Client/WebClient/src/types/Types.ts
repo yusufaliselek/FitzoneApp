@@ -1,3 +1,16 @@
+export interface ILogin {
+accessToken: string;
+accessTokenExpiration: string;
+refreshToken: string;
+refreshTokenExpiration: string;
+}
+
+export interface ILoginResponse {
+    data: ILogin;
+    status: number;
+    error: string;
+}
+
 export interface IMenu {
     title: string;
     icon?: JSX.Element;

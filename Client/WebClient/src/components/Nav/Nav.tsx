@@ -6,14 +6,10 @@ import { RiAccountCircleLine, RiSettings4Line } from 'react-icons/ri';
 import { RxDashboard } from 'react-icons/rx';
 import { VscFileSubmodule } from 'react-icons/vsc';
 import { Link } from 'react-router-dom';
-
 import { IMenu } from '../../types/Types';
 
 
-
-
 const Nav = ({ pageName }: { pageName: string }) => {
-    const [open, setOpen] = useState(true);
     const Menus: IMenu[] = [
         {
             title: "Dashboard",
@@ -30,11 +26,6 @@ const Nav = ({ pageName }: { pageName: string }) => {
             icon: <BsPersonBadgeFill size={24} />,
             link: "/coaches"
         },
-        // {
-        //     title: "Analizler",
-        //     icon: <MdOutlineAnalytics size={24} />,
-        //     link: "/analystics"
-        // },
         {
             title: "Antrenmanlar",
             icon: <CgGym size={24} />,
@@ -55,47 +46,37 @@ const Nav = ({ pageName }: { pageName: string }) => {
             icon: <BsCalendar2 size={24} />,
             link: "/calendar"
         },
-        {
-            title: "Ayarlar",
-            icon: <RiSettings4Line size={24} />,
-            link: "/settings"
-        },
     ];
+
+    const handleLogout = () => {
+        // Burada logout işlemini gerçekleştirecek kodları yazabilirsiniz.
+        // Örneğin, localStorage'da bulunan kullanıcı verilerini silerek çıkış yapabilirsiniz.
+        localStorage.removeItem("user");
+    };
+
     return (
-        <aside
-            className={`${open ? "w-60" : "w-20"} h-screen p-5  pt-8 relative bg-gray-500 transition-all duration-500`}>
-            <div className="flex items-center gap-x-4">
-                {/* <img
-                        src={logo}
-                        onClick={() => setOpen(!open)}
-                        className={`cursor-pointer duration-500 ${open && "rotate-[360deg]"
-                            }`}
-                    /> */}
-                <h2 className={`cursor-pointer text-white duration-500 ${open && "rotate-[360deg]"
-                    }`} onClick={() => setOpen(!open)}>Fitzone</h2>
+        <div className="w-64 h-screen p-2">
+            <div className='h-full px-3 py-4 overflow-y-auto bg-slate-50 rounded-lg'>
+                <div className='flex items-center justify-center'>
+                    <h1 className="text-2xl font-normal  text-blue-600">
+                        FITZONE
+                    </h1>
+                </div>
+                <ul>
+                    {Menus.map((menu) => (
+                        <Link to={menu.link} className={`flex items-center py-2 px-4 ${pageName == menu.title ? "text-white hover:bg-slate-400 bg-slate-400 font-medium" : "text-slate-600 font-normal hover:bg-slate-200"}  cursor-pointer rounded-md mt-3 transition-all duration-400`}
+                        >
+                            <span className="mr-2">{menu.icon}</span>
+                            <span>{menu.title}</span>
+                        </Link>
+                    ))}
+                </ul>
             </div>
-            <ul className="pt-6">
-                {Menus.map((Menu, index) => (
-                    <Link to={Menu.link} key={index}
-                        className={`flex  rounded-md p-2 cursor-pointer ${pageName === Menu.title ? "bg-gray-300 text-black" : "text-gray-300"} hover:bg-gray-100 hover:text-black transition-all text-sm items-center gap-x-4 mt-2`}>
-                        <div>
-                            {Menu.icon}
-                        </div>
-                        <span className={`origin-left transition-[opacity] duration-200 delay-75 ${!open && "opacity-0"}`}>
-                            {Menu.title}
-                        </span>
-                    </Link>
-                ))}
-            </ul>
-            <Link to={"/"} className={`flex  rounded-md p-2 text-sm gap-x-4 items-center cursor-pointer absolute bottom-5  hover:bg-gray-100 hover:text-black text-gray-300  transition duration-500`}>
-                <CiLogout size={24} />
-                <span className={`${!open ? "invisible" : "visible"} origin-left whitespace-nowrap transition-[visibility] delay-75 duration-200`}>
-                    Çıkış Yap
-                </span>
-            </Link>
-        </aside>
+        </div>
+
     );
-};
+
+}
 
 export default Nav;
 

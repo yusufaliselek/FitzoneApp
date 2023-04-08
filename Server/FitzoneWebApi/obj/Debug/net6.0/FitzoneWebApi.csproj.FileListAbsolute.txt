@@ -1,4 +1,3 @@
-D:\Web\FitzoneWebApp\Server\FitzoneWebApi\bin\Debug\net6.0\appsettings.Development.json
 D:\Web\FitzoneWebApp\Server\FitzoneWebApi\bin\Debug\net6.0\appsettings.json
 D:\Web\FitzoneWebApp\Server\FitzoneWebApi\bin\Debug\net6.0\FitzoneWebApi.exe
 D:\Web\FitzoneWebApp\Server\FitzoneWebApi\bin\Debug\net6.0\FitzoneWebApi.deps.json
@@ -260,3 +259,15 @@ D:\Freelance\Fitzone\Server\FitzoneWebApi\obj\Debug\net6.0\scopedcss\bundle\Fitz
 D:\Freelance\Fitzone\Server\FitzoneWebApi\obj\Debug\net6.0\FitzoneWebApi.csproj.CopyComplete
 D:\Freelance\Fitzone\Server\FitzoneWebApi\obj\Debug\net6.0\FitzoneWebApi.genruntimeconfig.cache
 D:\Freelance\Fitzone\Server\FitzoneWebApi\obj\Debug\net6.0\ref\FitzoneWebApi.dll
+D:\Web\FitzoneWebApp\Server\FitzoneWebApi\bin\Debug\net6.0\Serilog.dll
+D:\Web\FitzoneWebApp\Server\FitzoneWebApi\bin\Debug\net6.0\Serilog.AspNetCore.dll
+D:\Web\FitzoneWebApp\Server\FitzoneWebApi\bin\Debug\net6.0\Serilog.Expressions.dll
+D:\Web\FitzoneWebApp\Server\FitzoneWebApi\bin\Debug\net6.0\Serilog.Extensions.Hosting.dll
+D:\Web\FitzoneWebApp\Server\FitzoneWebApi\bin\Debug\net6.0\Serilog.Extensions.Logging.dll
+D:\Web\FitzoneWebApp\Server\FitzoneWebApi\bin\Debug\net6.0\Serilog.Formatting.Compact.dll
+D:\Web\FitzoneWebApp\Server\FitzoneWebApi\bin\Debug\net6.0\Serilog.Settings.Configuration.dll
+D:\Web\FitzoneWebApp\Server\FitzoneWebApi\bin\Debug\net6.0\Serilog.Sinks.Console.dll
+D:\Web\FitzoneWebApp\Server\FitzoneWebApi\bin\Debug\net6.0\Serilog.Sinks.Debug.dll
+D:\Web\FitzoneWebApp\Server\FitzoneWebApi\bin\Debug\net6.0\Serilog.Sinks.File.dll
+D:\Web\FitzoneWebApp\Server\FitzoneWebApi\bin\Debug\net6.0\Serilog.Sinks.PeriodicBatching.dll
+D:\Web\FitzoneWebApp\Server\FitzoneWebApi\bin\Debug\net6.0\Serilog.Sinks.Seq.dll
