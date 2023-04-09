@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { RiAccountCircleLine } from 'react-icons/ri';
 import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
-import DefaultHeader from '../components/Header/DefaultHeader';
+import FitzoneHeader from '../components/Header/FitzoneHeader';
 import Nav from '../components/Nav/Nav';
 import { FitzoneApi } from '../services/fitzoneApi';
 
@@ -252,7 +252,7 @@ const Dashboard = () => {
                     <Nav pageName='Dashboard' />
                     <div className='flex-row w-full h-full'>
                         {/*Header*/}
-                        <DefaultHeader pageName='Dashboard' DefaultName={username} DefaultIcon={<RiAccountCircleLine className='h-8 w-8' />} />
+                        <FitzoneHeader pageName='Dashboard'/>
                         <div className='xl:grid xl:grid-cols-3 flex flex-wrap gap-4 w-full py-10 overflow-y-scroll h-full'>
                             {value.map((item) =>
                                 <BarChart

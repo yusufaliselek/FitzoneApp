@@ -3,7 +3,7 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import React, { useState, useEffect } from 'react';
-import DefaultHeader from '../components/Header/DefaultHeader';
+import FitzoneHeader from '../components/Header/FitzoneHeader';
 import Nav from '../components/Nav/Nav';
 import Cookies from 'js-cookie';
 import * as jose from 'jose'
@@ -72,8 +72,8 @@ const Settings = () => {
             <Nav pageName='Ayarlar' />
             <div className='flex flex-col w-full h-screen'>
                 {/* Header */}
-                <DefaultHeader pageName='Ayarlar' />
-                <Box sx={{ width: '100%', paddingX: 2 }}>
+                <FitzoneHeader pageName='Ayarlar' />
+                <Box sx={{ width: '100%', paddingX: 2, overflowY: "auto" }}>
                     <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                         <Tab label="Antrenör Bilgisi" {...a11yProps(0)} />
                         <Tab label="Güvenlik" {...a11yProps(1)} />

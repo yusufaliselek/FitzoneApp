@@ -1,5 +1,5 @@
 import React from 'react'
-import AddContentHeader from '../../components/Header/AddContentHeader'
+import AddContentHeader from '../../components/Header/FitzoneHeader'
 import Nav from '../../components/Nav/Nav'
 import TrainingPackCard from '../../components/Training/TrainingPackCard'
 

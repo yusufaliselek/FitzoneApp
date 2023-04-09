@@ -2,7 +2,7 @@ import React from 'react'
 import 'devextreme/dist/css/dx.light.css';
 import { Scheduler, View, Editing } from 'devextreme-react/scheduler';
 import Nav from '../../components/Nav/Nav';
-import AddContentHeader from '../../components/Header/AddContentHeader';
+import AddContentHeader from '../../components/Header/FitzoneHeader';
 
 const appointments = [
     {

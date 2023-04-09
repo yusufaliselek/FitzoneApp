@@ -3,7 +3,7 @@ import { RiAccountCircleLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 
 import CoachCard from '../../components/CoachCard/CoachCard';
-import AddContentHeader from '../../components/Header/AddContentHeader';
+import AddContentHeader from '../../components/Header/FitzoneHeader';
 import Nav from '../../components/Nav/Nav';
 
 interface ICoachData {

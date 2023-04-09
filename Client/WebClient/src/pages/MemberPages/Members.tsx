@@ -3,7 +3,7 @@ import React from 'react';
 import { RiAccountCircleLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 
-import AddContentHeader from '../../components/Header/AddContentHeader';
+import AddContentHeader from '../../components/Header/FitzoneHeader';
 import Nav from '../../components/Nav/Nav';
 
 const columns: GridColDef[] = [

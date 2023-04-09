@@ -1,0 +1,17 @@
+D:\Web\FitzoneWebApp\Server\Server.Service\bin\Debug\net6.0\Server.Service.deps.json
+D:\Web\FitzoneWebApp\Server\Server.Service\bin\Debug\net6.0\Server.Service.dll
+D:\Web\FitzoneWebApp\Server\Server.Service\bin\Debug\net6.0\Server.Service.pdb
+D:\Web\FitzoneWebApp\Server\Server.Service\obj\Debug\net6.0\Server.Service.csproj.AssemblyReference.cache
+D:\Web\FitzoneWebApp\Server\Server.Service\obj\Debug\net6.0\Server.Service.GeneratedMSBuildEditorConfig.editorconfig
+D:\Web\FitzoneWebApp\Server\Server.Service\obj\Debug\net6.0\Server.Service.AssemblyInfoInputs.cache
+D:\Web\FitzoneWebApp\Server\Server.Service\obj\Debug\net6.0\Server.Service.AssemblyInfo.cs
+D:\Web\FitzoneWebApp\Server\Server.Service\obj\Debug\net6.0\Server.Service.csproj.CoreCompileInputs.cache
+D:\Web\FitzoneWebApp\Server\Server.Service\obj\Debug\net6.0\Server.Service.dll
+D:\Web\FitzoneWebApp\Server\Server.Service\obj\Debug\net6.0\refint\Server.Service.dll
+D:\Web\FitzoneWebApp\Server\Server.Service\obj\Debug\net6.0\Server.Service.pdb
+D:\Web\FitzoneWebApp\Server\Server.Service\obj\Debug\net6.0\ref\Server.Service.dll
+D:\Web\FitzoneWebApp\Server\Server.Service\bin\Debug\net6.0\Server.Core.dll
+D:\Web\FitzoneWebApp\Server\Server.Service\bin\Debug\net6.0\Server.Data.dll
+D:\Web\FitzoneWebApp\Server\Server.Service\bin\Debug\net6.0\Server.Data.pdb
+D:\Web\FitzoneWebApp\Server\Server.Service\bin\Debug\net6.0\Server.Core.pdb
+D:\Web\FitzoneWebApp\Server\Server.Service\obj\Debug\net6.0\Server.Service.csproj.CopyComplete
