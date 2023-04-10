@@ -7,6 +7,8 @@ import FitzoneHeader from '../components/Header/FitzoneHeader';
 import Nav from '../components/Nav/Nav';
 import Cookies from 'js-cookie';
 import * as jose from 'jose'
+import { FitzoneApi } from '../services/fitzoneApi';
+import { useNavigate } from 'react-router-dom';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -51,20 +53,36 @@ interface UserProps {
 }
 
 const Settings = () => {
+    const navigate = useNavigate()
     const [value, setValue] = React.useState(0);
 
-    const [userProps, setUserProps] = useState<UserProps>({biography: '', email: '', newPassword: '', newPasswordConfirm: "", currentPassword: "", username: ''});
+    const [userProps, setUserProps] = useState<UserProps>({ biography: '', email: '', newPassword: '', newPasswordConfirm: "", currentPassword: "", username: '' });
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
 
-    useEffect(() => {
-        const token: any = Cookies.get('token');
-        token ? console.log('Token var') : window.location.href = '/';
-        const claims: any = jose.decodeJwt(token)
-        setUserProps({...userProps, email: claims.email, username: String(localStorage.getItem('username'))});
-    }, [userProps]);
+    const RefreshToken = async () => {
+        if (!Cookies.get('token')) {
+             return FitzoneApi.ResfreshAccessTokenByRefreshToken().then((response) => {
+                 Cookies.set('token', response.data.accessToken, { expires: new Date(response.data.accessTokenExpiration) });
+                 Cookies.set('refreshToken', response.data.refreshToken, { expires: new Date(response.data.refreshTokenExpiration) });
+                 console.log("Token yenilendi");
+             }).catch((error) => {
+                 console.log(error)
+                 Cookies.remove('token');
+                 Cookies.remove('refreshToken');
+                 navigate('/login')
+                 console.log("Token süresi dolmuş");
+             });
+         }
+     }
+ 
+     useEffect(() => {
+         RefreshToken()
+         // Cookie deki değerleri jose ile decode edip state e atıyoruz.
+            const token = Cookies.get('token')
+     }, [])
 
     return (
         <div className='flex w-screen h-screen'>
@@ -92,7 +110,7 @@ const Settings = () => {
                                     </label>
                                     <input
                                         type="text"
-                                        value={userProps.username} onChange={e => setUserProps({...userProps, username: e.target.value})}
+                                        value={userProps.username} onChange={e => setUserProps({ ...userProps, username: e.target.value })}
                                         className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                     />
@@ -106,7 +124,7 @@ const Settings = () => {
                                     </label>
                                     <input
                                         type="email"
-                                        value={userProps.email} onChange={e => setUserProps({...userProps, email: e.target.value})}
+                                        value={userProps.email} onChange={e => setUserProps({ ...userProps, email: e.target.value })}
                                         className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                     />
@@ -123,7 +141,7 @@ const Settings = () => {
                                     </label>
                                     <input
                                         type="text"
-                                        value={userProps.username} onChange={e => setUserProps({...userProps, username: e.target.value})}
+                                        value={userProps.username} onChange={e => setUserProps({ ...userProps, username: e.target.value })}
                                         className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                     />
@@ -137,7 +155,7 @@ const Settings = () => {
                                     </label>
                                     <input
                                         type="text"
-                                        value={userProps.username} onChange={e => setUserProps({...userProps, username: e.target.value})}
+                                        value={userProps.username} onChange={e => setUserProps({ ...userProps, username: e.target.value })}
                                         className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                     />
@@ -150,7 +168,7 @@ const Settings = () => {
                                         Biyografi
                                     </label>
                                     <textarea
-                                        value={userProps.username} onChange={e => setUserProps({...userProps, username: e.target.value})}
+                                        value={userProps.username} onChange={e => setUserProps({ ...userProps, username: e.target.value })}
                                         className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                     />
@@ -171,7 +189,7 @@ const Settings = () => {
                                 <input
                                     type="password"
                                     spellCheck='true'
-                                    value={userProps.currentPassword} onChange={e => setUserProps({...userProps, currentPassword: e.target.value})}
+                                    value={userProps.currentPassword} onChange={e => setUserProps({ ...userProps, currentPassword: e.target.value })}
                                     className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 />
@@ -186,7 +204,7 @@ const Settings = () => {
                                 <input
                                     type="password"
                                     spellCheck='true'
-                                    value={userProps.newPassword} onChange={e => setUserProps({...userProps, newPassword: e.target.value})}
+                                    value={userProps.newPassword} onChange={e => setUserProps({ ...userProps, newPassword: e.target.value })}
                                     className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 />
@@ -201,7 +219,7 @@ const Settings = () => {
                                 <input
                                     type="password"
                                     spellCheck='true'
-                                    value={userProps.newPasswordConfirm} onChange={e => setUserProps({...userProps, newPasswordConfirm: e.target.value})}
+                                    value={userProps.newPasswordConfirm} onChange={e => setUserProps({ ...userProps, newPasswordConfirm: e.target.value })}
                                     className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 />

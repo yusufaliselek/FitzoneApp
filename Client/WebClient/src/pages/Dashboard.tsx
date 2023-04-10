@@ -235,14 +235,24 @@ const value: any[] = [
 
 const Dashboard = () => {
     const navigate = useNavigate()
-    const [username, setUsername] = useState<any>('')
+    const RefreshToken = async () => {
+       if (!Cookies.get('token')) {
+            return FitzoneApi.ResfreshAccessTokenByRefreshToken().then((response) => {
+                Cookies.set('token', response.data.accessToken, { expires: new Date(response.data.accessTokenExpiration) });
+                Cookies.set('refreshToken', response.data.refreshToken, { expires: new Date(response.data.refreshTokenExpiration) });
+                console.log("Token yenilendi");
+            }).catch((error) => {
+                console.log(error)
+                Cookies.remove('token');
+                Cookies.remove('refreshToken');
+                navigate('/login')
+                console.log("Token süresi dolmuş");
+            });
+        }
+    }
+
     useEffect(() => {
-        FitzoneApi.GetUsers().then((res) => {
-            alert(JSON.stringify(res.data))
-        }).catch((err) => {
-            navigate('/login')
-            alert(JSON.stringify(err))
-        })
+        RefreshToken()
     }, [])
     return (
         <>
@@ -252,7 +262,8 @@ const Dashboard = () => {
                     <Nav pageName='Dashboard' />
                     <div className='flex-row w-full h-full'>
                         {/*Header*/}
-                        <FitzoneHeader pageName='Dashboard'/>
+                        <FitzoneHeader pageName='Dashboard' />
+                        {/*Content*/}
                         <div className='xl:grid xl:grid-cols-3 flex flex-wrap gap-4 w-full py-10 overflow-y-scroll h-full'>
                             {value.map((item) =>
                                 <BarChart

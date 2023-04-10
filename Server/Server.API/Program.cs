@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Server.Core;
 using Server.Core.Configuration;
 using Server.Core.Models;
 using Server.Core.Repositories;
@@ -11,6 +10,7 @@ using Server.Data.Repository;
 using Server.Service.Services;
 using FluentValidation.AspNetCore;
 using Server.Core.Extensions;
+using Server.Core.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,7 +58,6 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = tokenOptions.Issuer,
         ValidAudience = tokenOptions.Audience[0], // burada ilk audience veriyoruz
         IssuerSigningKey = SignService.GetSymmetricSecurityKey(tokenOptions.SecurityKey),
-
         ValidateIssuerSigningKey = true,
         ValidateAudience = true,
         ValidateIssuer = true,

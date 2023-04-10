@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Server.Core.Configuration;
 using Server.Core.DTOs;
@@ -19,10 +20,10 @@ namespace Server.Service.Services
     {
         private readonly UserManager<TrainerUser> _userManager;
         private readonly CustomTokenOption _tokenOption;
-        public TokenService(UserManager<TrainerUser> userManager, CustomTokenOption tokenOption)
+        public TokenService(IOptions<CustomTokenOption> options, UserManager<TrainerUser> userManager)
         {
+            _tokenOption = options.Value;
             _userManager = userManager;
-            _tokenOption = tokenOption;
         }
 
         private string CreateRefreshToken()
@@ -37,9 +38,12 @@ namespace Server.Service.Services
         {
             var userList = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, userApp.Id),   // ister 38. satırdaki ister 39.
+                new Claim(JwtRegisteredClaimNames.Sub, userApp.Id),
                 new Claim(JwtRegisteredClaimNames.Email, userApp.Email),
-                new Claim(ClaimTypes.Name, userApp.UserName),
+                new Claim(JwtRegisteredClaimNames.UniqueName, userApp.UserName),
+                new Claim(JwtRegisteredClaimNames.GivenName, userApp.FirstName),
+                new Claim(JwtRegisteredClaimNames.FamilyName, userApp.LastName),
+                new Claim(JwtRegisteredClaimNames.Acr, userApp.PersonalPhoto),  // asıl amacını bilmiyorum sadece göstermelik fotoğrafı saklıyorum.
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             userList.AddRange(audiences.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));
@@ -47,7 +51,7 @@ namespace Server.Service.Services
             return userList;
         }
 
-        public TokenDto CreateTrainerUserToken(TrainerUser trainerUser)
+        public TokenDto CreateToken(TrainerUser userApp)
         {
             var accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOption.AccessTokenExpiration);
             var refreshTokenExpiration = DateTime.Now.AddMinutes(_tokenOption.RefreshTokenExpiration);
@@ -60,7 +64,7 @@ namespace Server.Service.Services
                     issuer: _tokenOption.Issuer,
                     expires: accessTokenExpiration,
                     notBefore: DateTime.Now,
-                    claims: GetClaims(trainerUser, _tokenOption.Audience),
+                    claims: GetClaims(userApp, _tokenOption.Audience),
                     signingCredentials: signingCredentials
                 );
 

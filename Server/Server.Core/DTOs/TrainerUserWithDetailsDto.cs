@@ -10,6 +10,7 @@ namespace Server.Core.DTOs
     {
         public string Biography { get; set; }
         public string PhoneNumber { get; set; }
+        public bool Gender { get; set; }
         public int TCKN { get; set; }
         public List<TrainerLicenceDto> TrainerLicences { get; set; }
         public List<TrainerClubDto> TrainerClubs { get; set; }

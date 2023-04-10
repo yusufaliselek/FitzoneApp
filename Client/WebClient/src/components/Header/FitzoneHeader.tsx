@@ -1,5 +1,6 @@
 import React from 'react';
 import AccountMenu from '../AccountMenu/AccountMenu';
+import Cookies from 'js-cookie';
 
 const FitzoneHeader = ({ pageName, addContent, addContentIcon, addContentAction }: { pageName: string, addContent?: string, addContentIcon?: JSX.Element, addContentAction?: any }) => {
   return (
@@ -16,7 +17,7 @@ const FitzoneHeader = ({ pageName, addContent, addContentIcon, addContentAction 
             </div>
           }
           <div className='flex text-blue-800 px-1 md:px-5 py-1 items-center space-x-1 md:space-x-4 rounded-md '>
-            {AccountMenu({ firstName: String(localStorage.getItem("username")), lastName: String(localStorage.getItem("username")) })}
+            {AccountMenu({ firstName: String(Cookies.get("firstName") ? String(Cookies.get("firstName")) : "Kullanıcı"), lastName: String(Cookies.get("lastName") ? String(Cookies.get("lastName")) : "Kullanıcı") })}
           </div>
         </div>
       </div>

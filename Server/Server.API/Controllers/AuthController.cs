@@ -5,7 +5,7 @@ using Server.Core.Services;
 
 namespace Server.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AuthController : CustomBaseController
     {
@@ -19,7 +19,7 @@ namespace Server.API.Controllers
         [HttpPost]  // api/auth/createtoken
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
-            var result = await _authenticationService.LoginAsync(loginDto);
+            var result = await _authenticationService.CreateTokenAsync(loginDto);
 
             return ActionResultInstance(result);
         }

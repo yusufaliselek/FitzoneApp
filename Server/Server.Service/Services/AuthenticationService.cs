@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Server.Core;
+using Microsoft.Extensions.Options;
 using Server.Core.DTOs;
 using Server.Core.Models;
 using Server.Core.Repositories;
 using Server.Core.Services;
+using Server.Core.UnitOfWork;
+using Server.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,32 +29,7 @@ namespace Server.Service.Services
             _userRefreshTokenService = userRefreshTokenService;
         }
 
-        public async Task<Response<TokenDto>> CreateTokenByRefreshToken(string refreshToken)
-        {
-            var existRefreshToken = await _userRefreshTokenService.Where(x => x.Code == refreshToken).SingleOrDefaultAsync();
-            if (existRefreshToken == null)
-            {
-                return Response<TokenDto>.Fail("Refresh token not found", 404, true);
-            }
-
-            var user = await _userManager.FindByIdAsync(existRefreshToken.UserId);
-
-            if (user == null)
-            {
-                return Response<TokenDto>.Fail("UserId not found", 404, true);
-            }
-
-            var tokenDto = _tokenService.CreateTrainerUserToken(user);
-
-            existRefreshToken.Code = tokenDto.RefreshToken;
-            existRefreshToken.Expiration = tokenDto.RefreshTokenExpiration;
-
-            await _unitOfWork.CommitAsync();
-
-            return Response<TokenDto>.Success(tokenDto, 200);
-        }
-
-        public async Task<Response<TokenDto>> LoginAsync(LoginDto loginDto)
+        public async Task<Response<TokenDto>> CreateTokenAsync(LoginDto loginDto)
         {
             if (loginDto == null) throw new ArgumentNullException(nameof(loginDto));
 
@@ -65,7 +42,7 @@ namespace Server.Service.Services
                 return Response<TokenDto>.Fail("Email or Password is wrong!", 400, true);
             }
 
-            var token = _tokenService.CreateTrainerUserToken(user);
+            var token = _tokenService.CreateToken(user);
 
             var userRefreshToken = await _userRefreshTokenService.Where(x => x.UserId == user.Id).SingleOrDefaultAsync();
 
@@ -82,6 +59,31 @@ namespace Server.Service.Services
             await _unitOfWork.CommitAsync();
 
             return Response<TokenDto>.Success(token, 200);
+        }
+
+        public async Task<Response<TokenDto>> CreateTokenByRefreshToken(string refreshToken)
+        {
+            var existRefreshToken = await _userRefreshTokenService.Where(x => x.Code == refreshToken).SingleOrDefaultAsync();
+            if (existRefreshToken == null)
+            {
+                return Response<TokenDto>.Fail("Refresh token not found", 404, true);
+            }
+
+            var user = await _userManager.FindByIdAsync(existRefreshToken.UserId);
+
+            if (user == null)
+            {
+                return Response<TokenDto>.Fail("UserId not found", 404, true);
+            }
+
+            var tokenDto = _tokenService.CreateToken(user);
+
+            existRefreshToken.Code = tokenDto.RefreshToken;
+            existRefreshToken.Expiration = tokenDto.RefreshTokenExpiration;
+
+            await _unitOfWork.CommitAsync();
+
+            return Response<TokenDto>.Success(tokenDto, 200);
         }
 
         public async Task<Response<NoDataDto>> RevokeRefreshToken(string refreshToken)

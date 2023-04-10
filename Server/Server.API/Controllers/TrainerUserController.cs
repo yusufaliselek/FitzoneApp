@@ -8,11 +8,11 @@ namespace Server.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : CustomBaseController
+    public class TrainerUserController : CustomBaseController
     {
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService)
+        public TrainerUserController(IUserService userService)
         {
             _userService = userService;
         }
@@ -25,7 +25,7 @@ namespace Server.API.Controllers
             return ActionResultInstance(await _userService.CreateUserAsync(createUserDto));
         }
 
-        [Authorize]
+
         [HttpGet]
         public async Task<IActionResult> GetUser()
         {

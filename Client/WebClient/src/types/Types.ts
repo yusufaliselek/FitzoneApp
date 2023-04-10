@@ -5,6 +5,10 @@ refreshToken: string;
 refreshTokenExpiration: string;
 }
 
+export interface IRefreshAccessToken {
+    token: string;
+}
+
 export interface ILoginResponse {
     data: ILogin;
     status: number;

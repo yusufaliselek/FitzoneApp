@@ -1,2 +1,12 @@
 /Client/WebClient/node_modules
 /Server/.vs
+/Server/Server.API/bin
+/Server/Server.API/onj
+/Server/Server.Core/obj
+/Server/Server.Core/bin
+/Server/Server.Core/.vs
+/Server/Server.Data/bin
+/Server/Server.Data/obj
+/Server/Server.Data/Migrations
+/Server/Server.Service/bin
+/Server/Server.Service/obj

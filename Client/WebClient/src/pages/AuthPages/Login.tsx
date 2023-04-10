@@ -49,16 +49,13 @@ const Login = () => {
                 });
                 return;
             }
+
+            const decodeJWT = jose.decodeJwt(response.data.accessToken);
+
             // Token bilgilerini cookie'ye yazdırıyoruz.
             Cookies.set("token", response.data.accessToken, { expires: new Date(response.data.accessTokenExpiration), secure: true });
             Cookies.set("refreshToken", response.data.refreshToken , { expires: new Date(response.data.refreshTokenExpiration), secure: true });
-            Cookies.set("email", email);
-
-            // Token bilgilerini localstorage'e yazdırıyoruz.
-            const claims: any = jose.decodeJwt(response.data.accessToken);
-            localStorage.setItem("username", claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]);
-            localStorage.setItem("userId", claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]);
-
+            
             // Token bilgilerini aldıktan sonra loading'i false yapıyoruz && dashboard'a yönlendiriyoruz.
             setLoading(false);
             navigate("/dashboard");

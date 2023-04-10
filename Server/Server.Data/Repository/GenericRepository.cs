@@ -11,14 +11,13 @@ namespace Server.Data.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly DbContext _dbContext;
+        private readonly DbContext _context;
         private readonly DbSet<T> _dbSet;
-        public GenericRepository(DbContext dbContext, DbSet<T> dbSet)
+        public GenericRepository(AppDbContext context)
         {
-            _dbContext = dbContext;
-            _dbSet = dbSet;
+            _context = context;
+            _dbSet = context.Set<T>();
         }
-
         public async Task AddAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
@@ -34,7 +33,7 @@ namespace Server.Data.Repository
             var entity = await _dbSet.FindAsync(id);
             if (entity != null)
             {
-                _dbContext.Entry(entity).State = EntityState.Detached;
+                _context.Entry(entity).State = EntityState.Detached;
             }
             return entity;
         }
@@ -46,7 +45,7 @@ namespace Server.Data.Repository
 
         public T Update(T entity)
         {
-            _dbContext.Entry(entity).State = EntityState.Modified;
+            _context.Entry(entity).State = EntityState.Modified;
 
             return entity;
         }
