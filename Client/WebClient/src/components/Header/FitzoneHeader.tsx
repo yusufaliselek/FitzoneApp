@@ -1,8 +1,12 @@
 import React from 'react';
 import AccountMenu from '../AccountMenu/AccountMenu';
+import { decodeJwt } from 'jose';
 import Cookies from 'js-cookie';
 
-const FitzoneHeader = ({ pageName, addContent, addContentIcon, addContentAction }: { pageName: string, addContent?: string, addContentIcon?: JSX.Element, addContentAction?: any }) => {
+const FitzoneHeader = ({
+  pageName, addContent, addContentIcon, addContentAction }
+  :
+  { pageName: string, addContent?: string, addContentIcon?: JSX.Element, addContentAction?: any }) => {
   return (
     <div className='px-5 items-start'>
       <div className='flex w-full h-16 justify-between items-center text-sm shadow-[rgba(33,35,38,0.1)_0px_10px_10px_-10px]'>
@@ -17,7 +21,13 @@ const FitzoneHeader = ({ pageName, addContent, addContentIcon, addContentAction 
             </div>
           }
           <div className='flex text-blue-800 px-1 md:px-5 py-1 items-center space-x-1 md:space-x-4 rounded-md '>
-            {AccountMenu({ firstName: String(Cookies.get("firstName") ? String(Cookies.get("firstName")) : "Kullanıcı"), lastName: String(Cookies.get("lastName") ? String(Cookies.get("lastName")) : "Kullanıcı") })}
+            {
+              AccountMenu({
+                firstName: String(decodeJwt(String(Cookies.get("token"))).given_name) ? String(decodeJwt(String(Cookies.get("token"))).given_name) : String(decodeJwt(String(Cookies.get("token"))).unique_name),
+                lastName: String(decodeJwt(String(Cookies.get("token"))).family_name) ? String(decodeJwt(String(Cookies.get("token"))).family_name) : "A",
+                personalPhoto: "https://www.w3schools.com/howto/img_avatar.png"
+              })
+            }
           </div>
         </div>
       </div>

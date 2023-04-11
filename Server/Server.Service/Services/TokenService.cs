@@ -43,6 +43,7 @@ namespace Server.Service.Services
                 new Claim(JwtRegisteredClaimNames.UniqueName, userApp.UserName),
                 new Claim(JwtRegisteredClaimNames.GivenName, userApp.FirstName),
                 new Claim(JwtRegisteredClaimNames.FamilyName, userApp.LastName),
+                new Claim(JwtRegisteredClaimNames.Iat, userApp.Biography),  // asıl amacını bilmiyorum sadece göstermelik fotoğrafı saklıyorum.
                 new Claim(JwtRegisteredClaimNames.Acr, userApp.PersonalPhoto),  // asıl amacını bilmiyorum sadece göstermelik fotoğrafı saklıyorum.
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };

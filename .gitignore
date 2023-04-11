@@ -47,3 +47,11 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+/Server/Server.Core/bin/Debug
+/Server/Server.Core/obj/Debug
+/Server/Server.Core/obj/Release
+/Server/Server.Core/obj/project.assets.json
+/Server/Server.Core/obj/project.nuget.cache
+/Server/Server.Core/obj/Server.Core.csproj.nuget.dgspec.json
+/Server/Server.Core/obj/Server.Core.csproj.nuget.g.props
+/Server/Server.Core/obj/Server.Core.csproj.nuget.g.targets

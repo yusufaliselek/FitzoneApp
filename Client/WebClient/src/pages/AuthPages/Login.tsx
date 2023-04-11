@@ -1,10 +1,10 @@
+import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import Cookies from 'js-cookie';
 import withReactContent from 'sweetalert2-react-content';
+
 import bg from '../../assets/bg-main.jpg';
-import * as jose from 'jose'
 import Spinner from '../../components/Spinner/Spinner';
 import { FitzoneApi } from '../../services/fitzoneApi';
 
@@ -50,12 +50,10 @@ const Login = () => {
                 return;
             }
 
-            const decodeJWT = jose.decodeJwt(response.data.accessToken);
-
             // Token bilgilerini cookie'ye yazdırıyoruz.
             Cookies.set("token", response.data.accessToken, { expires: new Date(response.data.accessTokenExpiration), secure: true });
-            Cookies.set("refreshToken", response.data.refreshToken , { expires: new Date(response.data.refreshTokenExpiration), secure: true });
-            
+            Cookies.set("refreshToken", response.data.refreshToken, { expires: new Date(response.data.refreshTokenExpiration), secure: true });
+
             // Token bilgilerini aldıktan sonra loading'i false yapıyoruz && dashboard'a yönlendiriyoruz.
             setLoading(false);
             navigate("/dashboard");

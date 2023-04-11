@@ -2,13 +2,15 @@ import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import React, { useState, useEffect } from 'react';
+import * as jose from 'jose';
+import Cookies from 'js-cookie';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import FitzoneHeader from '../components/Header/FitzoneHeader';
 import Nav from '../components/Nav/Nav';
-import Cookies from 'js-cookie';
-import * as jose from 'jose'
 import { FitzoneApi } from '../services/fitzoneApi';
-import { useNavigate } from 'react-router-dom';
+import { UserProps } from '../types/Types';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -43,20 +45,17 @@ function a11yProps(index: number) {
     };
 }
 
-interface UserProps {
-    username: string;
-    email: string;
-    currentPassword: string;
-    newPassword: string;
-    newPasswordConfirm: string;
-    biography: string;
-}
-
 const Settings = () => {
     const navigate = useNavigate()
     const [value, setValue] = React.useState(0);
 
-    const [userProps, setUserProps] = useState<UserProps>({ biography: '', email: '', newPassword: '', newPasswordConfirm: "", currentPassword: "", username: '' });
+    const [userProps, setUserProps] = useState<UserProps>({
+        email: '',
+        username: '',
+        firstName: '',
+        lastName: '',
+        personalPhoto: '',
+    });
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -64,25 +63,38 @@ const Settings = () => {
 
     const RefreshToken = async () => {
         if (!Cookies.get('token')) {
-             return FitzoneApi.ResfreshAccessTokenByRefreshToken().then((response) => {
-                 Cookies.set('token', response.data.accessToken, { expires: new Date(response.data.accessTokenExpiration) });
-                 Cookies.set('refreshToken', response.data.refreshToken, { expires: new Date(response.data.refreshTokenExpiration) });
-                 console.log("Token yenilendi");
-             }).catch((error) => {
-                 console.log(error)
-                 Cookies.remove('token');
-                 Cookies.remove('refreshToken');
-                 navigate('/login')
-                 console.log("Token süresi dolmuş");
-             });
-         }
-     }
- 
-     useEffect(() => {
-         RefreshToken()
-         // Cookie deki değerleri jose ile decode edip state e atıyoruz.
-            const token = Cookies.get('token')
-     }, [])
+            return FitzoneApi.ResfreshAccessTokenByRefreshToken().then((response) => {
+                Cookies.set('token', response.data.accessToken, { expires: new Date(response.data.accessTokenExpiration) });
+                Cookies.set('refreshToken', response.data.refreshToken, { expires: new Date(response.data.refreshTokenExpiration) });
+                console.log("Token yenilendi");
+            }).catch((error) => {
+                console.log(error)
+                Cookies.remove('token');
+                Cookies.remove('refreshToken');
+                navigate('/login')
+                console.log("Token süresi dolmuş");
+            });
+        }
+    }
+
+    useEffect(() => {
+
+        RefreshToken()
+
+        // Cookie deki değerleri jose ile decode edip state e atıyoruz.
+        const token = Cookies.get('token')
+        const decodeJWT = jose.decodeJwt(String(token));
+
+        setUserProps({
+            firstName: String(decodeJWT.given_name),
+            lastName: String(decodeJWT.family_name),
+            username: String(decodeJWT.unique_name),
+            email: String(decodeJWT.email),
+            personalPhoto: String(decodeJWT.acr),
+            biography: String(decodeJWT.Iat)
+        });
+
+    }, [])
 
     return (
         <div className='flex w-screen h-screen'>
@@ -132,6 +144,19 @@ const Settings = () => {
                             </div>
                             <div className='flex flex-col w-1/2 pl-5 gap-y-2'>
                                 <p className='text-sm text-gray-600 mb-2 pb-1 border-b'>Kişisel Bilgiler</p>
+
+                                <div className="mb-3 w-96">
+                                    <label
+                                        className="mb-2 inline-block text-neutral-700 dark:text-neutral-200"
+                                    >
+                                        Kullanıcı Fotoğrafı
+                                    </label>
+                                    <input
+                                        className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-xs font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-[0_0_0_1px] focus:shadow-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100"
+                                        id="formFileSm"
+                                        type="file" />
+                                </div>
+
                                 <div className="mb-2 w-full">
                                     <label
                                         form="username"
@@ -141,7 +166,7 @@ const Settings = () => {
                                     </label>
                                     <input
                                         type="text"
-                                        value={userProps.username} onChange={e => setUserProps({ ...userProps, username: e.target.value })}
+                                        value={userProps.firstName} onChange={e => setUserProps({ ...userProps, username: e.target.value })}
                                         className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                     />
@@ -155,7 +180,7 @@ const Settings = () => {
                                     </label>
                                     <input
                                         type="text"
-                                        value={userProps.username} onChange={e => setUserProps({ ...userProps, username: e.target.value })}
+                                        value={userProps.lastName} onChange={e => setUserProps({ ...userProps, username: e.target.value })}
                                         className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                     />
@@ -168,7 +193,7 @@ const Settings = () => {
                                         Biyografi
                                     </label>
                                     <textarea
-                                        value={userProps.username} onChange={e => setUserProps({ ...userProps, username: e.target.value })}
+                                        value={userProps.biography} onChange={e => setUserProps({ ...userProps, username: e.target.value })}
                                         className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                     />

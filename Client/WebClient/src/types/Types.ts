@@ -1,8 +1,8 @@
 export interface ILogin {
-accessToken: string;
-accessTokenExpiration: string;
-refreshToken: string;
-refreshTokenExpiration: string;
+    accessToken: string;
+    accessTokenExpiration: string;
+    refreshToken: string;
+    refreshTokenExpiration: string;
 }
 
 export interface IRefreshAccessToken {
@@ -24,4 +24,20 @@ export interface IMenu {
 export interface Account {
     user: string;
     password: string;
+}
+
+export interface UserProps {
+    username: string;
+    email: string;
+    currentPassword?: string;
+    newPassword?: string;
+    newPasswordConfirm?: string;
+    biography?: string;
+    firstName: string;
+    lastName: string;
+    personalPhoto: string;
+}
+
+export interface ObjectStrings {
+    [key: string]: string;
 }
