@@ -11,6 +11,7 @@ import FitzoneHeader from '../components/Header/FitzoneHeader';
 import Nav from '../components/Nav/Nav';
 import { FitzoneApi } from '../services/fitzoneApi';
 import { UserProps } from '../types/Types';
+import PhotoUpload from '../components/PhotoUpload/PhotoUpload';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -55,6 +56,7 @@ const Settings = () => {
         firstName: '',
         lastName: '',
         personalPhoto: '',
+        biography: ''
     });
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -91,7 +93,7 @@ const Settings = () => {
             username: String(decodeJWT.unique_name),
             email: String(decodeJWT.email),
             personalPhoto: String(decodeJWT.acr),
-            biography: String(decodeJWT.Iat)
+            biography: String(decodeJWT.iat)
         });
 
     }, [])
@@ -103,103 +105,94 @@ const Settings = () => {
             <div className='flex flex-col w-full h-screen'>
                 {/* Header */}
                 <FitzoneHeader pageName='Ayarlar' />
-                <Box sx={{ width: '100%', paddingX: 2, overflowY: "auto" }}>
+                <Box sx={{ width: '100%', paddingX: 2, overflowY: "auto", height: "calc(100vh-112px)" }}>
                     <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                         <Tab label="Antrenör Bilgisi" {...a11yProps(0)} />
                         <Tab label="Güvenlik" {...a11yProps(1)} />
                         {true && <Tab label="Yetkiler" {...a11yProps(2)} />}
                     </Tabs>
                     <TabPanel value={value} index={0}>
-                        <div className='flex h-auto justify-center'>
-                            <div className='flex flex-col w-1/2 pr-5 gap-y-2'>
-                                <p className='text-sm text-gray-600 mb-2 pb-1 border-b'>Hesap Bilgileri</p>
-                                <div className="mb-2 w-full">
-                                    <label
-                                        form="username"
-                                        className="block text-sm font-semibold text-gray-600"
-                                    >
-                                        Kullanıcı Adı
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={userProps.username} onChange={e => setUserProps({ ...userProps, username: e.target.value })}
-                                        className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                        <div className='flex flex-col w-full h-full justify-center items-center'>
+                            <div className='flex items-center gap-x-4'>
+                                <PhotoUpload photo={userProps.personalPhoto} />
+                                <label>{!userProps.firstName ? userProps.email : userProps.firstName + " " + userProps.lastName}</label>
+                            </div>
+                            <div className='flex w-full justify-center items-start gap-x-5'>
+                                <div className='flex flex-col justify-center'>
+                                    <div className="mb-2 w-full">
+                                        <label
+                                            form="username"
+                                            className="block text-sm font-semibold text-gray-600"
+                                        >
+                                            Kullanıcı Adı
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={userProps.username} onChange={e => setUserProps({ ...userProps, username: e.target.value })}
+                                            className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                    />
+                                        />
+                                    </div>
+                                    <div className="mb-2 w-full">
+                                        <label
+                                            form="email"
+                                            className="block text-sm font-semibold text-gray-600"
+                                        >
+                                            Email
+                                        </label>
+                                        <input
+                                            type="email"
+                                            value={userProps.email} onChange={e => setUserProps({ ...userProps, email: e.target.value })}
+                                            className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                        />
+                                    </div>
+                                    
                                 </div>
-                                <div className="mb-2 w-full">
-                                    <label
-                                        form="email"
-                                        className="block text-sm font-semibold text-gray-600"
-                                    >
-                                        Email
-                                    </label>
-                                    <input
-                                        type="email"
-                                        value={userProps.email} onChange={e => setUserProps({ ...userProps, email: e.target.value })}
-                                        className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                                <div className='flex flex-col justify-center'>
+                                    <div className="mb-2 w-full">
+                                        <label
+                                            form="username"
+                                            className="block text-sm font-semibold text-gray-600"
+                                        >
+                                            Adı
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={userProps.firstName} onChange={e => setUserProps({ ...userProps, firstName: e.target.value })}
+                                            className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                    />
+                                        />
+                                    </div>
+                                    <div className="mb-2 w-full">
+                                        <label
+                                            form="username"
+                                            className="block text-sm font-semibold text-gray-600"
+                                        >
+                                            Soyadı
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={userProps.lastName} onChange={e => setUserProps({ ...userProps, lastName: e.target.value })}
+                                            className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                        />
+                                    </div>
+                                    <div className="mb-2 w-full">
+                                        <label
+                                            form="biography"
+                                            className="block text-sm font-semibold text-gray-600"
+                                        >
+                                            Biyografi
+                                        </label>
+                                        <textarea
+                                            value={userProps.biography} onChange={e => setUserProps({ ...userProps, biography: e.target.value })}
+                                            className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                            <div className='flex flex-col w-1/2 pl-5 gap-y-2'>
-                                <p className='text-sm text-gray-600 mb-2 pb-1 border-b'>Kişisel Bilgiler</p>
-
-                                <div className="mb-3 w-96">
-                                    <label
-                                        className="mb-2 inline-block text-neutral-700 dark:text-neutral-200"
-                                    >
-                                        Kullanıcı Fotoğrafı
-                                    </label>
-                                    <input
-                                        className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-xs font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-[0_0_0_1px] focus:shadow-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100"
-                                        id="formFileSm"
-                                        type="file" />
-                                </div>
-
-                                <div className="mb-2 w-full">
-                                    <label
-                                        form="username"
-                                        className="block text-sm font-semibold text-gray-600"
-                                    >
-                                        Adı
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={userProps.firstName} onChange={e => setUserProps({ ...userProps, username: e.target.value })}
-                                        className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                    />
-                                </div>
-                                <div className="mb-2 w-full">
-                                    <label
-                                        form="username"
-                                        className="block text-sm font-semibold text-gray-600"
-                                    >
-                                        Soyadı
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={userProps.lastName} onChange={e => setUserProps({ ...userProps, username: e.target.value })}
-                                        className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                    />
-                                </div>
-                                <div className="mb-2 w-full">
-                                    <label
-                                        form="biography"
-                                        className="block text-sm font-semibold text-gray-600"
-                                    >
-                                        Biyografi
-                                    </label>
-                                    <textarea
-                                        value={userProps.biography} onChange={e => setUserProps({ ...userProps, username: e.target.value })}
-                                        className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                    />
-                                </div>
-                            </div>
-
                         </div>
                     </TabPanel>
                     <TabPanel value={value} index={1}>
@@ -215,7 +208,7 @@ const Settings = () => {
                                     type="password"
                                     spellCheck='true'
                                     value={userProps.currentPassword} onChange={e => setUserProps({ ...userProps, currentPassword: e.target.value })}
-                                    className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                                    className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 />
                             </div>
@@ -230,7 +223,7 @@ const Settings = () => {
                                     type="password"
                                     spellCheck='true'
                                     value={userProps.newPassword} onChange={e => setUserProps({ ...userProps, newPassword: e.target.value })}
-                                    className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                                    className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 />
                             </div>
@@ -245,7 +238,7 @@ const Settings = () => {
                                     type="password"
                                     spellCheck='true'
                                     value={userProps.newPasswordConfirm} onChange={e => setUserProps({ ...userProps, newPasswordConfirm: e.target.value })}
-                                    className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                                    className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 />
                             </div>

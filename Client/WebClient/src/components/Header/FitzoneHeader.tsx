@@ -24,8 +24,8 @@ const FitzoneHeader = ({
             {
               AccountMenu({
                 firstName: String(decodeJwt(String(Cookies.get("token"))).given_name) ? String(decodeJwt(String(Cookies.get("token"))).given_name) : String(decodeJwt(String(Cookies.get("token"))).unique_name),
-                lastName: String(decodeJwt(String(Cookies.get("token"))).family_name) ? String(decodeJwt(String(Cookies.get("token"))).family_name) : "A",
-                personalPhoto: "https://www.w3schools.com/howto/img_avatar.png"
+                lastName: String(decodeJwt(String(Cookies.get("token"))).family_name) ? String(decodeJwt(String(Cookies.get("token"))).family_name) : "",
+                personalPhoto: String(decodeJwt(String(Cookies.get("token"))).acr) ? String(decodeJwt(String(Cookies.get("token"))).family_name) : "https://www.w3schools.com/howto/img_avatar.png"
               })
             }
           </div>
