@@ -36,6 +36,8 @@ export interface UserProps {
     firstName: string;
     lastName: string;
     personalPhoto: string;
+    gender?: boolean;
+    location?: string;
 }
 
 export interface ObjectStrings {

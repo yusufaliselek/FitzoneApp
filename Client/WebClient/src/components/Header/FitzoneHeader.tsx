@@ -23,9 +23,7 @@ const FitzoneHeader = ({
           <div className='flex text-blue-800 px-1 md:px-5 py-1 items-center space-x-1 md:space-x-4 rounded-md '>
             {
               AccountMenu({
-                firstName: String(decodeJwt(String(Cookies.get("token"))).given_name) ? String(decodeJwt(String(Cookies.get("token"))).given_name) : String(decodeJwt(String(Cookies.get("token"))).unique_name),
-                lastName: String(decodeJwt(String(Cookies.get("token"))).family_name) ? String(decodeJwt(String(Cookies.get("token"))).family_name) : "",
-                personalPhoto: String(decodeJwt(String(Cookies.get("token"))).acr) ? String(decodeJwt(String(Cookies.get("token"))).family_name) : "https://www.w3schools.com/howto/img_avatar.png"
+                accountName: String(decodeJwt(String(Cookies.get("token"))).unique_name)
               })
             }
           </div>

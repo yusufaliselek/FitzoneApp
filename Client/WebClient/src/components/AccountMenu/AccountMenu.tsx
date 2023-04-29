@@ -14,7 +14,7 @@ import { FitzoneApi } from '../../services/fitzoneApi';
 import { ObjectStrings, UserProps } from '../../types/Types';
 import * as jose from 'jose';
 
-export const AccountMenu = ({ firstName, lastName, personalPhoto }: {firstName:string, lastName: string, personalPhoto: string}) => {
+export const AccountMenu = ({ accountName }: {accountName:string}) => {
 
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -40,7 +40,7 @@ export const AccountMenu = ({ firstName, lastName, personalPhoto }: {firstName:s
     return (
         <div>
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                <Tooltip title={firstName + " " + lastName}>
+                <Tooltip title={accountName}>
                     <IconButton
                         onClick={handleClick}
                         size="small"
@@ -49,7 +49,7 @@ export const AccountMenu = ({ firstName, lastName, personalPhoto }: {firstName:s
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
-                        {firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase()}
+                        {accountName.charAt(0).toUpperCase()}
                     </IconButton>
                 </Tooltip>
             </Box>
@@ -89,7 +89,7 @@ export const AccountMenu = ({ firstName, lastName, personalPhoto }: {firstName:s
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 <MenuItem className='gap-x-1'>
-                    <img src={personalPhoto} className='w-8 h-8 rounded-full' /> {firstName + " " + lastName}
+                     {accountName}
                 </MenuItem>
                 <Divider />
                 <MenuItem onClick={handleSettings}>

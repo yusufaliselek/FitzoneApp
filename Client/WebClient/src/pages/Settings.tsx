@@ -2,16 +2,16 @@ import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import * as jose from 'jose';
 import Cookies from 'js-cookie';
-import React, { useEffect, useState } from 'react';
+import React, { SelectHTMLAttributes, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import FitzoneHeader from '../components/Header/FitzoneHeader';
 import Nav from '../components/Nav/Nav';
+import PhotoUpload from '../components/PhotoUpload/PhotoUpload';
 import { FitzoneApi } from '../services/fitzoneApi';
 import { UserProps } from '../types/Types';
-import PhotoUpload from '../components/PhotoUpload/PhotoUpload';
+import { cities } from '../assets/Cities';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -49,6 +49,7 @@ function a11yProps(index: number) {
 const Settings = () => {
     const navigate = useNavigate()
     const [value, setValue] = React.useState(0);
+    const [firstName, setFirstName] = useState<string>('');
 
     const [userProps, setUserProps] = useState<UserProps>({
         email: '',
@@ -56,7 +57,7 @@ const Settings = () => {
         firstName: '',
         lastName: '',
         personalPhoto: '',
-        biography: ''
+        biography: '',
     });
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -79,22 +80,32 @@ const Settings = () => {
         }
     }
 
+    const GetUserByIdentityName = async () => {
+        FitzoneApi.GetUserByIdentityName().then((response) => {
+            console.log(response.data)
+
+
+
+            setUserProps({
+                firstName: response.data.firstName,
+                lastName: response.data.lastName,
+                username: response.data.userName,
+                email: response.data.email,
+                personalPhoto: response.data.personalPhoto,
+                biography: response.data.biography,
+                gender: response.data.gender
+            });
+
+            const firstName = response.data.firstName
+            setFirstName(firstName)
+        })
+    }
+
     useEffect(() => {
 
         RefreshToken()
 
-        // Cookie deki değerleri jose ile decode edip state e atıyoruz.
-        const token = Cookies.get('token')
-        const decodeJWT = jose.decodeJwt(String(token));
-
-        setUserProps({
-            firstName: String(decodeJWT.given_name),
-            lastName: String(decodeJWT.family_name),
-            username: String(decodeJWT.unique_name),
-            email: String(decodeJWT.email),
-            personalPhoto: String(decodeJWT.acr),
-            biography: String(decodeJWT.iat)
-        });
+        GetUserByIdentityName()
 
     }, [])
 
@@ -115,7 +126,7 @@ const Settings = () => {
                         <div className='flex flex-col w-full h-full justify-center items-center'>
                             <div className='flex items-center gap-x-4'>
                                 <PhotoUpload photo={userProps.personalPhoto} />
-                                <label>{!userProps.firstName ? userProps.email : userProps.firstName + " " + userProps.lastName}</label>
+                                <label>{!firstName ? userProps.email : userProps.firstName + " " + userProps.lastName}</label>
                             </div>
                             <div className='flex w-full justify-center items-start gap-x-5'>
                                 <div className='flex flex-col justify-center'>
@@ -147,7 +158,17 @@ const Settings = () => {
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                         />
                                     </div>
-                                    
+                                    <div className='mb-2 w-full'>
+                                        <label
+                                            form="gender"
+                                            className="block text-sm font-semibold text-gray-600">Cinsiyet</label>
+
+                                        <select value={String(userProps.gender)} className='block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40' onChange={(e: any) => setUserProps({ ...userProps, gender: e.target.value })}>
+                                            <option value={String(true)}>Erkek</option>
+                                            <option value={String(false)}>Kız</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div className='flex flex-col justify-center'>
                                     <div className="mb-2 w-full">
@@ -180,6 +201,21 @@ const Settings = () => {
                                     </div>
                                     <div className="mb-2 w-full">
                                         <label
+                                            form="location"
+                                            className="block text-sm font-semibold text-gray-600"
+                                        >
+                                            Lokasyon
+                                        </label>
+                                        <select value={String(userProps.gender)} className='block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40' onChange={(e: any) => setUserProps({ ...userProps, gender: e.target.value })}>
+                                            <option disabled selected> -- Şehir seçiniz -- </option>
+                                            {cities.map((city, index) => {
+                                                return <option key={index} value={city.plaka}>{city.il_adi}</option>
+                                            })}
+                                        </select>
+                                    </div>
+                                    <div className="mb-2 w-full">
+                                        <label
                                             form="biography"
                                             className="block text-sm font-semibold text-gray-600"
                                         >
@@ -196,52 +232,55 @@ const Settings = () => {
                         </div>
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        <div className='w-1/3 h-auto items-center gap-x-4'>
-                            <div className="mb-2 w-full">
-                                <label
-                                    form="currentPassword"
-                                    className="block text-sm font-semibold text-gray-600"
-                                >
-                                    Mevcut Şifre
-                                </label>
-                                <input
-                                    type="password"
-                                    spellCheck='true'
-                                    value={userProps.currentPassword} onChange={e => setUserProps({ ...userProps, currentPassword: e.target.value })}
-                                    className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                        <div className='flex flex-col w-full h-full justify-center items-center'>
+                            <div className='flex flex-col justify-center'>
+                                <div className="mb-2 w-full">
+                                    <label
+                                        form="currentPassword"
+                                        className="block text-sm font-semibold text-gray-600"
+                                    >
+                                        Mevcut Şifre
+                                    </label>
+                                    <input
+                                        type="password"
+                                        spellCheck='true'
+                                        value={userProps.currentPassword} onChange={e => setUserProps({ ...userProps, currentPassword: e.target.value })}
+                                        className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                />
-                            </div>
-                            <div className="mb-2 w-full">
-                                <label
-                                    form="newPassword"
-                                    className="block text-sm font-semibold text-gray-600"
-                                >
-                                    Yeni Şifre
-                                </label>
-                                <input
-                                    type="password"
-                                    spellCheck='true'
-                                    value={userProps.newPassword} onChange={e => setUserProps({ ...userProps, newPassword: e.target.value })}
-                                    className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                                    />
+                                </div>
+                                <div className="mb-2 w-full">
+                                    <label
+                                        form="newPassword"
+                                        className="block text-sm font-semibold text-gray-600"
+                                    >
+                                        Yeni Şifre
+                                    </label>
+                                    <input
+                                        type="password"
+                                        spellCheck='true'
+                                        value={userProps.newPassword} onChange={e => setUserProps({ ...userProps, newPassword: e.target.value })}
+                                        className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                />
-                            </div>
-                            <div className="mb-2 w-full">
-                                <label
-                                    form="newPasswordConfirm"
-                                    className="block text-sm font-semibold text-gray-600"
-                                >
-                                    Yeni Şifreyi Tekrar Giriniz
-                                </label>
-                                <input
-                                    type="password"
-                                    spellCheck='true'
-                                    value={userProps.newPasswordConfirm} onChange={e => setUserProps({ ...userProps, newPasswordConfirm: e.target.value })}
-                                    className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                                    />
+                                </div>
+                                <div className="mb-2 w-full">
+                                    <label
+                                        form="newPasswordConfirm"
+                                        className="block text-sm font-semibold text-gray-600"
+                                    >
+                                        Yeni Şifreyi Tekrar Giriniz
+                                    </label>
+                                    <input
+                                        type="password"
+                                        spellCheck='true'
+                                        value={userProps.newPasswordConfirm} onChange={e => setUserProps({ ...userProps, newPasswordConfirm: e.target.value })}
+                                        className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                />
+                                    />
+                                </div>
                             </div>
+
                         </div>
                     </TabPanel>
                     <TabPanel value={value} index={2}>

@@ -45,6 +45,14 @@ export class FitzoneApi {
         })
     }
 
+    public static async GetUserByIdentityName(): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().get('/TrainerUser').then((response) => {
+                resolve(response.data)
+            })
+        })
+    }
+
 }
 
 
