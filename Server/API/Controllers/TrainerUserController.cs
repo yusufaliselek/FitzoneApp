@@ -26,13 +26,13 @@ namespace API.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetUser()
+        public async Task<IActionResult> TrainerUser()
         {
             return ActionResultInstance(await _userService.GetUserByNameAsync(HttpContext.User.Identity.Name));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUsers()
+        public async Task<IActionResult> AllTrainerUsers()
         {
             return ActionResultInstance(await _userService.GetAllUsers());
         }

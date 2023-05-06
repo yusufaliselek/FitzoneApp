@@ -12,7 +12,7 @@ namespace Server.Core.Services
     {
         Task<CustomResponseDto<TrainerUserDto>> CreateUserAsync(CreateUserDto createUserDto);
 
-        Task<CustomResponseDto<TrainerUserDto>> GetUserByNameAsync(string userName);
+        Task<CustomResponseDto<TrainerUserWithDetailsDto>> GetUserByNameAsync(string userName);
 
         Task<CustomResponseDto<List<TrainerUserDto>>> GetAllUsers();
         

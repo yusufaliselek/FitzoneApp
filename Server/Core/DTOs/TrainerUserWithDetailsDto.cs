@@ -8,10 +8,6 @@ namespace Server.Core.DTOs
 {
     public class TrainerUserWithDetailsDto : TrainerUserDto
     {
-        public string Biography { get; set; }
-        public string PhoneNumber { get; set; }
-        public bool Gender { get; set; }
-        public Int64 TCKN { get; set; }
         public List<TrainerLicenceDto> TrainerLicences { get; set; }
         public List<TrainerClubDto> TrainerClubs { get; set; }
         public TrainerCanEditDto TrainerCanEdit { get; set; }

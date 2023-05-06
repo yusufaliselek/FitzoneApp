@@ -22,7 +22,7 @@ namespace Server.Core.Models
         public ICollection<TrainerClub> TrainerClubs { get; set; } // Dependent Entity
         public float? Qualification { get; set; }
         public string? Profession { get; set; }
-        public bool? IsActive { get; set; } = true;
+        public bool IsActive { get; set; } = true;
         public TrainerCanEdit TrainerCanEdit { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set;} = DateTime.Now;

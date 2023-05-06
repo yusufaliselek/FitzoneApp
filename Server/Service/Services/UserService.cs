@@ -40,15 +40,15 @@ namespace Server.Service.Services
             return CustomResponseDto<TrainerUserDto>.Success(200, _mapper.Map<TrainerUserDto>(user));
         }
 
-        public async Task<CustomResponseDto<TrainerUserDto>> GetUserByNameAsync(string userName)
+        public async Task<CustomResponseDto<TrainerUserWithDetailsDto>> GetUserByNameAsync(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
             if (user == null)
             {
-                return CustomResponseDto<TrainerUserDto>.Fail(404, "UserName not found");
+                return CustomResponseDto<TrainerUserWithDetailsDto>.Fail(404, "UserName not found");
             }
 
-            return CustomResponseDto<TrainerUserDto>.Success(200, _mapper.Map<TrainerUserDto>(user));
+            return CustomResponseDto<TrainerUserWithDetailsDto>.Success(200, _mapper.Map<TrainerUserWithDetailsDto>(user));
         }
 
         public async Task<CustomResponseDto<List<TrainerUserDto>>> GetAllUsers()

@@ -26,7 +26,16 @@ export interface Account {
     password: string;
 }
 
+export interface IUserLicence {
+    id: number;
+    name: string;
+    description: string;
+    licenceDate: string;
+    trainerUserId: string;
+}
+
 export interface UserProps {
+    id: string;
     username: string;
     email: string;
     currentPassword?: string;
@@ -38,6 +47,13 @@ export interface UserProps {
     personalPhoto: string;
     gender?: boolean;
     location?: string;
+    tckn?: string;
+    profession?: string;
+    birthdayDate?: string;
+    qualification?: number;
+    trainerLicenses: IUserLicence[];
+    trainerClubs: any[];
+    trainerCanEdit?: object;
 }
 
 export interface ObjectStrings {

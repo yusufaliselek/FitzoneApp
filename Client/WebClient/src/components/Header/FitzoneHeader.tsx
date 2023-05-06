@@ -16,8 +16,8 @@ const FitzoneHeader = ({
         <div className='flex'>
           {addContent != null &&
             <div onClick={addContentAction} className={`flex hover:text-blue-800 hover:bg-white bg-blue-800 text-white px-5 py-1 items-center space-x-4 rounded-md cursor-pointer transition-all duration-700`}>
-              <span>{addContent}</span>
               {addContentIcon}
+              <span>{addContent}</span>
             </div>
           }
           <div className='flex text-blue-800 px-1 md:px-5 py-1 items-center space-x-1 md:space-x-4 rounded-md '>
