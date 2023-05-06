@@ -1,27 +1,30 @@
+import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
-import Rating from '@mui/material/Rating';
-import Typography from '@mui/material/Typography';
-import Cookies from 'js-cookie';
-import React, { SelectHTMLAttributes, useEffect, useState } from 'react';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Rating from '@mui/material/Rating';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Typography from '@mui/material/Typography';
+import { GridColDef } from '@mui/x-data-grid';
+import Cookies from 'js-cookie';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import DataTable from 'react-data-table-component';
+
+import { cities } from '../assets/Cities';
+import CustomInput from '../components/CustomInput';
 import FitzoneHeader from '../components/Header/FitzoneHeader';
+import MUIDataGrid from '../components/MUIDataGrid/MUIDataGrid';
 import Nav from '../components/Nav/Nav';
 import PhotoUpload from '../components/PhotoUpload/PhotoUpload';
 import { FitzoneApi } from '../services/fitzoneApi';
 import { IUserLicence, UserProps } from '../types/Types';
-import { cities } from '../assets/Cities';
-import MUIDataGrid from '../components/MUIDataGrid/MUIDataGrid';
-import { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import { Button } from '@mui/material';
+import { AiOutlineCheckCircle } from 'react-icons/ai';
+import IsCanDo from '../components/IsCanDo/IsCanDo';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -29,29 +32,26 @@ interface TabPanelProps {
     value: number;
 }
 
-const columns: GridColDef[] = [
+const columns = [
     {
-        field: 'Name',
-        headerName: 'Lisans Adı',
-        width: 150,
-        editable: true,
-        flex: 1,
+        name: 'Lisans Adı',
+        selector: (row: any) => row.name,
     },
     {
-        field: 'Description',
-        headerName: 'Açıklama',
-        width: 150,
-        editable: true,
-        flex: 1,
+        name: 'Açıklama',
+        selector: (row: any) => row.description,
     },
     {
-        field: 'LicenceDate',
-        headerName: 'Lisans Tarihi',
-        width: 150,
-        editable: true,
-        flex: 1,
+        name: 'Lisans Tarihi',
+        selector: (row: any) => row.licenceDate,
+    },
+    {
+        name: 'İşlemler',
+        selector: (row: any) => row.id,
+        cell: (row: any) => <Button variant="contained" color="error" onClick={() => console.log(row)}>Sil</Button>
     }
 ];
+
 
 function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
@@ -81,12 +81,18 @@ function a11yProps(index: number) {
 }
 
 const Settings = () => {
+
+    const rowsConsole = ({ selectedRows }: { selectedRows: any }) => {
+        // You can set state or dispatch with something like Redux so we can use the retrieved data
+        console.log('Selected Rows: ', selectedRows);
+    };
+
     const navigate = useNavigate()
     const [value, setValue] = useState(0);
     const [firstName, setFirstName] = useState<string>('');
     const [open, setOpen] = useState(false);
 
-
+    const [dialogOpenId, setDialogOpenId] = useState<number>(0);
 
     const [userProps, setUserProps] = useState<UserProps>({
         id: "",
@@ -104,18 +110,34 @@ const Settings = () => {
         name: '',
         description: '',
         licenceDate: '',
-        id: 0,
+        id: dialogOpenId,
         trainerUserId: '',
     });
 
+
+
     const handleClickOpen = () => {
+        setDialogOpenId(dialogOpenId + 1);
         setOpen(true);
     };
 
     const handleClose = () => {
-        setUserProps({...userProps, trainerLicenses: [...userProps.trainerLicenses, userLicence]})
         setOpen(false);
+        if (userLicence.name && userLicence.description && userLicence.licenceDate) {
+            setUserProps(prevState => ({
+                ...prevState,
+                trainerLicenses: [...prevState.trainerLicenses, { ...userLicence, id: dialogOpenId, trainerUserId: userProps.id }]
+            }));
+        }
+        setUserLicence({
+            name: '',
+            description: '',
+            licenceDate: '',
+            id: dialogOpenId,
+            trainerUserId: '',
+        });
     };
+
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -158,14 +180,27 @@ const Settings = () => {
                 tckn: response.data.tckn,
                 qualification: response.data.qualification,
                 trainerCanEdit: response.data.trainerCanEdit,
-                trainerClubs: response.data.trainerClubs,
-                trainerLicenses: response.data.trainerLicenses,
+                trainerClubs: response.data.trainerClubs ?? [],
+                trainerLicenses: response.data.trainerLicenses ?? [],
+            });
+
+            setUserLicence({
+                name: '',
+                description: '',
+                licenceDate: '',
+                id: dialogOpenId,
+                trainerUserId: response.data.id,
             });
 
             const firstName = response.data.firstName
             setFirstName(firstName)
         })
     }
+
+    const paginationComponentOptions = {
+        rowsPerPageText: 'Sayfa başına satır',
+        rangeSeparatorText: '/',
+    };
 
     useEffect(() => {
 
@@ -213,7 +248,8 @@ const Settings = () => {
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                     />
                                 </div>
-                                <div className="mb-2 w-full">
+                                <CustomInput type='email' formType='email' value={userProps.email} changeFunction={e => setUserProps({ ...userProps, email: e.target.value })} />
+                                {/* <div className="mb-2 w-full">
                                     <label
                                         form="email"
                                         className="block text-sm font-semibold text-gray-600"
@@ -226,7 +262,7 @@ const Settings = () => {
                                         className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                     />
-                                </div>
+                                </div> */}
                                 <div className="mb-2 w-full">
                                     <label
                                         form="username"
@@ -420,11 +456,22 @@ const Settings = () => {
                                             <Button onClick={handleClose}>Subscribe</Button>
                                         </DialogActions>
                                     </Dialog>
-                                    <MUIDataGrid
-                                        onCellEditCommit={(e) => { console.log(e) }}
+                                    <DataTable
+                                        columns={columns}
+                                        data={userProps.trainerLicenses ?? []}
+                                        selectableRows
+                                        pagination
+                                        highlightOnHover
+                                        pointerOnHover
+                                        onSelectedRowsChange={rowsConsole}
+                                        paginationComponentOptions={paginationComponentOptions}
+                                    />
+                                    {/* <MUIDataGrid
+                                        onSelectionModelChange={(e: any[]) => { console.log(e) }}
+                                        onCellEditCommit={(e) => { alert("edit") }}
                                         columns={columns}
                                         rows={userProps.trainerLicenses ?? []}
-                                    />
+                                    /> */}
                                 </div>
                             </div>
                         </div>
@@ -482,7 +529,15 @@ const Settings = () => {
                         </div>
                     </TabPanel>
                     <TabPanel value={value} index={2}>
-                        Antrenör Yetkileri
+                        <div className='flex flex-col w-full h-full items-center gap-y-2'>
+                            {/*user have permissions*/}
+                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' />
+                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' />
+                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' />
+                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' />
+                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' />
+                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' />
+                        </div>
                     </TabPanel>
                 </Box>
             </div>

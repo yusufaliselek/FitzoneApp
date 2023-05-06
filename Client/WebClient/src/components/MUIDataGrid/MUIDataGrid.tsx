@@ -7,10 +7,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Box } from '@mui/material';
-import { DataGrid, GridColDef, GridEventListener } from '@mui/x-data-grid';
+import { DataGrid, GridCallbackDetails, GridColDef, GridEventListener, GridSelectionModel } from '@mui/x-data-grid';
 
 
-export default function MUIDataGrid({ rows, columns, onCellEditCommit }: { rows: any[], columns: GridColDef[], onCellEditCommit: GridEventListener<"cellEditCommit"> }) {
+export default function MUIDataGrid({ rows, columns, onCellEditCommit, onSelectionModelChange }: { rows: any[], columns: GridColDef[], onCellEditCommit: GridEventListener<"cellEditCommit">, 
+onSelectionModelChange: ((selectionModel: GridSelectionModel, details: GridCallbackDetails<any>) => void) }) {
     return (
         <Box sx={{ height: 400, width: '100%' }}>
             <DataGrid
@@ -20,7 +21,7 @@ export default function MUIDataGrid({ rows, columns, onCellEditCommit }: { rows:
                 hideFooterSelectedRowCount
                 onCellEditCommit={onCellEditCommit}
                 checkboxSelection
-                onSelectionModelChange={(newSelection) => {console.log(newSelection)}}
+                onSelectionModelChange={onSelectionModelChange}
             />
         </Box>
     );
