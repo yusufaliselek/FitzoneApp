@@ -12,8 +12,8 @@ using Server.Data;
 namespace Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230430120843_fit_1")]
-    partial class fit_1
+    [Migration("20230508192238_init_1")]
+    partial class init_1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -319,8 +319,8 @@ namespace Repository.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("Gender")
-                        .HasColumnType("bit");
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");

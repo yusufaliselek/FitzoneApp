@@ -14,7 +14,7 @@ namespace Server.Core.Models
         public string? LastName { get; set; }
         public string? Biography { get; set; }
         public string? TCKN { get; set; }
-        public bool? Gender { get; set; }
+        public string? Gender { get; set; }
         public DateTime BirthdayDate { get; set; }
         public string? PersonalPhoto { get; set; }
         public string? Location { get; set; }

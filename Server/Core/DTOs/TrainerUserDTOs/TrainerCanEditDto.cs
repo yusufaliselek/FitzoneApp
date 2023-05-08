@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Server.Core.DTOs;
 
-namespace Server.Core.DTOs
+namespace Core.DTOs.TrainerUserDTOs
 {
     public class TrainerCanEditDto : BaseDto
     {

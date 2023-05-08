@@ -1,6 +1,6 @@
 
 import Cookies from "js-cookie";
-import { ILoginResponse } from "../types/Types";
+import { ILoginResponse, ITrainerUserProps } from "../types/Types";
 import { ConfigService } from "./configService"
 
 export interface IGetData {
@@ -51,6 +51,15 @@ export class FitzoneApi {
                 resolve(response.data)
             })
         })
+    }
+
+    public static async UpdateTrainerUser(trainerUserDto: ITrainerUserProps): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().put('/TrainerUser/UpdateUser', trainerUserDto).then((response) => {
+                resolve(response.data)
+            })
+        })
+
     }
 
 }

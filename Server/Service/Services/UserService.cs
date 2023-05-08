@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using AutoMapper.Internal.Mappers;
 using Core.DTOs;
+using Core.DTOs.TrainerUserDTOs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Server.Core.DTOs;
 using Server.Core.Models;
 using Server.Core.Services;
 using System;
@@ -56,6 +56,51 @@ namespace Server.Service.Services
             var users = await _userManager.Users.ToListAsync();
             var usersDto = _mapper.Map<List<TrainerUserDto>>(users);
             return CustomResponseDto<List<TrainerUserDto>>.Success(200, usersDto);
+        }
+
+        public async Task<CustomResponseDto<TrainerUserWithDetailsDto>> UpdateUser(TrainerUserWithDetailsDto user)
+        {
+            var userDetail = await _userManager.FindByIdAsync(user.Id);
+            if (userDetail == null)
+            {
+                return CustomResponseDto<TrainerUserWithDetailsDto>.Fail(404, "User not found");
+            }
+
+            // Boş koleksiyonlar oluşturun
+            userDetail.TrainerLicences = new List<TrainerLicence>();
+            userDetail.TrainerClubs = new List<TrainerClub>();
+
+            // Diğer özellikleri güncelleyin
+            userDetail.Biography = user.Biography;
+            userDetail.BirthdayDate = user.BirthdayDate;
+            userDetail.FirstName = user.FirstName;
+            userDetail.LastName = user.LastName;
+            userDetail.TCKN = user.TCKN;
+            userDetail.Gender = user.Gender;
+            userDetail.Location = user.Location;
+            userDetail.PersonalPhoto = user.PersonalPhoto;
+            userDetail.PhoneNumber = user.PhoneNumber;
+            userDetail.Profession = user.Profession;
+            userDetail.Qualification = user.Qualification;
+            userDetail.UpdatedAt = DateTime.Now;
+
+            // Koleksiyonlara öğeleri ekle
+            userDetail.TrainerLicences = _mapper.Map<List<TrainerLicence>>(user.TrainerLicences);
+            userDetail.TrainerClubs = _mapper.Map<List<TrainerClub>>(user.TrainerClubs);
+            userDetail.TrainerCanEdit = _mapper.Map<TrainerCanEdit>(user.TrainerCanEdit);
+
+            var result = await _userManager.UpdateAsync(userDetail);
+
+            // Hata yoksa başarılı yanıt döndür
+            if (result.Succeeded)
+            {
+                return CustomResponseDto<TrainerUserWithDetailsDto>.Success(200, _mapper.Map<TrainerUserWithDetailsDto>(userDetail));
+            }
+
+            // Hata varsa hata mesajlarıyla hata yanıtı döndür
+            var errors = result.Errors.Select(x => x.Description).ToList();
+            return CustomResponseDto<TrainerUserWithDetailsDto>.Fail(400, errors);
+
         }
 
     }

@@ -1,5 +1,5 @@
 ﻿using Core.DTOs;
-using Server.Core.DTOs;
+using Core.DTOs.TrainerUserDTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +15,8 @@ namespace Server.Core.Services
         Task<CustomResponseDto<TrainerUserWithDetailsDto>> GetUserByNameAsync(string userName);
 
         Task<CustomResponseDto<List<TrainerUserDto>>> GetAllUsers();
-        
-        
+
+        Task<CustomResponseDto<TrainerUserWithDetailsDto>> UpdateUser(TrainerUserWithDetailsDto user);
 
     }
 }

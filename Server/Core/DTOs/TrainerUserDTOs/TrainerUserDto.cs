@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Server.Core.DTOs
+namespace Core.DTOs.TrainerUserDTOs
 {
     public class TrainerUserDto
     {
@@ -20,7 +20,7 @@ namespace Server.Core.DTOs
         public string Biography { get; set; }
         public string Location { get; set; }
         public string PersonalPhoto { get; set; }
-        public float Qualification { get; set; }
+        public float? Qualification { get; set; }
         public string Profession { get; set; }
         public DateTime CreatedAt { get; set; }
     }

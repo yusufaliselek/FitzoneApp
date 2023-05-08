@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Repository.Migrations
 {
-    public partial class fit_1 : Migration
+    public partial class init_1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -32,7 +32,7 @@ namespace Repository.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Biography = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TCKN = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Gender = table.Column<bool>(type: "bit", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BirthdayDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PersonalPhoto = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),

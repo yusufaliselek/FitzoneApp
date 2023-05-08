@@ -10,11 +10,8 @@ import React, { useEffect } from 'react';
 import { CiLogout } from 'react-icons/ci';
 import { RiSettings4Line } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
-import { FitzoneApi } from '../../services/fitzoneApi';
-import { ObjectStrings, UserProps } from '../../types/Types';
-import * as jose from 'jose';
 
-export const AccountMenu = ({ accountName }: {accountName:string}) => {
+export const AccountMenu = ({ accountName }: { accountName: string }) => {
 
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -89,7 +86,7 @@ export const AccountMenu = ({ accountName }: {accountName:string}) => {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 <MenuItem className='gap-x-1'>
-                     {accountName}
+                    {accountName}
                 </MenuItem>
                 <Divider />
                 <MenuItem onClick={handleSettings}>

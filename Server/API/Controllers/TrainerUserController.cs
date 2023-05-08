@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Core.DTOs.TrainerUserDTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Server.Core.DTOs;
 using Server.Core.Models;
 using Server.Core.Services;
 
@@ -36,6 +36,13 @@ namespace API.Controllers
         {
             return ActionResultInstance(await _userService.GetAllUsers());
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser(TrainerUserWithDetailsDto trainerUserDto)
+        {
+            return ActionResultInstance(await _userService.UpdateUser(trainerUserDto));
+        }
+
 
     }
 }

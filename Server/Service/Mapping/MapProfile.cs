@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Server.Core.DTOs;
+using Core.DTOs.TrainerUserDTOs;
 using Server.Core.Models;
 
 namespace Service.Mapping

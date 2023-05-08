@@ -22,7 +22,7 @@ import MUIDataGrid from '../components/MUIDataGrid/MUIDataGrid';
 import Nav from '../components/Nav/Nav';
 import PhotoUpload from '../components/PhotoUpload/PhotoUpload';
 import { FitzoneApi } from '../services/fitzoneApi';
-import { IUserLicence, UserProps } from '../types/Types';
+import { IUserLicence, ITrainerUserProps } from '../types/Types';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 import IsCanDo from '../components/IsCanDo/IsCanDo';
 
@@ -90,11 +90,12 @@ const Settings = () => {
     const navigate = useNavigate()
     const [value, setValue] = useState(0);
     const [firstName, setFirstName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
     const [open, setOpen] = useState(false);
 
     const [dialogOpenId, setDialogOpenId] = useState<number>(0);
 
-    const [userProps, setUserProps] = useState<UserProps>({
+    const [userProps, setUserProps] = useState<ITrainerUserProps>({
         id: "",
         email: '',
         username: '',
@@ -104,6 +105,21 @@ const Settings = () => {
         biography: '',
         trainerLicenses: [],
         trainerClubs: [],
+        trainerCanEdit: {
+            canAddMember: false,
+            canAddTraining: false,
+            canDeleteMember: false,
+            canDeleteTraining: false,
+            canEditMember: false,
+            canEditTraining: false,
+            canAddTrainerUser: false,
+            canDeleteTrainerUser: false,
+            canEditTrainerUser: false,
+            canDefineProgram: false,
+            isFounder: false,
+            trainerUserId: '',
+            id: 0
+        }
     });
 
     const [userLicence, setUserLicence] = useState<IUserLicence>({
@@ -142,6 +158,12 @@ const Settings = () => {
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+
+    const saveUserDetails = () => {
+        FitzoneApi.UpdateTrainerUser(userProps).then((response) => {
+            alert(JSON.stringify(response.data))
+        })
+    }
 
     const RefreshToken = async () => {
         if (!Cookies.get('token')) {
@@ -193,6 +215,9 @@ const Settings = () => {
             });
 
             const firstName = response.data.firstName
+            const email = response.data.email
+
+            setEmail(email)
             setFirstName(firstName)
         })
     }
@@ -228,97 +253,17 @@ const Settings = () => {
                             <div className='flex items-center gap-x-4'>
                                 <PhotoUpload photo={userProps.personalPhoto} />
                                 <div>
-                                    <label>{!firstName ? userProps.email : userProps.firstName + " " + userProps.lastName}</label>
+                                    <label>{!firstName ? email : userProps.firstName + " " + userProps.lastName}</label>
                                 </div>
 
                             </div>
                             <div className='grid grid-cols-2 md:w-[41.25rem] justify-center items-start gap-x-5 gap-y-2'>
-                                <div className="mb-2 w-full">
-                                    <label
-                                        form="username"
-                                        className="block text-sm font-semibold text-gray-600"
-                                    >
-                                        Kullanıcı Adı
-                                    </label>
-                                    <input
-                                        type="text"
-                                        disabled
-                                        value={userProps.username} onChange={e => setUserProps({ ...userProps, username: e.target.value })}
-                                        className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                    />
-                                </div>
-                                <CustomInput type='email' formType='email' value={userProps.email} changeFunction={e => setUserProps({ ...userProps, email: e.target.value })} />
-                                {/* <div className="mb-2 w-full">
-                                    <label
-                                        form="email"
-                                        className="block text-sm font-semibold text-gray-600"
-                                    >
-                                        Email
-                                    </label>
-                                    <input
-                                        type="email"
-                                        value={userProps.email} onChange={e => setUserProps({ ...userProps, email: e.target.value })}
-                                        className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                    />
-                                </div> */}
-                                <div className="mb-2 w-full">
-                                    <label
-                                        form="username"
-                                        className="block text-sm font-semibold text-gray-600"
-                                    >
-                                        Adı
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={userProps.firstName} onChange={e => setUserProps({ ...userProps, firstName: e.target.value })}
-                                        className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                    />
-                                </div>
-                                <div className="mb-2 w-full">
-                                    <label
-                                        form="username"
-                                        className="block text-sm font-semibold text-gray-600"
-                                    >
-                                        Soyadı
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={userProps.lastName} onChange={e => setUserProps({ ...userProps, lastName: e.target.value })}
-                                        className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                    />
-                                </div>
-                                <div className="mb-2 w-full">
-                                    <label
-                                        form="tckn"
-                                        className="block text-sm font-semibold text-gray-600"
-                                    >
-                                        T.C Kimlik Numarası
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={userProps.tckn} onChange={e => setUserProps({ ...userProps, tckn: e.target.value })}
-                                        className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                    />
-                                </div>
-                                <div className="mb-2 w-full">
-                                    <label
-                                        form="profession"
-                                        className="block text-sm font-semibold text-gray-600"
-                                    >
-                                        Doğum Tarihi
-                                    </label>
-                                    <input
-                                        type="date"
-                                        value={userProps.birthdayDate} onChange={e => { setUserProps({ ...userProps, birthdayDate: e.target.value }) }}
-                                        className="block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md cursor-pointer
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                    />
-                                </div>
+                                <CustomInput type='text' formType='text' label='Kullanıcı Adı' value={userProps.username} changeFunction={e => setUserProps({ ...userProps, username: e.target.value })} isDisabled />
+                                <CustomInput type='email' formType='email' label='Email' value={userProps.email} changeFunction={e => setUserProps({ ...userProps, email: e.target.value })} />
+                                <CustomInput type='text' formType='text' label='Adı' value={userProps.firstName} changeFunction={e => setUserProps({ ...userProps, firstName: e.target.value })} />
+                                <CustomInput type='text' formType='text' label='Soyadı' value={userProps.lastName} changeFunction={e => setUserProps({ ...userProps, lastName: e.target.value })} />
+                                <CustomInput type='text' formType='tckn' label='T.C Kimlik Numarası' value={userProps.tckn} changeFunction={e => setUserProps({ ...userProps, tckn: e.target.value })} />
+                                <CustomInput type='date' formType='profession' label='Doğum Tarihi' value={userProps.birthdayDate} changeFunction={e => { setUserProps({ ...userProps, birthdayDate: e.target.value }) }} />
                                 <div className="mb-2 w-full">
                                     <label
                                         form="location"
@@ -364,20 +309,7 @@ const Settings = () => {
                                 <div className='col-span-2 text-center shadow-[rgba(33,35,38,0.1)_0px_10px_10px_-10px] mb-3'>
                                     <span className='text-sm text-gray-600'>Teknik Bilgiler</span>
                                 </div>
-                                <div className="mb-2 w-full">
-                                    <label
-                                        form="profession"
-                                        className="block text-sm font-semibold text-gray-600"
-                                    >
-                                        Uzmanlık Alanı
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={userProps.profession} onChange={e => setUserProps({ ...userProps, profession: e.target.value })}
-                                        className="block w-full px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                    />
-                                </div>
+                                <CustomInput type='text' formType='profession' label='Uzmanlık Alanı' value={userProps.profession} changeFunction={e => setUserProps({ ...userProps, profession: e.target.value })} />
                                 <div className="mb-2 w-full">
                                     <label
                                         form="qualification"
@@ -452,8 +384,8 @@ const Settings = () => {
                                             </div>
                                         </DialogContent>
                                         <DialogActions>
-                                            <Button onClick={handleClose}>Cancel</Button>
-                                            <Button onClick={handleClose}>Subscribe</Button>
+                                            <Button onClick={handleClose}>İptal</Button>
+                                            <Button onClick={handleClose}>Ekle</Button>
                                         </DialogActions>
                                     </Dialog>
                                     <DataTable
@@ -466,12 +398,13 @@ const Settings = () => {
                                         onSelectedRowsChange={rowsConsole}
                                         paginationComponentOptions={paginationComponentOptions}
                                     />
-                                    {/* <MUIDataGrid
-                                        onSelectionModelChange={(e: any[]) => { console.log(e) }}
-                                        onCellEditCommit={(e) => { alert("edit") }}
-                                        columns={columns}
-                                        rows={userProps.trainerLicenses ?? []}
-                                    /> */}
+                                    <div className='flex justify-end py-1 text-right cursor-pointer w-full ' onClick={saveUserDetails}>
+                                        <span className=' hover:bg-slate-500 hover:text-fuchsia-900'>
+
+                                            Kaydet
+                                        </span>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

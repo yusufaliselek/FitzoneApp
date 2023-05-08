@@ -34,7 +34,33 @@ export interface IUserLicence {
     trainerUserId: string;
 }
 
-export interface UserProps {
+export interface ITrainerClub {
+    id: number;
+    name: string;
+    description: string;
+    trainerUserId: string;
+    role: string;
+    entryDate: string;
+    leaveDate: string;
+}
+
+export interface ITrainerCanEdit {
+    id: number;
+    isFounder: boolean;
+    canAddTrainerUser: boolean;
+    canEditTrainerUser: boolean;
+    canDeleteTrainerUser: boolean;
+    canAddTraining: boolean;
+    canEditTraining: boolean;
+    canDeleteTraining: boolean;
+    canAddMember: boolean;
+    canEditMember: boolean;
+    canDeleteMember: boolean;
+    canDefineProgram: boolean;
+    trainerUserId: string;
+}
+
+export interface ITrainerUserProps {
     id: string;
     username: string;
     email: string;
@@ -52,8 +78,8 @@ export interface UserProps {
     birthdayDate?: string;
     qualification?: number;
     trainerLicenses: IUserLicence[];
-    trainerClubs: any[];
-    trainerCanEdit?: object;
+    trainerClubs: ITrainerClub[];
+    trainerCanEdit?: ITrainerCanEdit;
 }
 
 export interface ObjectStrings {

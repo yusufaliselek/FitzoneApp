@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Server.Core.DTOs
+namespace Core.DTOs.TrainerUserDTOs
 {
     public class TrainerUserWithDetailsDto : TrainerUserDto
     {
