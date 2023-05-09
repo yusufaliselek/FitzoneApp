@@ -76,6 +76,7 @@ export interface ITrainerUserProps {
     tckn?: string;
     profession?: string;
     birthdayDate?: string;
+    phoneNumber?: string;
     qualification?: number;
     trainerLicenses: IUserLicence[];
     trainerClubs: ITrainerClub[];

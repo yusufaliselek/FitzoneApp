@@ -12,8 +12,8 @@ using Server.Data;
 namespace Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230508192238_init_1")]
-    partial class init_1
+    [Migration("20230509065838_fit1")]
+    partial class fit1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

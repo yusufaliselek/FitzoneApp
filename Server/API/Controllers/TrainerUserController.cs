@@ -19,26 +19,26 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTrainerUser(CreateUserDto createUserDto)
+        public async Task<IActionResult> Create(CreateUserDto createUserDto)
         {
             return ActionResultInstance(await _userService.CreateUserAsync(createUserDto));
         }
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> TrainerUser()
+        public async Task<IActionResult> Get()
         {
             return ActionResultInstance(await _userService.GetUserByNameAsync(HttpContext.User.Identity.Name));
         }
 
         [HttpGet]
-        public async Task<IActionResult> AllTrainerUsers()
+        public async Task<IActionResult> All()
         {
             return ActionResultInstance(await _userService.GetAllUsers());
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateUser(TrainerUserWithDetailsDto trainerUserDto)
+        public async Task<IActionResult> Update(TrainerUserWithDetailsDto trainerUserDto)
         {
             return ActionResultInstance(await _userService.UpdateUser(trainerUserDto));
         }

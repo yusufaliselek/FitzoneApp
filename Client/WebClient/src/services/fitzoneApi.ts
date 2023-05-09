@@ -47,7 +47,7 @@ export class FitzoneApi {
 
     public static async GetUserByIdentityName(): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().get('/TrainerUser/TrainerUser').then((response) => {
+            ConfigService.FitzoneApi().get('/TrainerUser/Get').then((response) => {
                 resolve(response.data)
             })
         })
@@ -55,7 +55,7 @@ export class FitzoneApi {
 
     public static async UpdateTrainerUser(trainerUserDto: ITrainerUserProps): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().put('/TrainerUser/UpdateUser', trainerUserDto).then((response) => {
+            ConfigService.FitzoneApi().put('/TrainerUser/Update', trainerUserDto).then((response) => {
                 resolve(response.data)
             })
         })

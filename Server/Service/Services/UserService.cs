@@ -66,25 +66,11 @@ namespace Server.Service.Services
                 return CustomResponseDto<TrainerUserWithDetailsDto>.Fail(404, "User not found");
             }
 
-            // Boş koleksiyonlar oluşturun
+            // TrainerUserDto'ya eşleştirin
+            _mapper.Map(user, userDetail);
+
             userDetail.TrainerLicences = new List<TrainerLicence>();
             userDetail.TrainerClubs = new List<TrainerClub>();
-
-            // Diğer özellikleri güncelleyin
-            userDetail.Biography = user.Biography;
-            userDetail.BirthdayDate = user.BirthdayDate;
-            userDetail.FirstName = user.FirstName;
-            userDetail.LastName = user.LastName;
-            userDetail.TCKN = user.TCKN;
-            userDetail.Gender = user.Gender;
-            userDetail.Location = user.Location;
-            userDetail.PersonalPhoto = user.PersonalPhoto;
-            userDetail.PhoneNumber = user.PhoneNumber;
-            userDetail.Profession = user.Profession;
-            userDetail.Qualification = user.Qualification;
-            userDetail.UpdatedAt = DateTime.Now;
-
-            // Koleksiyonlara öğeleri ekle
             userDetail.TrainerLicences = _mapper.Map<List<TrainerLicence>>(user.TrainerLicences);
             userDetail.TrainerClubs = _mapper.Map<List<TrainerClub>>(user.TrainerClubs);
             userDetail.TrainerCanEdit = _mapper.Map<TrainerCanEdit>(user.TrainerCanEdit);
@@ -100,8 +86,8 @@ namespace Server.Service.Services
             // Hata varsa hata mesajlarıyla hata yanıtı döndür
             var errors = result.Errors.Select(x => x.Description).ToList();
             return CustomResponseDto<TrainerUserWithDetailsDto>.Fail(400, errors);
-
         }
+
 
     }
 }
