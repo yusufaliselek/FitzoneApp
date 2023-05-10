@@ -5,7 +5,7 @@ import Login from './pages/AuthPages/Login';
 import Signup from './pages/AuthPages/Signup';
 import Users from './pages/MemberPages/Members';
 import Coaches from './pages/CoachPages/Coaches';
-import Settings from './pages/Settings';
+import Settings from './pages/Settings/Settings';
 import CoachDetail from './pages/CoachPages/CoachDetail';
 import AddMember from './pages/MemberPages/AddMember';
 import AddCoach from './pages/CoachPages/AddCoach';

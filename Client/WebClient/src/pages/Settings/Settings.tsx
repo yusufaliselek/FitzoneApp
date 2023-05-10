@@ -14,15 +14,15 @@ import { Rating } from 'react-simple-star-rating'
 
 import DataTable from 'react-data-table-component';
 
-import { cities } from '../assets/Cities';
-import CustomInput from '../components/CustomInput';
-import FitzoneHeader from '../components/Header/FitzoneHeader';
-import Nav from '../components/Nav/Nav';
-import PhotoUpload from '../components/PhotoUpload/PhotoUpload';
-import { FitzoneApi } from '../services/fitzoneApi';
-import { IUserLicence, ITrainerUserProps, ITrainerClub } from '../types/Types';
-import { RiFileUserFill, RiPhoneFill, RiSave3Fill } from 'react-icons/ri';
-import IsCanDo from '../components/IsCanDo/IsCanDo';
+import { cities } from '../../assets/Cities';
+import CustomInput from '../../components/CustomInput';
+import FitzoneHeader from '../../components/Header/FitzoneHeader';
+import Nav from '../../components/Nav/Nav';
+import PhotoUpload from '../../components/PhotoUpload/PhotoUpload';
+import { FitzoneApi } from '../../services/fitzoneApi';
+import { IUserLicence, ITrainerUserProps, ITrainerClub } from '../../types/Types';
+import { RiFileUserFill, RiPhoneFill, RiSave3Fill, RiDeleteBin5Line, RiEdit2Line } from 'react-icons/ri';
+import IsCanDo from '../../components/IsCanDo/IsCanDo';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -46,7 +46,14 @@ const columns = [
     {
         name: 'İşlemler',
         selector: (row: any) => row.id,
-        cell: (row: any) => <Button variant="contained" color="error" onClick={() => console.log(row)}>Sil</Button>
+        cell: (row: any) => <div className='flex gap-x-4'>
+            <div className='hover:bg-gray-300 rounded-full p-2 text-blue-600 hover:text-blue-500 cursor-pointer'>
+                <RiEdit2Line size={20} />
+            </div>
+            <div className='hover:bg-gray-300 rounded-full p-2 text-red-600 hover:text-red-500 cursor-pointer'>
+                <RiDeleteBin5Line size={20} />
+            </div>
+        </div>
     }
 ];
 
@@ -104,7 +111,7 @@ const Settings = () => {
         personalPhoto: '',
         biography: '',
         phoneNumber: '',
-        trainerLicenses: [],
+        trainerLicences: [],
         trainerClubs: [],
         trainerCanEdit: {
             canAddMember: false,
@@ -143,11 +150,12 @@ const Settings = () => {
     };
 
     const closeLicenceDialog = () => {
+        console.log(trainerLicence);
         setLicenceDialog(false);
         if (trainerLicence.name && trainerLicence.description && trainerLicence.licenceDate) {
             setUserProps(prevState => ({
                 ...prevState,
-                trainerLicenses: [...prevState.trainerLicenses, { ...trainerLicence, id: dialogOpenId, trainerUserId: trainerProps.id }]
+                trainerLicenses: [...prevState.trainerLicences, { ...trainerLicence, id: dialogOpenId, trainerUserId: trainerProps.id }]
             }));
         }
         setUserLicence(clearLicenceDialog);
@@ -240,10 +248,11 @@ const Settings = () => {
                 location: response.data.location,
                 profession: response.data.profession,
                 tckn: response.data.tckn,
+                phoneNumber: response.data.phoneNumber,
                 qualification: response.data.qualification,
                 trainerCanEdit: response.data.trainerCanEdit,
                 trainerClubs: response.data.trainerClubs ?? [],
-                trainerLicenses: response.data.trainerLicenses ?? [],
+                trainerLicences: response.data.trainerLicences ?? [],
             });
 
             setUserLicence({
@@ -302,7 +311,7 @@ const Settings = () => {
                                         <input
                                             type='text'
                                             readOnly={!phoneNumberVisibility}
-                                            value={trainerProps.phoneNumber?.length != undefined && trainerProps.phoneNumber.length > 1 ? trainerProps.phoneNumber : "05** *** ** **"}
+                                            value={trainerProps.phoneNumber ? trainerProps.phoneNumber : "05** *** ** **"}
                                             onChange={e => setUserProps({ ...trainerProps, phoneNumber: e.target.value })}
                                             onDoubleClick={(e: any) => { setPhoneNumberVisibility(!phoneNumberVisibility) }}
                                             style={{ backgroundColor: 'transparent', border: `${phoneNumberVisibility ? "1px solid lightgray" : "1px solid transparent"}`, outline: 'none', width: "130px" }}
@@ -384,7 +393,9 @@ const Settings = () => {
                                         className='py-1 mt-2 text-blue-700 bg-white rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40'
                                         initialValue={trainerProps.qualification}
-                                        onClick={(e) => { setUserProps({ ...trainerProps, qualification:e }) }}
+                                        allowFraction={true}
+                                        emptyStyle={{ display: "flex" }} fillStyle={{ display: "-webkit-inline-box" }}
+                                        onClick={(e) => { setUserProps({ ...trainerProps, qualification: e }) }}
                                     />
                                 </div>
                                 <div className='col-span-2 mb-2 w-full flex flex-col'>
@@ -451,11 +462,10 @@ const Settings = () => {
                                     </Dialog>
                                     <DataTable
                                         columns={columns}
-                                        data={trainerProps.trainerLicenses ?? []}
+                                        data={trainerProps.trainerLicences}
                                         selectableRows
                                         pagination
                                         highlightOnHover
-                                        pointerOnHover
                                         onSelectedRowsChange={rowsConsole}
                                         paginationComponentOptions={paginationComponentOptions}
                                     />
@@ -608,12 +618,12 @@ const Settings = () => {
                     <TabPanel value={value} index={2}>
                         <div className='flex flex-col w-full h-full items-center gap-y-2'>
                             {/*trainer have permissions*/}
-                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' />
-                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' />
-                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' />
-                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' />
-                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' />
-                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' />
+                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' display={Boolean(trainerProps.trainerCanEdit?.canAddMember)} />
+                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' display={Boolean(trainerProps.trainerCanEdit?.canAddTrainerUser)} />
+                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' display={Boolean(trainerProps.trainerCanEdit?.canDefineProgram)} />
+                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' display={Boolean(trainerProps.trainerCanEdit?.canAddMember)} />
+                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' display={Boolean(trainerProps.trainerCanEdit?.canAddMember)} />
+                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' display={Boolean(!trainerProps.trainerCanEdit?.canAddMember)} />
                         </div>
                     </TabPanel>
                 </Box>
