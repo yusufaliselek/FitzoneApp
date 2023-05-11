@@ -18,8 +18,8 @@ namespace Server.Core.Models
         public DateTime BirthdayDate { get; set; }
         public string? PersonalPhoto { get; set; }
         public string? Location { get; set; }
-        public ICollection<TrainerLicence> TrainerLicences { get; set; } // Dependent Entity
-        public ICollection<TrainerClub> TrainerClubs { get; set; } // Dependent Entity
+        public List<TrainerLicence> TrainerLicences { get; set; } // Dependent Entity
+        public List<TrainerClub> TrainerClubs { get; set; } // Dependent Entity
         public float? Qualification { get; set; }
         public string? Profession { get; set; }
         public bool IsActive { get; set; } = true;

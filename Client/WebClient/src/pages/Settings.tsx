@@ -380,12 +380,15 @@ const Settings = () => {
                                     >
                                         Yeterlilik
                                     </label>
-                                    <Rating
-                                        className='py-1 mt-2 text-blue-700 bg-white rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40'
-                                        initialValue={trainerProps.qualification}
-                                        onClick={(e) => { setUserProps({ ...trainerProps, qualification:e }) }}
-                                    />
+                                    <div>
+                                        <Rating
+                                            titleSeparator='/'
+                                            allowFraction={true}
+                                            SVGclassName="inline-block"
+                                            initialValue={trainerProps.qualification}
+                                            onClick={(e) => { setUserProps({ ...trainerProps, qualification: e }) }}
+                                        />
+                                    </div>
                                 </div>
                                 <div className='col-span-2 mb-2 w-full flex flex-col'>
                                     <div className='flex justify-between py-1 items-center'>
@@ -485,6 +488,20 @@ const Settings = () => {
                                                 <input
                                                     type="text"
                                                     value={trainerClub.name} onChange={e => setUserClub({ ...trainerClub, name: e.target.value })}
+                                                    className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                                />
+                                            </div>
+                                            <div className="mb-2 w-full">
+                                                <label
+                                                    form="role"
+                                                    className="block text-sm font-semibold text-gray-600"
+                                                >
+                                                    Kulüpteki Rol
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    value={trainerClub.role} onChange={e => setUserClub({ ...trainerClub, role: e.target.value })}
                                                     className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
                             focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                                 />
