@@ -78,7 +78,7 @@ export interface ITrainerUserProps {
     birthdayDate?: string;
     phoneNumber?: string;
     qualification?: number;
-    trainerLicenses: IUserLicence[];
+    trainerLicences: IUserLicence[];
     trainerClubs: ITrainerClub[];
     trainerCanEdit?: ITrainerCanEdit;
 }
