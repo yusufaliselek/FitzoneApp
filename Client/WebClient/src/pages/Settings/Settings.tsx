@@ -389,7 +389,6 @@ const Settings = () => {
                                     >
                                         Yeterlilik
                                     </label>
-<<<<<<< HEAD:Client/WebClient/src/pages/Settings.tsx
                                     <div>
                                         <Rating
                                             titleSeparator='/'
@@ -399,16 +398,6 @@ const Settings = () => {
                                             onClick={(e) => { setUserProps({ ...trainerProps, qualification: e }) }}
                                         />
                                     </div>
-=======
-                                    <Rating
-                                        className='py-1 mt-2 text-blue-700 bg-white rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40'
-                                        initialValue={trainerProps.qualification}
-                                        allowFraction={true}
-                                        emptyStyle={{ display: "flex" }} fillStyle={{ display: "-webkit-inline-box" }}
-                                        onClick={(e) => { setUserProps({ ...trainerProps, qualification: e }) }}
-                                    />
->>>>>>> 30a289e61f5cef803b73e7a62669c2360f635691:Client/WebClient/src/pages/Settings/Settings.tsx
                                 </div>
                                 <div className='col-span-2 mb-2 w-full flex flex-col'>
                                     <div className='flex justify-between py-1 items-center'>
