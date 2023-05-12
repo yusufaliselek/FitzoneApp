@@ -38,7 +38,7 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateById(TrainerUserWithDetailsDto trainerUserDto)
+        public async Task<IActionResult> Update(TrainerUserWithDetailsDto trainerUserDto)
         {
             return ActionResultInstance(await _userService.UpdateUser(trainerUserDto));
         }

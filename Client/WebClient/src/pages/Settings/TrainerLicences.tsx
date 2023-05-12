@@ -2,6 +2,7 @@ import React from 'react'
 import { ITrainerLicence, ITrainerUserProps } from '../../types/Types';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import DataTable from 'react-data-table-component';
+import NoDataComponent from '../../components/NoDataComponent/NoDataComponent';
 
 interface UserLicencesProps {
     trainerLicences: ITrainerLicence[];
@@ -96,6 +97,7 @@ const TrainerLicences = (props: UserLicencesProps) => {
                     </DialogActions>
                 </Dialog>
                 <DataTable
+                    noDataComponent={<NoDataComponent text='Lisans Bulunamadı'/>}
                     columns={props.columns}
                     data={props.trainerProps.trainerLicences}
                     selectableRows

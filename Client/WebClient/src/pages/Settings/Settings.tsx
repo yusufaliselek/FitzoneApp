@@ -25,6 +25,8 @@ import { RiFileUserFill, RiPhoneFill, RiSave3Fill, RiDeleteBin5Line, RiEdit2Line
 import IsCanDo from '../../components/IsCanDo/IsCanDo';
 import TrainerLicences from './TrainerLicences';
 import TrainerClubs from './TrainerClubs';
+import UserPersonalInfos from './TrainerPersonalInfos';
+import Spinner from '../../components/Spinner/Spinner';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -335,138 +337,74 @@ const Settings = () => {
                         {true && <Tab label="Yetkiler" {...a11yProps(2)} />}
                     </Tabs>
                     <TabPanel value={value} index={0}>
-                        <div className='flex flex-col w-full h-full justify-center items-center overflow-y-auto'>
-                            <div className='flex flex-col items-center gap-y-4 my-5'>
-                                <PhotoUpload photo={trainerProps.personalPhoto} />
-                                <div className='flex gap-x-4'>
-                                    <div className='flex gap-x-1 items-center'>
-                                        <RiFileUserFill size={20} color='rgba(29,78,216, 0.8)' />
-                                        <span>{!firstName ? email : trainerProps.firstName + " " + trainerProps.lastName}</span>
-                                    </div>
-                                    <div className='flex gap-x-1 items-center'>
-                                        <RiPhoneFill size={20} color='rgba(29,78,216, 0.8)' />
-                                        <input
-                                            type='text'
-                                            readOnly={!phoneNumberVisibility}
-                                            value={trainerProps.phoneNumber ? trainerProps.phoneNumber : "05** *** ** **"}
-                                            onChange={e => setUserProps({ ...trainerProps, phoneNumber: e.target.value })}
-                                            onDoubleClick={(e: any) => { setPhoneNumberVisibility(!phoneNumberVisibility) }}
-                                            style={{ backgroundColor: 'transparent', border: `${phoneNumberVisibility ? "1px solid lightgray" : "1px solid transparent"}`, outline: 'none', width: "130px" }}
-                                        />
-                                        <RiSave3Fill
-                                            size={20}
-                                            color='rgba(29,78,216, 0.8)'
-                                            visibility={phoneNumberVisibility ? "visible" : "hidden"}
-                                            style={{ cursor: 'pointer' }}
-                                            onClick={() => {
-                                                setPhoneNumberVisibility(false)
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div className='grid grid-cols-2 md:w-[41.25rem] justify-center items-start gap-x-5 gap-y-2'>
-                                <CustomInput type='text' formType='text' label='Kullanıcı Adı' value={trainerProps.username} changeFunction={e => setUserProps({ ...trainerProps, username: e.target.value })} isDisabled />
-                                <CustomInput type='email' formType='email' label='Email' value={trainerProps.email} changeFunction={e => setUserProps({ ...trainerProps, email: e.target.value })} />
-                                <CustomInput type='text' formType='text' label='Adı' value={trainerProps.firstName} changeFunction={e => setUserProps({ ...trainerProps, firstName: e.target.value })} />
-                                <CustomInput type='text' formType='text' label='Soyadı' value={trainerProps.lastName} changeFunction={e => setUserProps({ ...trainerProps, lastName: e.target.value })} />
-                                <CustomInput type='text' formType='tckn' label='T.C Kimlik Numarası' value={trainerProps.tckn} changeFunction={e => setUserProps({ ...trainerProps, tckn: e.target.value })} />
-                                <CustomInput type='date' formType='profession' label='Doğum Tarihi' value={trainerProps.birthdayDate} changeFunction={e => { setUserProps({ ...trainerProps, birthdayDate: e.target.value }) }} />
-                                <div className="mb-2 w-full">
-                                    <label
-                                        form="location"
-                                        className="block text-sm font-semibold text-gray-600"
-                                    >
-                                        Lokasyon
-                                    </label>
-                                    <select value={String(trainerProps.location)} className='block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40' onChange={(e: any) => setUserProps({ ...trainerProps, location: e.target.value })}>
-                                        <option value={undefined} hidden> -- Şehir seçiniz -- </option>
-                                        {cities.map((city, index) => {
-                                            return <option key={index} value={city.plaka}>{city.il_adi}</option>
-                                        })}
-                                    </select>
-                                </div>
-                                <div className='mb-2 w-full'>
-                                    <label
-                                        form="gender"
-                                        className="block text-sm font-semibold text-gray-600">Cinsiyet</label>
-
-                                    <select value={String(trainerProps.gender)} className='block w-[20rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40' onChange={(e: any) => setUserProps({ ...trainerProps, gender: e.target.value })}>
-                                        <option value={undefined} hidden>-- Cinsiyet Seçiniz --</option>
-                                        <option value={"male"}>Erkek</option>
-                                        <option value={"female"}>Kız</option>
-                                    </select>
-                                </div>
-                                <div className="mb-2 w-full col-span-2">
-                                    <label
-                                        form="biography"
-                                        className="block text-sm font-semibold text-gray-600"
-                                    >
-                                        Biyografi
-                                    </label>
-                                    <textarea
-                                        value={trainerProps.biography} onChange={e => setUserProps({ ...trainerProps, biography: e.target.value })}
-                                        className="block w-full px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                        {
+                            trainerProps.id ?
+                                <div className='flex flex-col w-full h-full justify-center items-center overflow-y-auto'>
+                                    <UserPersonalInfos
+                                        email={email}
+                                        firstName={firstName}
+                                        phoneNumberVisibility={phoneNumberVisibility}
+                                        setPhoneNumberVisibility={setPhoneNumberVisibility}
+                                        setUserProps={setUserProps}
+                                        trainerProps={trainerProps}
                                     />
-                                </div>
-                            </div>
-                            <div className='grid grid-cols-2 md:w-[41.25rem] justify-center items-start gap-x-5 md:mt-6 gap-y-2'>
-                                <div className='col-span-2 text-center shadow-[rgba(33,35,38,0.1)_0px_10px_10px_-10px] mb-3'>
-                                    <span className='text-sm text-gray-600'>Teknik Bilgiler</span>
-                                </div>
-                                <CustomInput type='text' formType='profession' label='Uzmanlık Alanı' value={trainerProps.profession} changeFunction={e => setUserProps({ ...trainerProps, profession: e.target.value })} />
-                                <div className="mb-2 w-full">
-                                    <label
-                                        form="qualification"
-                                        className="block text-sm font-semibold text-gray-600"
-                                    >
-                                        Yeterlilik
-                                    </label>
-                                    <div>
-                                        <Rating
-                                            titleSeparator='/'
-                                            allowFraction={true}
-                                            SVGclassName="inline-block"
-                                            initialValue={trainerProps.qualification}
-                                            onClick={(e) => { setUserProps({ ...trainerProps, qualification: e }) }}
+                                    <div className='grid grid-cols-2 md:w-[41.25rem] justify-center items-start gap-x-5 md:mt-6 gap-y-2'>
+                                        <div className='col-span-2 text-center shadow-[rgba(33,35,38,0.1)_0px_10px_10px_-10px] mb-3'>
+                                            <span className='text-sm text-gray-600'>Teknik Bilgiler</span>
+                                        </div>
+                                        <CustomInput type='text' formType='profession' label='Uzmanlık Alanı' value={trainerProps.profession} changeFunction={e => setUserProps({ ...trainerProps, profession: e.target.value })} />
+                                        <div className="mb-2 w-full">
+                                            <label
+                                                form="qualification"
+                                                className="block text-sm font-semibold text-gray-600"
+                                            >
+                                                Yeterlilik
+                                            </label>
+                                            <div>
+                                                <Rating
+                                                    titleSeparator='/'
+                                                    allowFraction={true}
+                                                    SVGclassName="inline-block"
+                                                    initialValue={trainerProps.qualification}
+                                                    onClick={(e) => { setUserProps({ ...trainerProps, qualification: e }) }}
+                                                />
+                                            </div>
+                                        </div>
+                                        <TrainerLicences
+                                            columns={columnsLicence}
+                                            licenceDialog={licenceDialog}
+                                            rowsConsole={rowsConsole}
+                                            openLicenceDialog={openLicenceDialog}
+                                            closeLicenceDialog={closeLicenceDialog}
+                                            cancelLicenceDialog={cancelLicenceDialog}
+                                            trainerLicences={trainerProps.trainerLicences}
+                                            trainerLicence={trainerLicence}
+                                            setUserLicence={setUserLicence}
+                                            paginationComponentOptions={paginationComponentOptions}
+                                            trainerProps={trainerProps}
+
+                                        />
+                                        <TrainerClubs
+                                            columns={columnsClub}
+                                            clubDialog={clubDialog}
+                                            rowsConsole={rowsConsole}
+                                            openClubDialog={openClubDialog}
+                                            closeClubDialog={closeClubDialog}
+                                            cancelClubDialog={cancelClubDialog}
+                                            trainerClub={trainerClub}
+                                            setUserClub={setUserClub}
+                                            paginationComponentOptions={paginationComponentOptions}
+                                            trainerProps={trainerProps}
                                         />
                                     </div>
+                                    <Button variant="outlined" onClick={saveUserDetails}>
+                                        Bilgileri Kaydet
+                                    </Button>
                                 </div>
-                                <TrainerLicences
-                                    columns={columnsLicence}
-                                    licenceDialog={licenceDialog}
-                                    rowsConsole={rowsConsole}
-                                    openLicenceDialog={openLicenceDialog}
-                                    closeLicenceDialog={closeLicenceDialog}
-                                    cancelLicenceDialog={cancelLicenceDialog}
-                                    trainerLicences={trainerProps.trainerLicences}
-                                    trainerLicence={trainerLicence}
-                                    setUserLicence={setUserLicence}
-                                    paginationComponentOptions={paginationComponentOptions}
-                                    trainerProps={trainerProps}
+                                :
+                                <Spinner color='lightgray'/>
+                        }
 
-                                />
-                                <TrainerClubs
-                                    columns={columnsClub}
-                                    clubDialog={clubDialog}
-                                    rowsConsole={rowsConsole}
-                                    openClubDialog={openClubDialog}
-                                    closeClubDialog={closeClubDialog}
-                                    cancelClubDialog={cancelClubDialog}
-                                    trainerClub={trainerClub}
-                                    setUserClub={setUserClub}
-                                    paginationComponentOptions={paginationComponentOptions}
-                                    trainerProps={trainerProps}
-                                />
-                            </div>
-                            <Button variant="outlined" onClick={saveUserDetails}>
-                                Bilgileri Kaydet
-                            </Button>
-                        </div>
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                         <div className='flex flex-col w-full h-full justify-center items-center'>
