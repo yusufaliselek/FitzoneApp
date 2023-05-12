@@ -64,6 +64,22 @@ namespace Server.Service.Services
             {
                 return CustomResponseDto<TrainerUserWithDetailsDto>.Fail(404, "User not found");
             }
+            // Trainer User Infos
+            user.FirstName = userDto.FirstName;
+            user.LastName = userDto.LastName;
+            user.Email = userDto.Email;
+            user.PhoneNumber = userDto.PhoneNumber;
+            user.UserName = userDto.UserName;
+            user.UpdatedAt = DateTime.Now;
+            user.Qualification = userDto.Qualification;
+            user.Profession = userDto.Profession;
+            user.Location = userDto.Location;
+            user.Biography = userDto.Biography;
+            user.Gender = userDto.Gender;
+            user.PersonalPhoto = userDto.PersonalPhoto;
+            user.TCKN = userDto.TCKN;
+            user.BirthdayDate = userDto.BirthdayDate;
+                
 
 
             // Trainer Club Infos

@@ -26,7 +26,7 @@ export interface Account {
     password: string;
 }
 
-export interface IUserLicence {
+export interface ITrainerLicence {
     id: number;
     name: string;
     description: string;
@@ -78,7 +78,7 @@ export interface ITrainerUserProps {
     birthdayDate?: string;
     phoneNumber?: string;
     qualification?: number;
-    trainerLicences: IUserLicence[];
+    trainerLicences: ITrainerLicence[];
     trainerClubs: ITrainerClub[];
     trainerCanEdit?: ITrainerCanEdit;
 }

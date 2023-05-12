@@ -20,9 +20,11 @@ import FitzoneHeader from '../../components/Header/FitzoneHeader';
 import Nav from '../../components/Nav/Nav';
 import PhotoUpload from '../../components/PhotoUpload/PhotoUpload';
 import { FitzoneApi } from '../../services/fitzoneApi';
-import { IUserLicence, ITrainerUserProps, ITrainerClub } from '../../types/Types';
+import { ITrainerLicence, ITrainerUserProps, ITrainerClub } from '../../types/Types';
 import { RiFileUserFill, RiPhoneFill, RiSave3Fill, RiDeleteBin5Line, RiEdit2Line } from 'react-icons/ri';
 import IsCanDo from '../../components/IsCanDo/IsCanDo';
+import TrainerLicences from './TrainerLicences';
+import TrainerClubs from './TrainerClubs';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -30,23 +32,58 @@ interface TabPanelProps {
     value: number;
 }
 
-const columns = [
+const columnsLicence = [
     {
         name: 'Lisans Adı',
-        selector: (row: any) => row.name,
+        selector: (row: ITrainerLicence) => row.name,
     },
     {
         name: 'Açıklama',
-        selector: (row: any) => row.description,
+        selector: (row: ITrainerLicence) => row.description,
     },
     {
         name: 'Lisans Tarihi',
-        selector: (row: any) => row.licenceDate,
+        selector: (row: ITrainerLicence) => row.licenceDate,
     },
     {
         name: 'İşlemler',
-        selector: (row: any) => row.id,
-        cell: (row: any) => <div className='flex gap-x-4'>
+        selector: (row: ITrainerLicence) => row.id,
+        cell: (row: ITrainerLicence) => <div className='flex gap-x-4'>
+            <div className='hover:bg-gray-300 rounded-full p-2 text-blue-600 hover:text-blue-500 cursor-pointer'>
+                <RiEdit2Line size={20} />
+            </div>
+            <div className='hover:bg-gray-300 rounded-full p-2 text-red-600 hover:text-red-500 cursor-pointer'>
+                <RiDeleteBin5Line size={20} />
+            </div>
+        </div>
+    }
+];
+
+const columnsClub = [
+    {
+        name: 'Kulüp Adı',
+        selector: (row: ITrainerClub) => row.name,
+    },
+    {
+        name: 'Açıklama',
+        selector: (row: ITrainerClub) => row.description,
+    },
+    {
+        name: 'Rol',
+        selector: (row: ITrainerClub) => row.role,
+    },
+    {
+        name: 'Giriş Tarihi',
+        selector: (row: ITrainerClub) => row.entryDate,
+    },
+    {
+        name: 'Ayrılış Tarihi',
+        selector: (row: ITrainerClub) => row.leaveDate,
+    },
+    {
+        name: 'İşlemler',
+        selector: (row: ITrainerClub) => row.id,
+        cell: (row: ITrainerClub) => <div className='flex gap-x-4'>
             <div className='hover:bg-gray-300 rounded-full p-2 text-blue-600 hover:text-blue-500 cursor-pointer'>
                 <RiEdit2Line size={20} />
             </div>
@@ -142,7 +179,7 @@ const Settings = () => {
         }
     }
 
-    const [trainerLicence, setUserLicence] = useState<IUserLicence>(clearLicenceDialog);
+    const [trainerLicence, setUserLicence] = useState<ITrainerLicence>(clearLicenceDialog);
 
     const openLicenceDialog = () => {
         setDialogOpenId(dialogOpenId + 1);
@@ -155,7 +192,7 @@ const Settings = () => {
         if (trainerLicence.name && trainerLicence.description && trainerLicence.licenceDate) {
             setUserProps(prevState => ({
                 ...prevState,
-                trainerLicenses: [...prevState.trainerLicences, { ...trainerLicence, id: dialogOpenId, trainerUserId: trainerProps.id }]
+                trainerLicences: [...prevState.trainerLicences, { ...trainerLicence, id: dialogOpenId, trainerUserId: trainerProps.id }]
             }));
         }
         setUserLicence(clearLicenceDialog);
@@ -399,183 +436,36 @@ const Settings = () => {
                                         />
                                     </div>
                                 </div>
-                                <div className='col-span-2 mb-2 w-full flex flex-col'>
-                                    <div className='flex justify-between py-1 items-center'>
-                                        <label
-                                            form="trainerLicences"
-                                            className="block text-sm font-semibold text-gray-600"
-                                        >
-                                            Lisanslar
-                                        </label>
-                                        <Button variant="outlined" onClick={openLicenceDialog}>
-                                            Lisans Ekle
-                                        </Button>
-                                    </div>
-                                    <Dialog open={licenceDialog} onClose={closeLicenceDialog}>
-                                        <DialogTitle>Lisans Bilgileri</DialogTitle>
-                                        <DialogContent>
-                                            <div className="mb-2 w-full">
-                                                <label
-                                                    form="licenceName"
-                                                    className="block text-sm font-semibold text-gray-600"
-                                                >
-                                                    Lisans Adı
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    value={trainerLicence.name} onChange={e => setUserLicence({ ...trainerLicence, name: e.target.value })}
-                                                    className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                />
-                                            </div>
-                                            <div className="mb-2 w-full">
-                                                <label
-                                                    form="licenceName"
-                                                    className="block text-sm font-semibold text-gray-600"
-                                                >
-                                                    Açıklama
-                                                </label>
-                                                <textarea
-                                                    value={trainerLicence.description} onChange={e => setUserLicence({ ...trainerLicence, description: e.target.value })}
-                                                    className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                />
-                                            </div>
-                                            <div className="mb-2 w-full">
-                                                <label
-                                                    form="licenceDate"
-                                                    className="block text-sm font-semibold text-gray-600"
-                                                >
-                                                    Lisans Alma Tarihi
-                                                </label>
-                                                <input
-                                                    type="date"
-                                                    value={trainerLicence.licenceDate} onChange={e => { setUserLicence({ ...trainerLicence, licenceDate: e.target.value }) }}
-                                                    className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md cursor-pointer
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                />
-                                            </div>
-                                        </DialogContent>
-                                        <DialogActions>
-                                            <Button onClick={cancelLicenceDialog}>İptal</Button>
-                                            <Button onClick={closeLicenceDialog}>Ekle</Button>
-                                        </DialogActions>
-                                    </Dialog>
-                                    <DataTable
-                                        columns={columns}
-                                        data={trainerProps.trainerLicences}
-                                        selectableRows
-                                        pagination
-                                        highlightOnHover
-                                        onSelectedRowsChange={rowsConsole}
-                                        paginationComponentOptions={paginationComponentOptions}
-                                    />
-                                </div>
-                                <div className='col-span-2 mb-2 w-full flex flex-col'>
-                                    <div className='flex justify-between py-1 items-center'>
-                                        <label
-                                            form="trainerClubs"
-                                            className="block text-sm font-semibold text-gray-600"
-                                        >
-                                            Kulüpler
-                                        </label>
-                                        <Button variant="outlined" onClick={openClubDialog}>
-                                            Kulüp Ekle
-                                        </Button>
-                                    </div>
-                                    <Dialog open={clubDialog} onClose={closeClubDialog}>
-                                        <DialogTitle>Kulüp Bilgileri</DialogTitle>
-                                        <DialogContent>
-                                            <div className="mb-2 w-full">
-                                                <label
-                                                    form="clubName"
-                                                    className="block text-sm font-semibold text-gray-600"
-                                                >
-                                                    Kulüp Adı
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    value={trainerClub.name} onChange={e => setUserClub({ ...trainerClub, name: e.target.value })}
-                                                    className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                />
-                                            </div>
-                                            <div className="mb-2 w-full">
-                                                <label
-                                                    form="role"
-                                                    className="block text-sm font-semibold text-gray-600"
-                                                >
-                                                    Kulüpteki Rol
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    value={trainerClub.role} onChange={e => setUserClub({ ...trainerClub, role: e.target.value })}
-                                                    className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                />
-                                            </div>
-                                            <div className="mb-2 w-full">
-                                                <label
-                                                    form="clubDescription"
-                                                    className="block text-sm font-semibold text-gray-600"
-                                                >
-                                                    Açıklama
-                                                </label>
-                                                <textarea
-                                                    value={trainerClub.description} onChange={e => setUserClub({ ...trainerClub, description: e.target.value })}
-                                                    className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                />
-                                            </div>
-                                            <div className="mb-2 w-full">
-                                                <label
-                                                    form="clubEnterDate"
-                                                    className="block text-sm font-semibold text-gray-600"
-                                                >
-                                                    Kulübe Giriş Tarihi
-                                                </label>
-                                                <input
-                                                    type="date"
-                                                    value={trainerClub.entryDate} onChange={e => { setUserClub({ ...trainerClub, entryDate: e.target.value }) }}
-                                                    className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md cursor-pointer
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                />
-                                            </div>
-                                            <div className="mb-2 w-full">
-                                                <label
-                                                    form="clubExitDate"
-                                                    className="block text-sm font-semibold text-gray-600"
-                                                >
-                                                    Kulüpten Ayrılma Tarihi
-                                                </label>
-                                                <input
-                                                    type="date"
-                                                    value={trainerClub.leaveDate} onChange={e => { setUserClub({ ...trainerClub, leaveDate: e.target.value }) }}
-                                                    className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md cursor-pointer
-                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                />
-                                            </div>
-                                        </DialogContent>
-                                        <DialogActions>
-                                            <Button onClick={cancelClubDialog}>İptal</Button>
-                                            <Button onClick={closeClubDialog}>Ekle</Button>
-                                        </DialogActions>
-                                    </Dialog>
-                                    <DataTable
-                                        columns={columns}
-                                        data={trainerProps.trainerClubs ?? []}
-                                        selectableRows
-                                        pagination
-                                        highlightOnHover
-                                        pointerOnHover
-                                        onSelectedRowsChange={rowsConsole}
-                                        paginationComponentOptions={paginationComponentOptions}
-                                    />
-                                    <Button variant="outlined" onClick={saveUserDetails}>
-                                        Bilgileri Kaydet
-                                    </Button>
-                                </div>
+                                <TrainerLicences
+                                    columns={columnsLicence}
+                                    licenceDialog={licenceDialog}
+                                    rowsConsole={rowsConsole}
+                                    openLicenceDialog={openLicenceDialog}
+                                    closeLicenceDialog={closeLicenceDialog}
+                                    cancelLicenceDialog={cancelLicenceDialog}
+                                    trainerLicences={trainerProps.trainerLicences}
+                                    trainerLicence={trainerLicence}
+                                    setUserLicence={setUserLicence}
+                                    paginationComponentOptions={paginationComponentOptions}
+                                    trainerProps={trainerProps}
+
+                                />
+                                <TrainerClubs
+                                    columns={columnsClub}
+                                    clubDialog={clubDialog}
+                                    rowsConsole={rowsConsole}
+                                    openClubDialog={openClubDialog}
+                                    closeClubDialog={closeClubDialog}
+                                    cancelClubDialog={cancelClubDialog}
+                                    trainerClub={trainerClub}
+                                    setUserClub={setUserClub}
+                                    paginationComponentOptions={paginationComponentOptions}
+                                    trainerProps={trainerProps}
+                                />
                             </div>
+                            <Button variant="outlined" onClick={saveUserDetails}>
+                                Bilgileri Kaydet
+                            </Button>
                         </div>
                     </TabPanel>
                     <TabPanel value={value} index={1}>
