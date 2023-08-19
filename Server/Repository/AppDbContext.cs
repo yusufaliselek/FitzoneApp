@@ -23,7 +23,6 @@ namespace Server.Data
 
         public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
         public DbSet<User> User { get; set; }
-        public DbSet<Role> Role { get; set; }
         public DbSet<TrainerDetail> TrainerDetail { get; set; }
         public DbSet<TrainerPermission> TrainerPermission { get; set; }
         public DbSet<MemberDetail> MemberDetail { get; set; }
