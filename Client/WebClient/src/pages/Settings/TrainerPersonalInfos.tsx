@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PhotoUpload from '../../components/PhotoUpload/PhotoUpload';
 import { ITrainerUserProps } from '../../types/Types';
 import { RiFileUserFill, RiPhoneFill, RiSave3Fill } from 'react-icons/ri';
@@ -15,6 +15,23 @@ interface ITrainerPersonalInfoProps {
 }
 
 const UserPersonalInfos = (props: ITrainerPersonalInfoProps) => {
+
+  const [phoneNumber, setPhoneNumber] = useState(props.trainerProps.phoneNumber || undefined);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    const regex = /^05\d{9}$/;
+
+    if (regex.test(inputValue)) {
+      setPhoneNumber(inputValue);
+      setErrorMessage('');
+      props.setUserProps({ ...props.trainerProps, phoneNumber: inputValue });
+    } else {
+      setErrorMessage('Lütfen telefon numarasını düzgün formatta giriniz.');
+    }
+  };
+
   return (
     <>
       <div className='flex flex-col items-center gap-y-4 my-5'>
@@ -29,19 +46,24 @@ const UserPersonalInfos = (props: ITrainerPersonalInfoProps) => {
             <input
               type='text'
               readOnly={!props.phoneNumberVisibility}
-              value={props.trainerProps.phoneNumber ? props.trainerProps.phoneNumber : "05** *** ** **"}
-              onChange={e => props.setUserProps({ ...props.trainerProps, phoneNumber: e.target.value })}
-              onDoubleClick={(e: any) => { props.setPhoneNumberVisibility(!props.phoneNumberVisibility) }}
-              style={{ backgroundColor: 'transparent', border: `${props.phoneNumberVisibility ? "1px solid lightgray" : "1px solid transparent"}`, outline: 'none', width: "130px" }}
+              value={phoneNumber}
+              onChange={handleChange}
+              onDoubleClick={() => props.setPhoneNumberVisibility(!props.phoneNumberVisibility)}
+              style={{
+                backgroundColor: 'transparent',
+                boxShadow: `0 0 2px 2px ${errorMessage ? 'red' : 'lightgray'}`,
+                borderRadius: "5px",
+                paddingLeft: "5px",
+                outline: 'none',
+                width: "130px"
+              }}
             />
             <RiSave3Fill
               size={20}
               color='rgba(29,78,216, 0.8)'
               visibility={props.phoneNumberVisibility ? "visible" : "hidden"}
               style={{ cursor: 'pointer' }}
-              onClick={() => {
-                props.setPhoneNumberVisibility(false)
-              }}
+              onClick={() => props.setPhoneNumberVisibility(false)}
             />
           </div>
         </div>

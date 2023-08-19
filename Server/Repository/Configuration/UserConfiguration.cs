@@ -4,9 +4,9 @@ using Server.Core.Models;
 
 namespace Server.Data.Configuration
 {
-    public class TrainerUserConfiguration : IEntityTypeConfiguration<TrainerUser>
+    public class UserConfiguration : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<TrainerUser> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
 
         }

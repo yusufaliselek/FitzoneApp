@@ -1,100 +1,34 @@
-import { Button } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import Box from '@mui/material/Box';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Rating } from 'react-simple-star-rating'
+import { Rating } from 'react-simple-star-rating';
 
-import DataTable from 'react-data-table-component';
-
-import { cities } from '../../assets/Cities';
 import CustomInput from '../../components/CustomInput';
 import FitzoneHeader from '../../components/Header/FitzoneHeader';
-import Nav from '../../components/Nav/Nav';
-import PhotoUpload from '../../components/PhotoUpload/PhotoUpload';
-import { FitzoneApi } from '../../services/fitzoneApi';
-import { ITrainerLicence, ITrainerUserProps, ITrainerClub } from '../../types/Types';
-import { RiFileUserFill, RiPhoneFill, RiSave3Fill, RiDeleteBin5Line, RiEdit2Line } from 'react-icons/ri';
 import IsCanDo from '../../components/IsCanDo/IsCanDo';
-import TrainerLicences from './TrainerLicences';
-import TrainerClubs from './TrainerClubs';
-import UserPersonalInfos from './TrainerPersonalInfos';
+import Nav from '../../components/Nav/Nav';
 import Spinner from '../../components/Spinner/Spinner';
+import { FitzoneApi } from '../../services/fitzoneApi';
+import { ITrainerClub, ITrainerLicence, ITrainerUserProps } from '../../types/Types';
+import TrainerClubs from './TrainerClubs';
+import TrainerLicences from './TrainerLicences';
+import UserPersonalInfos from './TrainerPersonalInfos';
+import { RiDeleteBin5Line, RiEdit2Line } from 'react-icons/ri';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+import NoDataComponent from '../../components/NoDataComponent/NoDataComponent';
+import DataTable from 'react-data-table-component';
 
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
     value: number;
 }
-
-const columnsLicence = [
-    {
-        name: 'Lisans Adı',
-        selector: (row: ITrainerLicence) => row.name,
-    },
-    {
-        name: 'Açıklama',
-        selector: (row: ITrainerLicence) => row.description,
-    },
-    {
-        name: 'Lisans Tarihi',
-        selector: (row: ITrainerLicence) => row.licenceDate,
-    },
-    {
-        name: 'İşlemler',
-        selector: (row: ITrainerLicence) => row.id,
-        cell: (row: ITrainerLicence) => <div className='flex gap-x-4'>
-            <div className='hover:bg-gray-300 rounded-full p-2 text-blue-600 hover:text-blue-500 cursor-pointer'>
-                <RiEdit2Line size={20} />
-            </div>
-            <div className='hover:bg-gray-300 rounded-full p-2 text-red-600 hover:text-red-500 cursor-pointer'>
-                <RiDeleteBin5Line size={20} />
-            </div>
-        </div>
-    }
-];
-
-const columnsClub = [
-    {
-        name: 'Kulüp Adı',
-        selector: (row: ITrainerClub) => row.name,
-    },
-    {
-        name: 'Açıklama',
-        selector: (row: ITrainerClub) => row.description,
-    },
-    {
-        name: 'Rol',
-        selector: (row: ITrainerClub) => row.role,
-    },
-    {
-        name: 'Giriş Tarihi',
-        selector: (row: ITrainerClub) => row.entryDate,
-    },
-    {
-        name: 'Ayrılış Tarihi',
-        selector: (row: ITrainerClub) => row.leaveDate,
-    },
-    {
-        name: 'İşlemler',
-        selector: (row: ITrainerClub) => row.id,
-        cell: (row: ITrainerClub) => <div className='flex gap-x-4'>
-            <div className='hover:bg-gray-300 rounded-full p-2 text-blue-600 hover:text-blue-500 cursor-pointer'>
-                <RiEdit2Line size={20} />
-            </div>
-            <div className='hover:bg-gray-300 rounded-full p-2 text-red-600 hover:text-red-500 cursor-pointer'>
-                <RiDeleteBin5Line size={20} />
-            </div>
-        </div>
-    }
-];
 
 
 function TabPanel(props: TabPanelProps) {
@@ -137,9 +71,10 @@ const Settings = () => {
     const [email, setEmail] = useState<string>('');
     const [licenceDialog, setLicenceDialog] = useState(false);
     const [clubDialog, setClubDialog] = useState(false);
+    const [clubEditDialog, setClubEditDialog] = useState(false);
     const [phoneNumberVisibility, setPhoneNumberVisibility] = useState<boolean>(false);
 
-    const [dialogOpenId, setDialogOpenId] = useState<number>(0);
+    const [dialogOpenId, setDialogOpenId] = useState<number>(Number(0));
 
     const [trainerProps, setUserProps] = useState<ITrainerUserProps>({
         id: "",
@@ -169,6 +104,36 @@ const Settings = () => {
         }
     });
 
+
+    const MySwal = withReactContent(Swal);
+    const ToastConfirm = MySwal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: true,
+        showCancelButton: true,
+        cancelButtonText: "Hayır",
+        confirmButtonText: "Evet",
+        didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+        didClose: () => {
+            console.log("toast closed");
+        }
+    });
+
+    const Toast = MySwal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        }
+    });
+
     // Antrenör lisansları
 
     const clearLicenceDialog = () => {
@@ -184,7 +149,7 @@ const Settings = () => {
     const [trainerLicence, setUserLicence] = useState<ITrainerLicence>(clearLicenceDialog);
 
     const openLicenceDialog = () => {
-        setDialogOpenId(dialogOpenId + 1);
+        setDialogOpenId(dialogOpenId + trainerProps.trainerLicences.length * 100);
         setLicenceDialog(true);
     };
 
@@ -238,11 +203,15 @@ const Settings = () => {
         setUserClub(clearClubDialog);
     };
 
-
     const cancelClubDialog = () => {
-        setClubDialog(false);
-        setUserClub(clearClubDialog);
-    }
+        setClubEditDialog(false);
+        setUserClub(clearClubDialog());
+    };
+
+    const cancelClubEditDialog = () => {
+        setClubEditDialog(false);
+        setUserClub(clearClubDialog());
+    };
 
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -323,6 +292,57 @@ const Settings = () => {
 
     }, [])
 
+    const columnsClub = [
+        {
+            name: 'Kulüp Adı',
+            selector: (row: ITrainerClub) => row.name,
+        },
+        {
+            name: 'Açıklama',
+            selector: (row: ITrainerClub) => row.description,
+        },
+        {
+            name: 'Rol',
+            selector: (row: ITrainerClub) => row.role,
+        },
+        {
+            name: 'Giriş Tarihi',
+            selector: (row: ITrainerClub) => row.entryDate,
+        },
+        {
+            name: 'İşlemler',
+            selector: (row: ITrainerClub) => row.id,
+            cell: (row: ITrainerClub) => <div className='flex gap-x-4'>
+                <div className='hover:bg-gray-300 rounded-full p-2 text-blue-600 hover:text-blue-500 cursor-pointer' onClick={() => {
+                    setUserClub(row)
+                    setClubEditDialog(true)
+                }}>
+                    <RiEdit2Line size={20} />
+                </div>
+                <div className='hover:bg-gray-300 rounded-full p-2 text-red-600 hover:text-red-500 cursor-pointer' onClick={() => {
+                    console.log(trainerProps);
+                    ToastConfirm.fire({
+                        icon: "warning",
+                        title: "Kulübü silmek istediğinize emin misiniz?"
+                    }).then((result) => {
+                        setUserProps({
+                            ...trainerProps,
+                            trainerClubs: trainerProps?.trainerClubs.filter(x => x.id !== row.id)
+                        });
+                        if (result.isConfirmed) {
+                            Toast.fire({
+                                icon: "info",
+                                title: "Kulüp silindi"
+                            });
+                        }
+                    });
+                }}>
+                    <RiDeleteBin5Line size={20} />
+                </div>
+            </div>
+        }
+    ];
+
     return (
         <div className='flex w-screen h-screen'>
             {/* Navbar */}
@@ -371,7 +391,6 @@ const Settings = () => {
                                             </div>
                                         </div>
                                         <TrainerLicences
-                                            columns={columnsLicence}
                                             licenceDialog={licenceDialog}
                                             rowsConsole={rowsConsole}
                                             openLicenceDialog={openLicenceDialog}
@@ -382,10 +401,10 @@ const Settings = () => {
                                             setUserLicence={setUserLicence}
                                             paginationComponentOptions={paginationComponentOptions}
                                             trainerProps={trainerProps}
-
                                         />
-                                        <TrainerClubs
-                                            columns={columnsClub}
+                                        {/* <TrainerClubs
+                                            columnsClub={columnsClub}
+                                            setUserProps={setUserProps}
                                             clubDialog={clubDialog}
                                             rowsConsole={rowsConsole}
                                             openClubDialog={openClubDialog}
@@ -395,14 +414,195 @@ const Settings = () => {
                                             setUserClub={setUserClub}
                                             paginationComponentOptions={paginationComponentOptions}
                                             trainerProps={trainerProps}
-                                        />
+                                        /> */}
+                                        <div className='col-span-2 mb-2 w-full flex flex-col'>
+                                            <div className='flex justify-between py-1 items-center'>
+                                                <label
+                                                    form="trainerClubs"
+                                                    className="block text-sm font-semibold text-gray-600"
+                                                >
+                                                    Kulüpler
+                                                </label>
+                                                <Button variant="outlined" onClick={openClubDialog}>
+                                                    Kulüp Ekle
+                                                </Button>
+                                            </div>
+                                            <Dialog open={clubDialog} onClose={closeClubDialog}>
+                                                <DialogTitle>Kulüp Bilgileri</DialogTitle>
+                                                <DialogContent>
+                                                    <div className="mb-2 w-full">
+                                                        <label
+                                                            form="clubName"
+                                                            className="block text-sm font-semibold text-gray-600"
+                                                        >
+                                                            Kulüp Adı
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            value={trainerClub.name} onChange={e => setUserClub({ ...trainerClub, name: e.target.value })}
+                                                            className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                                        />
+                                                    </div>
+                                                    <div className="mb-2 w-full">
+                                                        <label
+                                                            form="role"
+                                                            className="block text-sm font-semibold text-gray-600"
+                                                        >
+                                                            Kulüpteki Rol
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            value={trainerClub.role} onChange={e => setUserClub({ ...trainerClub, role: e.target.value })}
+                                                            className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                                        />
+                                                    </div>
+                                                    <div className="mb-2 w-full">
+                                                        <label
+                                                            form="clubDescription"
+                                                            className="block text-sm font-semibold text-gray-600"
+                                                        >
+                                                            Açıklama
+                                                        </label>
+                                                        <textarea
+                                                            value={trainerClub.description} onChange={e => setUserClub({ ...trainerClub, description: e.target.value })}
+                                                            className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                                        />
+                                                    </div>
+                                                    <div className="mb-2 w-full">
+                                                        <label
+                                                            form="clubEnterDate"
+                                                            className="block text-sm font-semibold text-gray-600"
+                                                        >
+                                                            Kulübe Giriş Tarihi
+                                                        </label>
+                                                        <input
+                                                            type="date"
+                                                            value={trainerClub.entryDate} onChange={e => { setUserClub({ ...trainerClub, entryDate: e.target.value }) }}
+                                                            className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md cursor-pointer
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                                        />
+                                                    </div>
+                                                    <div className="mb-2 w-full">
+                                                        <label
+                                                            form="clubExitDate"
+                                                            className="block text-sm font-semibold text-gray-600"
+                                                        >
+                                                            Kulüpten Ayrılma Tarihi
+                                                        </label>
+                                                        <input
+                                                            type="date"
+                                                            value={trainerClub.leaveDate} onChange={e => { setUserClub({ ...trainerClub, leaveDate: e.target.value }) }}
+                                                            className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md cursor-pointer
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                                        />
+                                                    </div>
+                                                </DialogContent>
+                                                <DialogActions>
+                                                    <Button onClick={cancelClubDialog}>İptal</Button>
+                                                    <Button onClick={closeClubDialog}>Ekle</Button>
+                                                </DialogActions>
+                                            </Dialog>
+                                            <Dialog open={clubEditDialog} onClose={() => console.log("a")}>
+                                                <DialogTitle>Kulüp Bilgilerini Düzenleyin</DialogTitle>
+                                                <DialogContent>
+                                                    <div className="mb-2 w-full">
+                                                        <label
+                                                            form="clubName"
+                                                            className="block text-sm font-semibold text-gray-600"
+                                                        >
+                                                            Kulüp Adı
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            value={trainerClub.name} onChange={e => setUserClub({ ...trainerClub, name: e.target.value })}
+                                                            className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                                        />
+                                                    </div>
+                                                    <div className="mb-2 w-full">
+                                                        <label
+                                                            form="role"
+                                                            className="block text-sm font-semibold text-gray-600"
+                                                        >
+                                                            Kulüpteki Rol
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            value={trainerClub.role} onChange={e => setUserClub({ ...trainerClub, role: e.target.value })}
+                                                            className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                                        />
+                                                    </div>
+                                                    <div className="mb-2 w-full">
+                                                        <label
+                                                            form="clubDescription"
+                                                            className="block text-sm font-semibold text-gray-600"
+                                                        >
+                                                            Açıklama
+                                                        </label>
+                                                        <textarea
+                                                            value={trainerClub.description} onChange={e => setUserClub({ ...trainerClub, description: e.target.value })}
+                                                            className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md 
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                                        />
+                                                    </div>
+                                                    <div className="mb-2 w-full">
+                                                        <label
+                                                            form="clubEnterDate"
+                                                            className="block text-sm font-semibold text-gray-600"
+                                                        >
+                                                            Kulübe Giriş Tarihi
+                                                        </label>
+                                                        <input
+                                                            type="date"
+                                                            value={trainerClub.entryDate} onChange={e => { setUserClub({ ...trainerClub, entryDate: e.target.value }) }}
+                                                            className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md cursor-pointer
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                                        />
+                                                    </div>
+                                                    <div className="mb-2 w-full">
+                                                        <label
+                                                            form="clubExitDate"
+                                                            className="block text-sm font-semibold text-gray-600"
+                                                        >
+                                                            Kulüpten Ayrılma Tarihi
+                                                        </label>
+                                                        <input
+                                                            type="date"
+                                                            value={trainerClub.leaveDate} onChange={e => { setUserClub({ ...trainerClub, leaveDate: e.target.value }) }}
+                                                            className="block w-[30rem] px-2 py-2 mt-2 text-blue-700 bg-white border rounded-md cursor-pointer
+                            focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                                        />
+                                                    </div>
+                                                </DialogContent>
+                                                <DialogActions>
+                                                    <Button onClick={cancelClubEditDialog}>İptal</Button>
+                                                    <Button onClick={() => console.log("a")}>Kaydet</Button>
+                                                </DialogActions>
+                                            </Dialog>
+                                            <DataTable
+                                                noDataComponent={<NoDataComponent text='Kulüp Bulunamadı' />}
+                                                columns={columnsClub}
+                                                data={trainerProps.trainerClubs ?? []}
+                                                selectableRows
+                                                pagination
+                                                highlightOnHover
+                                                onSelectedRowsChange={rowsConsole}
+                                                paginationComponentOptions={paginationComponentOptions}
+                                            />
+                                        </div>
                                     </div>
                                     <Button variant="outlined" onClick={saveUserDetails}>
                                         Bilgileri Kaydet
                                     </Button>
                                 </div>
                                 :
-                                <Spinner color='lightgray'/>
+                                <div>
+                                    <Spinner color='lightgray' />
+                                </div>
                         }
 
                     </TabPanel>
@@ -464,8 +664,6 @@ const Settings = () => {
                             <IsCanDo text='Yeni Kullanıcı Ekleyebilir' display={Boolean(trainerProps.trainerCanEdit?.canAddMember)} />
                             <IsCanDo text='Yeni Kullanıcı Ekleyebilir' display={Boolean(trainerProps.trainerCanEdit?.canAddTrainerUser)} />
                             <IsCanDo text='Yeni Kullanıcı Ekleyebilir' display={Boolean(trainerProps.trainerCanEdit?.canDefineProgram)} />
-                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' display={Boolean(trainerProps.trainerCanEdit?.canAddMember)} />
-                            <IsCanDo text='Yeni Kullanıcı Ekleyebilir' display={Boolean(trainerProps.trainerCanEdit?.canAddMember)} />
                             <IsCanDo text='Yeni Kullanıcı Ekleyebilir' display={Boolean(!trainerProps.trainerCanEdit?.canAddMember)} />
                         </div>
                     </TabPanel>

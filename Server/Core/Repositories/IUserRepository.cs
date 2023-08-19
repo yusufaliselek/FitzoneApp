@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Core.Repositories
 {
-    public interface ITrainerUserRepository : IGenericRepository<TrainerUser>
+    public interface IUserRepository : IGenericRepository<User>
     {
-        Task<TrainerUser> GetTrainerUserWithDetailsAsync(string trainerUserId);
+        //Task<User> GetUserWithDetailsAsync(string userId);
 
     }
 }

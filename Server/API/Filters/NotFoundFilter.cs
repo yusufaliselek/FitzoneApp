@@ -28,7 +28,7 @@ namespace API.Filters
                 return;
             }
 
-            var id = (int)idValue;
+            var id = (string)idValue;
             var anyEntity = await _service.AnyAsync(x => x.Id == id);
 
             if (anyEntity)

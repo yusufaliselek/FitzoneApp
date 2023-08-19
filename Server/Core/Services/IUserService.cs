@@ -1,5 +1,5 @@
 ﻿using Core.DTOs;
-using Core.DTOs.TrainerUserDTOs;
+using Core.DTOs.UserDTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +10,9 @@ namespace Server.Core.Services
 {
     public interface IUserService
     {
-        Task<CustomResponseDto<TrainerUserDto>> CreateUserAsync(CreateUserDto createUserDto);
-
-        Task<CustomResponseDto<TrainerUserWithDetailsDto>> GetUserByNameAsync(string userName);
-
-        Task<CustomResponseDto<List<TrainerUserDto>>> GetAllUsers();
-
-        Task<CustomResponseDto<TrainerUserWithDetailsDto>> UpdateUser(TrainerUserWithDetailsDto user);
+        Task<CustomResponseDto<UserDto>> CreateUserAsync(CreateUserDto createUserDto);
+        Task<CustomResponseDto<UserDto>> UpdateUserAsync(UpdateUserDto updateUserDto);
+        Task<CustomResponseDto<UserDto>> ChangePasswordAsync(UserChangePasswordDto userChangePasswordDto);
 
     }
 }

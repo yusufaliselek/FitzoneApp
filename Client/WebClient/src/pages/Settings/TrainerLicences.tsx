@@ -3,6 +3,7 @@ import { ITrainerLicence, ITrainerUserProps } from '../../types/Types';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import DataTable from 'react-data-table-component';
 import NoDataComponent from '../../components/NoDataComponent/NoDataComponent';
+import { RiDeleteBin5Line, RiEdit2Line } from 'react-icons/ri';
 
 interface UserLicencesProps {
     trainerLicences: ITrainerLicence[];
@@ -13,15 +14,6 @@ interface UserLicencesProps {
     setUserLicence: React.Dispatch<React.SetStateAction<ITrainerLicence>>;
     cancelLicenceDialog: () => void;
     trainerProps: ITrainerUserProps;
-    columns: ({
-        name: string;
-        selector: (row: any) => any;
-        cell?: undefined;
-    } | {
-        name: string;
-        selector: (row: any) => any;
-        cell: (row: any) => JSX.Element;
-    })[];
     rowsConsole: ({ selectedRows }: {
         selectedRows: any;
     }) => void;
@@ -32,6 +24,34 @@ interface UserLicencesProps {
 }
 
 const TrainerLicences = (props: UserLicencesProps) => {
+
+
+    const columnsLicence = [
+        {
+            name: 'Lisans Adı',
+            selector: (row: ITrainerLicence) => row.name,
+        },
+        {
+            name: 'Açıklama',
+            selector: (row: ITrainerLicence) => row.description,
+        },
+        {
+            name: 'Lisans Tarihi',
+            selector: (row: ITrainerLicence) => row.licenceDate,
+        },
+        {
+            name: 'İşlemler',
+            selector: (row: ITrainerLicence) => row.id,
+            cell: (row: ITrainerLicence) => <div className='flex gap-x-4'>
+                <div className='hover:bg-gray-300 rounded-full p-2 text-blue-600 hover:text-blue-500 cursor-pointer'>
+                    <RiEdit2Line size={20} />
+                </div>
+                <div className='hover:bg-gray-300 rounded-full p-2 text-red-600 hover:text-red-500 cursor-pointer'>
+                    <RiDeleteBin5Line size={20} />
+                </div>
+            </div>
+        }
+    ];
     return (
         <>
             <div className='col-span-2 mb-2 w-full flex flex-col'>
@@ -97,8 +117,8 @@ const TrainerLicences = (props: UserLicencesProps) => {
                     </DialogActions>
                 </Dialog>
                 <DataTable
-                    noDataComponent={<NoDataComponent text='Lisans Bulunamadı'/>}
-                    columns={props.columns}
+                    noDataComponent={<NoDataComponent text='Lisans Bulunamadı' />}
+                    columns={columnsLicence}
                     data={props.trainerProps.trainerLicences}
                     selectableRows
                     pagination

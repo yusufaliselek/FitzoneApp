@@ -18,9 +18,9 @@ namespace Server.Service.Services
 {
     public class TokenService : ITokenService
     {
-        private readonly UserManager<TrainerUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly CustomTokenOption _tokenOption;
-        public TokenService(IOptions<CustomTokenOption> options, UserManager<TrainerUser> userManager)
+        public TokenService(IOptions<CustomTokenOption> options, UserManager<User> userManager)
         {
             _tokenOption = options.Value;
             _userManager = userManager;
@@ -34,7 +34,7 @@ namespace Server.Service.Services
             return Convert.ToBase64String(numberByte);
         }
 
-        private IEnumerable<Claim> GetClaims(TrainerUser userApp, List<String> audiences)
+        private IEnumerable<Claim> GetClaims(User userApp, List<String> audiences)
         {
             var userList = new List<Claim>
             {
@@ -48,7 +48,7 @@ namespace Server.Service.Services
             return userList;
         }
 
-        public TokenDto CreateToken(TrainerUser userApp)
+        public TokenDto CreateToken(User userApp)
         {
             var accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOption.AccessTokenExpiration);
             var refreshTokenExpiration = DateTime.Now.AddMinutes(_tokenOption.RefreshTokenExpiration);

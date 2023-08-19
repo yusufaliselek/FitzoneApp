@@ -60,10 +60,13 @@ const Login = () => {
         }).catch((error) => {
             // Hata mesajını gösteriyoruz.
             setLoading(false);
-            Toast.fire({
-                icon: "error",
-                title: error.error.errors.toString(),
-            });
+            console.log(error);
+            if (error.errors[0] === "Email or Password is wrong!") {
+                Toast.fire({
+                    icon: "error",
+                    title: "Email veya şifre yanlış.",
+                });
+            }
         })
     }
 

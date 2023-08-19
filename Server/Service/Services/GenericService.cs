@@ -49,7 +49,7 @@ namespace Server.Service.Services
             return await _repository.GetAll().ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(string id)
         {
             var hasProduct = await _repository.GetByIdAsync(id);
 

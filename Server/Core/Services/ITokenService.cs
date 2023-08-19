@@ -10,7 +10,7 @@ namespace Server.Core.Services
 {
     public interface ITokenService
     {
-        TokenDto CreateToken(TrainerUser trainerUser);
+        TokenDto CreateToken(User user);
 
     }
 }

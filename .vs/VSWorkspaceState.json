@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Server",
+    "\\Server\\Core",
+    "\\Server\\Core\\Models"
   ],
   "PreviewInSolutionExplorer": false
 }

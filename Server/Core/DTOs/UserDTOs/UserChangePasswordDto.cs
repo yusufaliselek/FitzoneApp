@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Server.Core.Models
+namespace Core.DTOs.UserDTOs
 {
-    public abstract class BaseEntity
+    public class UserChangePasswordDto
     {
         public string Id { get; set; }
-        public string? CreatedAt { get; set; }
-        public string? UpdatedAt { get; set; }
+        public string CurrentPassword { get; set; }
+        public string NewPassword { get; set; }
     }
 }

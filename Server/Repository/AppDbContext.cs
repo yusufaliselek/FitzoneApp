@@ -10,20 +10,23 @@ using System.Threading.Tasks;
 using System.Reflection.Emit;
 using System.Reflection;
 using Server.Data.Configuration;
+using Core.Models;
 
 namespace Server.Data
 {
-    public class AppDbContext : IdentityDbContext<TrainerUser, IdentityRole, string>
+    public class AppDbContext : IdentityDbContext<User, IdentityRole, string>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
+            
         }
 
         public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
-        public DbSet<TrainerUser> TrainerUsers { get; set; }
-        public DbSet<TrainerCanEdit> TrainerCanEdits { get; set; }
-        public DbSet<TrainerLicence> TrainerLicences { get; set; }
-        public DbSet<TrainerClub> TrainerClubs { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<Role> Role { get; set; }
+        public DbSet<TrainerDetail> TrainerDetail { get; set; }
+        public DbSet<TrainerPermission> TrainerPermission { get; set; }
+        public DbSet<MemberDetail> MemberDetail { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -32,5 +35,6 @@ namespace Server.Data
 
             base.OnModelCreating(builder);
         }
+
     }
 }

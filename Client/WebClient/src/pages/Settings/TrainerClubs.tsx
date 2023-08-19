@@ -1,10 +1,14 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
-import React from 'react'
-import { ITrainerClub, ITrainerUserProps } from '../../types/Types';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import React, { useState } from 'react';
 import DataTable from 'react-data-table-component';
+import { RiDeleteBin5Line, RiEdit2Line } from 'react-icons/ri';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import NoDataComponent from '../../components/NoDataComponent/NoDataComponent';
+import { ITrainerClub, ITrainerUserProps } from '../../types/Types';
 
 interface UserClubsProps {
+    columnsClub: any;
     openClubDialog: () => void;
     closeClubDialog: () => void;
     clubDialog: boolean;
@@ -12,15 +16,6 @@ interface UserClubsProps {
     setUserClub: React.Dispatch<React.SetStateAction<ITrainerClub>>;
     cancelClubDialog: () => void;
     trainerProps: ITrainerUserProps;
-    columns: ({
-        name: string;
-        selector: (row: any) => any;
-        cell?: undefined;
-    } | {
-        name: string;
-        selector: (row: any) => any;
-        cell: (row: any) => JSX.Element;
-    })[];
     rowsConsole: ({ selectedRows }: {
         selectedRows: any;
     }) => void;
@@ -28,10 +23,13 @@ interface UserClubsProps {
         rowsPerPageText: string;
         rangeSeparatorText: string;
     };
+    setUserProps: React.Dispatch<React.SetStateAction<ITrainerUserProps>>;
 }
 
 
+
 const TrainerClubs = (props: UserClubsProps) => {
+
     return (
         <>
             <div className='col-span-2 mb-2 w-full flex flex-col'>
@@ -125,13 +123,12 @@ const TrainerClubs = (props: UserClubsProps) => {
                     </DialogActions>
                 </Dialog>
                 <DataTable
-                    noDataComponent={<NoDataComponent text='Kulüp Bulunamadı'/>}
-                    columns={props.columns}
+                    noDataComponent={<NoDataComponent text='Kulüp Bulunamadı' />}
+                    columns={props.columnsClub}
                     data={props.trainerProps.trainerClubs ?? []}
                     selectableRows
                     pagination
                     highlightOnHover
-                    pointerOnHover
                     onSelectedRowsChange={props.rowsConsole}
                     paginationComponentOptions={props.paginationComponentOptions}
                 />

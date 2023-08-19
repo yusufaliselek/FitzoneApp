@@ -43,7 +43,7 @@ namespace Server.Data.Repository
             return _dbSet.AsNoTracking().AsQueryable();
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(string id)
         {
             return await _dbSet.FindAsync(id);
         }

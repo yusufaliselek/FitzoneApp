@@ -18,10 +18,10 @@ namespace  Service.Services
     public class AuthenticationService : IAuthenticationService
     {
         private readonly ITokenService _tokenService;
-        private readonly UserManager<TrainerUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IGenericRepository<UserRefreshToken> _userRefreshTokenService;
-        public AuthenticationService(ITokenService tokenService, UserManager<TrainerUser> userManager, IUnitOfWork unitOfWork, IGenericRepository<UserRefreshToken> userRefreshTokenService)
+        public AuthenticationService(ITokenService tokenService, UserManager<User> userManager, IUnitOfWork unitOfWork, IGenericRepository<UserRefreshToken> userRefreshTokenService)
         {
             _tokenService = tokenService;
             _userManager = userManager;
