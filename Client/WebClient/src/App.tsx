@@ -11,28 +11,11 @@ import AddMember from './pages/MemberPages/AddMember';
 import AddCoach from './pages/CoachPages/AddCoach';
 import Training from './pages/TrainingPages/Training';
 import Calendar from './pages/CalendarPages/Calendar';
-import { trTR } from '@mui/material/locale';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const theme = createTheme(
-  {
-    palette: {
-      primary: {
-        main: '#1a73e8',
-      },
-      secondary: {
-        main: '#1a73e8',
-      },
-    },
-  },
-  trTR,
-)
 
 function App() {
 
   return (
     <>
-      <ThemeProvider theme={theme}>
         <Router>
           <Routes>
             <Route path="/login" element={<Login />} />
@@ -49,7 +32,6 @@ function App() {
             <Route path='*' element={<Login />} />
           </Routes>
         </Router>
-      </ThemeProvider>
     </>
 
   );

@@ -22,7 +22,7 @@ namespace Server.Service.Services
 
         public async Task<CustomResponseDto<UserDto>> CreateUserAsync(CreateUserDto createUserDto)
         {
-            var user = new User { Email = createUserDto.Email, UserName = createUserDto.UserName };
+            var user = new User { Email = createUserDto.Email, UserName = createUserDto.UserName, Role = createUserDto.Role };
 
             var result = await _userManager.CreateAsync(user, createUserDto.Password);
 
@@ -70,6 +70,16 @@ namespace Server.Service.Services
             {
                 var errors = result.Errors.Select(x => x.Description).ToList();
                 return CustomResponseDto<UserDto>.Fail(400, errors);
+            }
+            return CustomResponseDto<UserDto>.Success(200, _mapper.Map<UserDto>(user));
+        }
+
+        public async Task<CustomResponseDto<UserDto>> GetUserByIdAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return CustomResponseDto<UserDto>.Fail(404, "User not found");
             }
             return CustomResponseDto<UserDto>.Success(200, _mapper.Map<UserDto>(user));
         }

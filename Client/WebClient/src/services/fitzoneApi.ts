@@ -1,6 +1,7 @@
 
 import Cookies from "js-cookie";
-import { ILoginResponse, ITrainerUserProps } from "../types/Types";
+import { decodeJwt } from 'jose';
+import { ILoginResponse } from "../types/Types";
 import { ConfigService } from "./configService"
 
 export interface IGetData {
@@ -37,29 +38,14 @@ export class FitzoneApi {
         })
     }
 
-    public static async GetUsers(): Promise<any> {
+    public static async GetUserById(id:string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().get('/user').then((response) => {
+            ConfigService.FitzoneApi().get('/User/GetById?userId='+ id).then((response) => {
                 resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
             })
         })
-    }
-
-    public static async GetUserByIdentityName(): Promise<any> {
-        return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().get('/TrainerUser/Get').then((response) => {
-                resolve(response.data)
-            })
-        })
-    }
-
-    public static async UpdateTrainerUser(trainerUserDto: ITrainerUserProps): Promise<any> {
-        return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().put('/TrainerUser/Update', trainerUserDto).then((response) => {
-                resolve(response.data)
-            })
-        })
-
     }
 
 }

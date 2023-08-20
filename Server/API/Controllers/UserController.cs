@@ -35,5 +35,11 @@ namespace API.Controllers
         {
             return ActionResultInstance(await _userService.ChangePasswordAsync(userChangePasswordDto));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetById(string userId)
+        {
+            return ActionResultInstance(await _userService.GetUserByIdAsync(userId));
+        }
     }
 }

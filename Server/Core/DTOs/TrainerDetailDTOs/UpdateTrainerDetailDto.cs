@@ -1,20 +1,22 @@
-﻿using Server.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Models
+namespace Core.DTOs.TrainerDetailDTOs
 {
-    public class TrainerDetail : BaseEntity
+    public class UpdateTrainerDetailDto
     {
+        public string Id { get; set; }
         public string TrainerId { get; set; }
         public string? Biography { get; set; }
         public string? Location { get; set; }
         public string? Profession { get; set; }
         public string? Qualification { get; set; }
         public string? TrainerPermissionId { get; set; }
+        public string? CreatedAt { get; set; }
+        public string? UpdatedAt { get; set; }
 
     }
 }

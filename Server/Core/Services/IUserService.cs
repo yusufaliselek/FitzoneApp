@@ -13,6 +13,7 @@ namespace Server.Core.Services
         Task<CustomResponseDto<UserDto>> CreateUserAsync(CreateUserDto createUserDto);
         Task<CustomResponseDto<UserDto>> UpdateUserAsync(UpdateUserDto updateUserDto);
         Task<CustomResponseDto<UserDto>> ChangePasswordAsync(UserChangePasswordDto userChangePasswordDto);
+        Task<CustomResponseDto<UserDto>> GetUserByIdAsync(string userId);
 
     }
 }

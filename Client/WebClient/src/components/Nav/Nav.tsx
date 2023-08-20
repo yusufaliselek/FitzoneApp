@@ -63,8 +63,8 @@ const Nav = ({ pageName }: { pageName: string }) => {
                     </h1>
                 </div>
                 <ul>
-                    {Menus.map((menu) => (
-                        <Link to={menu.link} className={`flex items-center py-2 px-4 ${pageName == menu.title ? "text-white hover:bg-slate-400 bg-indigo-500 font-medium" : "text-slate-600 font-normal hover:bg-slate-200"}  cursor-pointer rounded-md mt-3 transition-all duration-400`}
+                    {Menus.map((menu, index) => (
+                        <Link to={menu.link} key={index} className={`flex items-center py-2 px-4 ${pageName == menu.title ? "text-white hover:bg-slate-400 bg-indigo-500 font-medium" : "text-slate-600 font-normal hover:bg-slate-200"}  cursor-pointer rounded-md mt-3 transition-all duration-400`}
                         >
                             <span className="mr-2">{menu.icon}</span>
                             <span>{menu.title}</span>

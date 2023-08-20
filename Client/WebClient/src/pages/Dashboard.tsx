@@ -236,7 +236,7 @@ const value: any[] = [
 const Dashboard = () => {
     const navigate = useNavigate()
     const RefreshToken = async () => {
-       if (!Cookies.get('token')) {
+        if (!Cookies.get('token')) {
             return FitzoneApi.ResfreshAccessTokenByRefreshToken().then((response) => {
                 Cookies.set('token', response.data.accessToken, { expires: new Date(response.data.accessTokenExpiration) });
                 Cookies.set('refreshToken', response.data.refreshToken, { expires: new Date(response.data.refreshTokenExpiration) });
@@ -265,27 +265,7 @@ const Dashboard = () => {
                         <FitzoneHeader pageName='Dashboard' />
                         {/*Content*/}
                         <div className='xl:grid xl:grid-cols-3 flex flex-wrap gap-4 w-full py-10 overflow-y-scroll h-full'>
-                            {value.map((item) =>
-                                <BarChart
-                                    width={500}
-                                    height={300}
-                                    data={item}
-                                    margin={{
-                                        top: 5,
-                                        right: 30,
-                                        left: 20,
-                                        bottom: 5,
-                                    }}
-                                >
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="name" />
-                                    <YAxis />
-                                    <Tooltip />
-                                    <Legend />
-                                    <Bar dataKey="pv" fill="blue" />
-                                    <Bar dataKey="uv" fill="#8FBC8F" />
-                                </BarChart>
-                            )}
+                            DASHBOARD
                         </div>
                     </div>
 

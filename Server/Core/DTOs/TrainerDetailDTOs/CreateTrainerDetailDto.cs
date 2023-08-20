@@ -1,13 +1,12 @@
-﻿using Server.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Models
+namespace Core.DTOs.TrainerDetailDTOs
 {
-    public class TrainerDetail : BaseEntity
+    public class CreateTrainerDetailDto
     {
         public string TrainerId { get; set; }
         public string? Biography { get; set; }
@@ -15,6 +14,5 @@ namespace Core.Models
         public string? Profession { get; set; }
         public string? Qualification { get; set; }
         public string? TrainerPermissionId { get; set; }
-
     }
 }
