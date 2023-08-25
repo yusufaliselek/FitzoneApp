@@ -1,7 +1,7 @@
 
 import Cookies from "js-cookie";
 import { decodeJwt } from 'jose';
-import { ILoginResponse, ITrainerDetails } from "../types/Types";
+import { IGetTrainerDetailById, ILoginResponse, ITrainerDetails } from "../types/Types";
 import { ConfigService } from "./configService"
 
 export interface IGetData {
@@ -65,6 +65,17 @@ export class FitzoneApi {
     public static async GetTrainerDetailByTrainerId(id: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             ConfigService.FitzoneApi().get('/TrainerDetail/GetByTrainerId?trainerId=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    // Trainer Permission
+    public static async GetAllTrainerPermission(): Promise<{ data: IGetTrainerDetailById[], errors: any }> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().get('/TrainerPermission/GetAll').then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)

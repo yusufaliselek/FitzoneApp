@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { CiLogout } from 'react-icons/ci';
 import { RiSettings4Line } from 'react-icons/ri';
 import { MdOutlineAdminPanelSettings } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { decodeJwt } from 'jose';
 
 const PaperProps = {
@@ -42,7 +42,7 @@ const PaperProps = {
 
 export const AccountMenu = ({ accountName }: { accountName: string }) => {
 
-    const navigate = useNavigate();
+    const navigate: NavigateFunction = useNavigate();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const open = Boolean(anchorEl);
@@ -82,6 +82,7 @@ export const AccountMenu = ({ accountName }: { accountName: string }) => {
     ];
 
     useEffect(() => {
+
         if (!Cookies.get('token')) {
             navigate('/login');
         }
@@ -90,6 +91,7 @@ export const AccountMenu = ({ accountName }: { accountName: string }) => {
             const payload = decodeJwt(token);
             setIsAdmin(payload.typ === 'admin');
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -118,13 +120,13 @@ export const AccountMenu = ({ accountName }: { accountName: string }) => {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem style={{ textAlign: "center" }}>
+                <MenuItem style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <span>{accountName}</span>
                 </MenuItem>
                 <Divider />
                 {menuItems.map((item, index) => {
                     if (item.title === "Admin Paneli" && !isAdmin) {
-                        return;
+                        return null;
                     }
                     return (
                         <MenuItem key={index} onClick={() => handleNavigate(item.path)}>

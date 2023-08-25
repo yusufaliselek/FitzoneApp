@@ -125,3 +125,26 @@ export interface ITrainerPermission {
 export interface IGetUserById {
     
 }
+
+export interface IGetTrainerDetailById {
+    id:string;
+    name:string;
+    canCreateUser:boolean;
+    canEditUser:boolean;
+    canDeleteUser:boolean;
+    canCreateRole:boolean;
+    canEditRole:boolean;
+    canDeleteRole:boolean;
+    canCreateTraining:boolean;
+    canEditTraining:boolean;
+    canDeleteTraining:boolean;
+    canCreateTrainingCategory:boolean;
+    canEditTrainingCategory:boolean;
+    canDeleteTrainingCategory:boolean;
+    canCreateMember:boolean;
+    canEditMember:boolean;
+    canDeleteMember:boolean;
+    canSetRole:boolean;
+    createdAt:string;
+    updatedAt:string;
+}

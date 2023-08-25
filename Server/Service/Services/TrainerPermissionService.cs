@@ -27,6 +27,7 @@ namespace Service.Services
         public async Task<CustomResponseDto<TrainerPermissionDto>> CreateTrainerPermissionAsync(CreateTrainerPermissionDto createTrainerPermissionDto)
         {
             var trainerPermission = _mapper.Map<TrainerPermission>(createTrainerPermissionDto);
+            trainerPermission.Id = Guid.NewGuid().ToString();
             await _genericService.AddAsync(trainerPermission);
             return CustomResponseDto<TrainerPermissionDto>.Success(200,_mapper.Map<TrainerPermissionDto>(trainerPermission));
         }

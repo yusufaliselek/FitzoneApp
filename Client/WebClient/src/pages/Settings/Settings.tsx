@@ -7,10 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import FitzoneHeader from '../../components/Header/FitzoneHeader';
 import Nav from '../../components/Nav/Nav';
 import { FitzoneApi } from '../../services/fitzoneApi';
-import withReactContent from 'sweetalert2-react-content';
-import Swal from 'sweetalert2';
+// import withReactContent from 'sweetalert2-react-content';
+// import Swal from 'sweetalert2';
 import { BsPersonCircle } from 'react-icons/bs';
-import { decodeJwt } from 'jose';
+// import { decodeJwt } from 'jose';
 import TextInput from '../../components/TextInput';
 
 interface TabPanelProps {
@@ -65,18 +65,18 @@ const trainerParams = {
     userName: "",
 }
 
-const trainerDetailsParams = {
-    id: "",
-    trainerId: "",
-    biography: "",
-    location: "",
-    profession: "",
-    qualification: "",
-    trainerPermissionId: "",
-    trainerPermission: undefined,
-    createdAt: "",
-    updatedAt: "",
-}
+// const trainerDetailsParams = {
+//     id: "",
+//     trainerId: "",
+//     biography: "",
+//     location: "",
+//     profession: "",
+//     qualification: "",
+//     trainerPermissionId: "",
+//     trainerPermission: undefined,
+//     createdAt: "",
+//     updatedAt: "",
+// }
 
 const Settings = () => {
 
@@ -84,37 +84,37 @@ const Settings = () => {
 
     const [value, setValue] = useState(0);
     const [trainer, setTrainer] = useState(trainerParams);
-    const [trainerDetails, setTrainerDetails] = useState(trainerDetailsParams);
+    // const [trainerDetails, setTrainerDetails] = useState(trainerDetailsParams);
 
 
-    const MySwal = withReactContent(Swal);
-    const ToastConfirm = MySwal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: true,
-        showCancelButton: true,
-        cancelButtonText: "Hayır",
-        confirmButtonText: "Evet",
-        didOpen: (toast) => {
-            toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-        didClose: () => {
-            console.log("toast closed");
-        }
-    });
+    // const MySwal = withReactContent(Swal);
+    // const ToastConfirm = MySwal.mixin({
+    //     toast: true,
+    //     position: "top-end",
+    //     showConfirmButton: true,
+    //     showCancelButton: true,
+    //     cancelButtonText: "Hayır",
+    //     confirmButtonText: "Evet",
+    //     didOpen: (toast) => {
+    //         toast.addEventListener("mouseenter", Swal.stopTimer);
+    //         toast.addEventListener("mouseleave", Swal.resumeTimer);
+    //     },
+    //     didClose: () => {
+    //         console.log("toast closed");
+    //     }
+    // });
 
-    const Toast = MySwal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer);
-        }
-    });
+    // const Toast = MySwal.mixin({
+    //     toast: true,
+    //     position: "top-end",
+    //     showConfirmButton: false,
+    //     timer: 3000,
+    //     timerProgressBar: true,
+    //     didOpen: (toast) => {
+    //         toast.addEventListener("mouseenter", Swal.stopTimer);
+    //         toast.addEventListener("mouseleave", Swal.resumeTimer);
+    //     }
+    // });
 
     const goLogin = () => navigate('/login')
 
@@ -147,6 +147,7 @@ const Settings = () => {
 
     useEffect(() => {
         RefreshToken();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -158,9 +159,9 @@ const Settings = () => {
                 <FitzoneHeader pageName='Ayarlar' />
                 <Box sx={{ width: '100%', paddingX: 2, overflowY: "auto", height: "calc(100vh-112px)" }}>
                     <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                        <Tab label="Antrenör Bilgisi" {...a11yProps(0)} />
-                        <Tab label="Güvenlik" {...a11yProps(1)} />
-                        {true && <Tab label="Yetkiler" {...a11yProps(2)} />}
+                        <Tab label="Bilgilerim" {...a11yProps(0)} />
+                        <Tab label="Güvenlik Ayarlarım" {...a11yProps(1)} />
+                        <Tab label="Yetkilerim" {...a11yProps(2)} />
                     </Tabs>
                     <TabPanel value={value} index={0}>
                         <div className='w-full h-[calc(100vh-112px)] overflow-y-auto flex flex-col gap-2 items-center'>
