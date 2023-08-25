@@ -48,7 +48,10 @@ namespace  Service.Services
 
             if (userRefreshToken == null)
             {
-                await _userRefreshTokenService.AddAsync(new UserRefreshToken { UserId = user.Id, Code = token.RefreshToken, Expiration = token.RefreshTokenExpiration });
+                await _userRefreshTokenService.AddAsync(new UserRefreshToken { 
+                    UserId = user.Id, Code = token.RefreshToken, 
+                    Expiration = token.RefreshTokenExpiration 
+                });
             }
             else
             {

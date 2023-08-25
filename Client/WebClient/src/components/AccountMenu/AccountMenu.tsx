@@ -6,15 +6,45 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Cookies from 'js-cookie';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CiLogout } from 'react-icons/ci';
 import { RiSettings4Line } from 'react-icons/ri';
+import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import { decodeJwt } from 'jose';
+
+const PaperProps = {
+    elevation: 0,
+    sx: {
+        overflow: 'visible',
+        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+        mt: 1.5,
+        '& .MuiAvatar-root': {
+            width: 32,
+            height: 32,
+            ml: -0.5,
+            mr: 1,
+        },
+        '&:before': {
+            content: '""',
+            display: 'block',
+            position: 'absolute',
+            top: 0,
+            right: 14,
+            width: 10,
+            height: 10,
+            bgcolor: 'background.paper',
+            transform: 'translateY(-50%) rotate(45deg)',
+            zIndex: 0,
+        }
+    }
+};
 
 export const AccountMenu = ({ accountName }: { accountName: string }) => {
 
     const navigate = useNavigate();
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -22,18 +52,46 @@ export const AccountMenu = ({ accountName }: { accountName: string }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    const handleLogout = () => {
-        Cookies.remove('token');
-        Cookies.remove('refreshToken');
-        localStorage.clear();
-        handleClose();
-        navigate('/login');
-    };
 
-    const handleSettings = () => {
+    const handleNavigate = (path: string) => {
+        if (path === "/logout") {
+            Cookies.remove('token');
+            Cookies.remove('refreshToken');
+            localStorage.clear();
+        }
         handleClose();
-        navigate('/settings');
+        navigate(path);
     }
+
+    const menuItems = [
+        {
+            title: "Admin Paneli",
+            icon: <MdOutlineAdminPanelSettings size={25} />,
+            path: "/admin"
+        },
+        {
+            title: "Ayarlar",
+            icon: <RiSettings4Line size={25} />,
+            path: "/settings"
+        },
+        {
+            title: "Çıkış Yap",
+            icon: <CiLogout size={25} />,
+            path: "/logout"
+        },
+    ];
+
+    useEffect(() => {
+        if (!Cookies.get('token')) {
+            navigate('/login');
+        }
+        const token = Cookies.get('token');
+        if (token) {
+            const payload = decodeJwt(token);
+            setIsAdmin(payload.typ === 'admin');
+        }
+    }, []);
+
     return (
         <div>
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -56,51 +114,27 @@ export const AccountMenu = ({ accountName }: { accountName: string }) => {
                 open={open}
                 onClose={handleClose}
                 onClick={handleClose}
-                PaperProps={{
-                    elevation: 0,
-                    sx: {
-                        overflow: 'visible',
-                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                        mt: 1.5,
-                        '& .MuiAvatar-root': {
-                            width: 32,
-                            height: 32,
-                            ml: -0.5,
-                            mr: 1,
-                        },
-                        '&:before': {
-                            content: '""',
-                            display: 'block',
-                            position: 'absolute',
-                            top: 0,
-                            right: 14,
-                            width: 10,
-                            height: 10,
-                            bgcolor: 'background.paper',
-                            transform: 'translateY(-50%) rotate(45deg)',
-                            zIndex: 0,
-                        },
-                    },
-                }}
+                PaperProps={PaperProps}
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem className='gap-x-1'>
-                    {accountName}
+                <MenuItem style={{ textAlign: "center" }}>
+                    <span>{accountName}</span>
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleSettings}>
-                    <ListItemIcon>
-                        <RiSettings4Line />
-                    </ListItemIcon>
-                    Ayarlar
-                </MenuItem>
-                <MenuItem onClick={handleLogout}>
-                    <ListItemIcon>
-                        <CiLogout />
-                    </ListItemIcon>
-                    Çıkış Yap
-                </MenuItem>
+                {menuItems.map((item, index) => {
+                    if (item.title === "Admin Paneli" && !isAdmin) {
+                        return;
+                    }
+                    return (
+                        <MenuItem key={index} onClick={() => handleNavigate(item.path)}>
+                            <ListItemIcon>
+                                {item.icon}
+                            </ListItemIcon>
+                            <span>{item.title}</span>
+                        </MenuItem>
+                    )
+                })}
             </Menu>
         </div>
     );

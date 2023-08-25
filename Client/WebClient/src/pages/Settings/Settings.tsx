@@ -65,13 +65,26 @@ const trainerParams = {
     userName: "",
 }
 
+const trainerDetailsParams = {
+    id: "",
+    trainerId: "",
+    biography: "",
+    location: "",
+    profession: "",
+    qualification: "",
+    trainerPermissionId: "",
+    trainerPermission: undefined,
+    createdAt: "",
+    updatedAt: "",
+}
+
 const Settings = () => {
 
     const navigate = useNavigate()
-    const goLogin = () => navigate('/login')
 
     const [value, setValue] = useState(0);
     const [trainer, setTrainer] = useState(trainerParams);
+    const [trainerDetails, setTrainerDetails] = useState(trainerDetailsParams);
 
 
     const MySwal = withReactContent(Swal);
@@ -103,26 +116,7 @@ const Settings = () => {
         }
     });
 
-
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
-    };
-
-    const RefreshToken = async () => {
-        if (!Cookies.get('token')) {
-            return FitzoneApi.ResfreshAccessTokenByRefreshToken().then((response) => {
-                Cookies.set('token', response.data.accessToken, { expires: new Date(response.data.accessTokenExpiration) });
-                Cookies.set('refreshToken', response.data.refreshToken, { expires: new Date(response.data.refreshTokenExpiration) });
-                console.log("Token yenilendi");
-            }).catch((error) => {
-                console.log(error)
-                Cookies.remove('token');
-                Cookies.remove('refreshToken');
-                goLogin();
-                console.log("Token süresi dolmuş");
-            });
-        }
-    }
+    const goLogin = () => navigate('/login')
 
     const clearToken = () => {
         Cookies.remove('token');
@@ -130,29 +124,29 @@ const Settings = () => {
         goLogin();
     }
 
+    const RefreshToken = () => {
+        if (!Cookies.get('token')) {
+            return FitzoneApi.ResfreshAccessTokenByRefreshToken().then((response) => {
+                Cookies.set('token', response.data.accessToken, { expires: new Date(response.data.accessTokenExpiration) });
+                Cookies.set('refreshToken', response.data.refreshToken, { expires: new Date(response.data.refreshTokenExpiration) });
+                console.log("Token yenilendi");
+            }).catch((error) => {
+                console.log(error)
+                clearToken()
+            });
+        }
+    }
+
     const handleChangeForm = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTrainer({ ...trainer, [event.target.id]: event.target.value });
     }
 
-    useEffect(() => {
-        RefreshToken()
-        const token = Cookies.get('token');
-        if (!token) {
-            goLogin();
-            return;
-        }
-        const id = decodeJwt(token).sub;
-        if (!id) {
-            goLogin();
-            return;
-        }
-        FitzoneApi.GetUserById(id).then((response) => {
-            response.data.role !== "trainer" ?
-                clearToken()
-                :
-                setTrainer(response.data)
-        })
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+    };
 
+    useEffect(() => {
+        RefreshToken();
     }, [])
 
     return (

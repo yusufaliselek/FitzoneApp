@@ -86,3 +86,42 @@ export interface ITrainerUserProps {
 export interface ObjectStrings {
     [key: string]: string;
 }
+
+// TrainerDetails
+export interface ITrainerDetails {
+    id: string;
+    trainerId: string;
+    biography: string;
+    location: string;
+    profession: string;
+    qualification: string;
+    trainerPermissionId: string;
+    trainerPermission: ITrainerPermission;
+    createdAt: string;
+    updatedAt: string;
+}
+
+// TrainerPermission
+export interface ITrainerPermission {
+    id: string;
+    name: string;
+    canCreateUser: boolean;
+    canEditUser: boolean;
+    canDeleteUser: boolean;
+    canCreateRole: boolean;
+    canEditRole: boolean;
+    canDeleteRole: boolean;
+    canCreateTraining: boolean;
+    canEditTraining: boolean;
+    canDeleteTraining: boolean;
+    canCreateTrainingCategory: boolean;
+    canEditTrainingCategory: boolean;
+    canDeleteTrainingCategory: boolean;
+    canSetRole: boolean;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface IGetUserById {
+    
+}

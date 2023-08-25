@@ -22,25 +22,25 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTrainerDetailById(string trainerDetailId)
+        public async Task<IActionResult> GetById(string trainerDetailId)
         {
             return ActionResultInstance(await _trainerDetailService.GetTrainerDetailByIdAsync(trainerDetailId));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllTrainerDetails()
+        public async Task<IActionResult> GetByTrainerId(string trainerId)
         {
-            return ActionResultInstance(await _trainerDetailService.GetAllTrainerDetailsAsync());
+            return ActionResultInstance(await _trainerDetailService.GetTrainerDetailByTrainerIdAsync(trainerId));
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateTrainerDetail(UpdateTrainerDetailDto updateTrainerDetailDto)
+        public async Task<IActionResult> Update(UpdateTrainerDetailDto updateTrainerDetailDto)
         {
             return ActionResultInstance(await _trainerDetailService.UpdateTrainerDetailAsync(updateTrainerDetailDto));
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteTrainerDetail(string trainerDetailId)
+        public async Task<IActionResult> Delete(string trainerDetailId)
         {
             return ActionResultInstance(await _trainerDetailService.DeleteTrainerDetailAsync(trainerDetailId));
         }

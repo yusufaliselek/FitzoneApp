@@ -17,14 +17,14 @@ const Nav = ({ pageName }: { pageName: string }) => {
             link: "/dashboard"
         },
         {
-            title: "Üyeler",
-            icon: <RiAccountCircleLine size={24} />,
-            link: "/members"
-        },
-        {
             title: "Antrenörler",
             icon: <BsPersonBadgeFill size={24} />,
             link: "/coaches"
+        },
+        {
+            title: "Üyeler",
+            icon: <RiAccountCircleLine size={24} />,
+            link: "/members"
         },
         {
             title: "Antrenmanlar",
@@ -47,12 +47,7 @@ const Nav = ({ pageName }: { pageName: string }) => {
             link: "/calendar"
         },
     ];
-
-    const handleLogout = () => {
-        // Burada logout işlemini gerçekleştirecek kodları yazabilirsiniz.
-        // Örneğin, localStorage'da bulunan kullanıcı verilerini silerek çıkış yapabilirsiniz.
-        localStorage.removeItem("user");
-    };
+    
 
     return (
         <div className="w-64 h-screen p-2">

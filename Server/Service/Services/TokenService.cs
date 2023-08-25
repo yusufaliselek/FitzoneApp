@@ -41,6 +41,7 @@ namespace Server.Service.Services
                 new Claim(JwtRegisteredClaimNames.Sub, userApp.Id),
                 new Claim(JwtRegisteredClaimNames.Email, userApp.Email),
                 new Claim(JwtRegisteredClaimNames.UniqueName, userApp.UserName),
+                new Claim(JwtRegisteredClaimNames.Typ, userApp.Role.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             userList.AddRange(audiences.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));

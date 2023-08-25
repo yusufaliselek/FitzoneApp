@@ -3,6 +3,7 @@ using Core.DTOs;
 using Core.DTOs.TrainerDetailDTOs;
 using Core.Models;
 using Core.Services;
+using Microsoft.EntityFrameworkCore;
 using Server.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -37,15 +38,23 @@ namespace Service.Services
             return CustomResponseDto<string>.Success(200, "Trainer detail deleted!");
         }
 
-        public async Task<CustomResponseDto<List<TrainerDetailDto>>> GetAllTrainerDetailsAsync()
-        {
-            var trainerDetails = await _genericService.GetAllAsync();
-            return CustomResponseDto<List<TrainerDetailDto>>.Success(200, _mapper.Map<List<TrainerDetailDto>>(trainerDetails));
-        }
-
         public async Task<CustomResponseDto<TrainerDetailDto>> GetTrainerDetailByIdAsync(string trainerDetailId)
         {
             var trainerDetail = await _genericService.GetByIdAsync(trainerDetailId);
+            if (trainerDetail == null)
+            {
+                return CustomResponseDto<TrainerDetailDto>.Fail(404, "Trainer detail not found!");
+            }
+            return CustomResponseDto<TrainerDetailDto>.Success(200, _mapper.Map<TrainerDetailDto>(trainerDetail));
+        }
+
+        public async Task<CustomResponseDto<TrainerDetailDto>> GetTrainerDetailByTrainerIdAsync(string trainerId)
+        {
+            var trainerDetail = await _genericService.Where(x => x.TrainerId == trainerId).FirstOrDefaultAsync();
+            if (trainerDetail == null)
+            {
+                return CustomResponseDto<TrainerDetailDto>.Fail(404, "Trainer detail not found!");
+            }
             return CustomResponseDto<TrainerDetailDto>.Success(200, _mapper.Map<TrainerDetailDto>(trainerDetail));
         }
 

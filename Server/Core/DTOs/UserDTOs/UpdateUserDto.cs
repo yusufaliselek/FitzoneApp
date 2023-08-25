@@ -11,7 +11,6 @@ namespace Core.DTOs.UserDTOs
         public string Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public string? RoleId { get; set; }
         public string? Qualification { get; set; }
         public string? PhoneNumber { get; set; }
         public string? BirthdayDate { get; set; }
