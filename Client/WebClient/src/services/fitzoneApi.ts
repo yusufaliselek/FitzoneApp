@@ -37,6 +37,9 @@ export class FitzoneApi {
         })
     }
 
+    //// User - Start ////
+
+    // Get By Id
     public static async GetUserById(id: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             ConfigService.FitzoneApi().get('/User/GetById?userId=' + id).then((response) => {
@@ -46,6 +49,30 @@ export class FitzoneApi {
             })
         })
     }
+
+    // Update User
+    public static async UpdateUser(data: any): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().put('/User/Update', data).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    // Change Password
+    public static async ChangePassword(data: any): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().put('/User/ChangePassword', data).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    //// User - End ////
 
     // Trainer Detail
 
@@ -64,6 +91,17 @@ export class FitzoneApi {
     public static async GetTrainerDetailByTrainerId(id: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             ConfigService.FitzoneApi().get('/TrainerDetail/GetByTrainerId?trainerId=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    // Update Trainer Detail
+    public static async UpdateTrainerDetail(data: any): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().put('/TrainerDetail/Update', data).then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)

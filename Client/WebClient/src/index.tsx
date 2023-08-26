@@ -8,7 +8,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <div className='bg-[#f8f5f5]'>
+    <div className='bg-[rgb(248,245,245)]'>
     <Router />
     </div>
   </React.StrictMode>

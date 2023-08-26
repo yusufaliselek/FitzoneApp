@@ -279,7 +279,7 @@ const AdminPanel = () => {
                 <Box sx={{ width: '100%', paddingX: 2, height: "calc(100vh-112px)" }}>
                     <Tabs value={value} onChange={handleChangeTabs}>
                         <Tab label="Yetki Altyapısı" {...a11yProps(0)} />
-                        <Tab label="Güvenlik Ayarlarım" {...a11yProps(1)} />
+                        <Tab label="Salon Bilgileri" {...a11yProps(1)} />
                     </Tabs>
                     <TabPanel value={value} index={0}>
                         <div className='flex'>
