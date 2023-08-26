@@ -11,41 +11,8 @@ import { FitzoneApi } from '../../services/fitzoneApi';
 // import Swal from 'sweetalert2';
 import { BsPersonCircle } from 'react-icons/bs';
 // import { decodeJwt } from 'jose';
-import TextInput from '../../components/TextInput';
-
-interface TabPanelProps {
-    children?: React.ReactNode;
-    index: number;
-    value: number;
-}
-
-
-function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box>
-                    <div>{children}</div>
-                </Box>
-            )}
-        </div>
-    );
-}
-
-function a11yProps(index: number) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
+import TextInput from '../../components/TextInput/TextInput';
+import { TabPanel, a11yProps } from '../../utils/funcs/TabPanel';
 
 const trainerParams = {
     biography: "",

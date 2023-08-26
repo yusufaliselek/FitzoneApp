@@ -1,25 +1,12 @@
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 
 import bg from '../../assets/bg-main.jpg';
 import Spinner from '../../components/Spinner/Spinner';
 import { FitzoneApi } from '../../services/fitzoneApi';
+import Toast from '../../components/Toast/Toast';
 
-const MySwal = withReactContent(Swal);
-const Toast = MySwal.mixin({
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 2000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-        toast.addEventListener("mouseenter", Swal.stopTimer);
-        toast.addEventListener("mouseleave", Swal.resumeTimer);
-    },
-});
 
 const Login = () => {
 
@@ -54,6 +41,8 @@ const Login = () => {
             Cookies.set("token", response.data.accessToken, { expires: new Date(response.data.accessTokenExpiration), secure: true });
             Cookies.set("refreshToken", response.data.refreshToken, { expires: new Date(response.data.refreshTokenExpiration), secure: true });
 
+
+
             // Token bilgilerini aldıktan sonra loading'i false yapıyoruz && dashboard'a yönlendiriyoruz.
             setLoading(false);
             navigate("/dashboard");
@@ -65,6 +54,12 @@ const Login = () => {
                 Toast.fire({
                     icon: "error",
                     title: "Email veya şifre yanlış.",
+                });
+            }
+            else {
+                Toast.fire({
+                    icon: "error",
+                    title: "Hata oluştu.",
                 });
             }
         })

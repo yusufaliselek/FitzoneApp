@@ -1,7 +1,6 @@
 
 import Cookies from "js-cookie";
-import { decodeJwt } from 'jose';
-import { IGetTrainerDetailById, ILoginResponse, ITrainerDetails } from "../types/Types";
+import { IGetTrainerPermissionById, ILoginResponse, ITrainerDetails } from "../types/Types";
 import { ConfigService } from "./configService"
 
 export interface IGetData {
@@ -72,8 +71,10 @@ export class FitzoneApi {
         })
     }
 
-    // Trainer Permission
-    public static async GetAllTrainerPermission(): Promise<{ data: IGetTrainerDetailById[], errors: any }> {
+    /////// Trainer Permission - Start ///////
+
+    // GetAllTrainerPermission
+    public static async GetAllTrainerPermission(): Promise<{ data: IGetTrainerPermissionById[], errors: any }> {
         return new Promise<any>((resolve, reject) => {
             ConfigService.FitzoneApi().get('/TrainerPermission/GetAll').then((response) => {
                 resolve(response.data)
@@ -82,6 +83,52 @@ export class FitzoneApi {
             })
         })
     }
+
+    // CreateTrainerPermission
+    public static async CreateTrainerPermission(data: IGetTrainerPermissionById): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().post('/TrainerPermission/Create', data).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    // UpdateTrainerPermission
+    public static async UpdateTrainerPermission(data: IGetTrainerPermissionById): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().put('/TrainerPermission/Update', data).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    // Delete Trainer Permission
+    public static async DeleteTrainerPermission(id: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().delete('/TrainerPermission/Delete?id=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    // Get Trainers By Trainer Permission Id
+    public static async GetTrainersByTrainerPermissionId(id: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().get('/TrainerPermission/GetTrainersByTrainerPermissionId?trainerPermissionId=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+
 
 }
 

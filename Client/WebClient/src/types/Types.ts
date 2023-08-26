@@ -126,7 +126,7 @@ export interface IGetUserById {
     
 }
 
-export interface IGetTrainerDetailById {
+export interface IGetTrainerPermissionById {
     id:string;
     name:string;
     canCreateUser:boolean;
@@ -145,6 +145,6 @@ export interface IGetTrainerDetailById {
     canEditMember:boolean;
     canDeleteMember:boolean;
     canSetRole:boolean;
-    createdAt:string;
-    updatedAt:string;
+    createdAt?:string;
+    updatedAt?:string;
 }

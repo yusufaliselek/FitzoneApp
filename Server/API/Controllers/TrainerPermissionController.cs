@@ -34,6 +34,12 @@ namespace API.Controllers
             return ActionResultInstance(await _trainerPermissionService.GetAllTrainerPermissionsAsync());
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetTrainersByTrainerPermissionId(string trainerPermissionId)
+        {
+            return ActionResultInstance(await _trainerPermissionService.GetTrainersByTrainerPermissionIdAsync(trainerPermissionId));
+        }
+
         [HttpPut]
         public async Task<IActionResult> Update(TrainerPermissionDto updateTrainerPermissionDto)
         {
@@ -41,9 +47,9 @@ namespace API.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(string trainerPermissionId)
+        public async Task<IActionResult> Delete(string id)
         {
-            return ActionResultInstance(await _trainerPermissionService.DeleteTrainerPermissionAsync(trainerPermissionId));
+            return ActionResultInstance(await _trainerPermissionService.DeleteTrainerPermissionAsync(id));
         }
 
     }

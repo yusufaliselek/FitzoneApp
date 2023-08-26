@@ -10,26 +10,28 @@ const TextInput = ({
     value,
     onChange
 }: {
-    label: string;
+    label?: string;
     placeholder?: string;
     required?: boolean;
     type?: string;
-    id: string;
+    id?: string;
     disabled?: boolean;
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
     return (
-        <div className='w-full text-[#1976d2]'>
-            <label
-                htmlFor={id}
-                className="block mb-2 text-sm font-medium ">
-                {label}
-            </label>
+        <div className='w-full text-blue-700'>
+            {
+                label && <label
+                    htmlFor={id}
+                    className="block mb-2 text-sm font-medium ">
+                    {label}
+                </label>
+            }
             <input type={type} id={id}
                 value={value} onChange={onChange}
                 placeholder={placeholder} required={required} disabled={disabled}
-                className="bg-gray-50 border focus:border-gray-500  text-sm rounded-lg block w-full p-2.5 outline-0" />
+                className="bg-gray-50 border focus:border-blue-500  text-sm rounded-lg  w-full p-2.5 outline-0  focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
         </div>
     )
 }

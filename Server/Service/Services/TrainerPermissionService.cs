@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
 using Core.DTOs;
 using Core.DTOs.TrainerPermissionDTOs;
+using Core.DTOs.UserDTOs;
 using Core.Models;
 using Core.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Server.Core.Models;
 using Server.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -16,11 +20,15 @@ namespace Service.Services
     {
         private readonly IMapper _mapper;
         private readonly IGenericService<TrainerPermission> _genericService;
+        private readonly IGenericService<TrainerDetail> _genericServiceTrainerDetail;
+        private readonly UserManager<User> _userManager;
 
-        public TrainerPermissionService(IMapper mapper, IGenericService<TrainerPermission> genericService)
+        public TrainerPermissionService(IMapper mapper, IGenericService<TrainerPermission> genericService, UserManager<User> userManager, IGenericService<TrainerDetail> genericServiceTrainerDetail)
         {
             _mapper = mapper;
             _genericService = genericService;
+            _userManager = userManager;
+            _genericServiceTrainerDetail = genericServiceTrainerDetail;
         }
 
 
@@ -48,6 +56,22 @@ namespace Service.Services
         public async Task<CustomResponseDto<TrainerPermissionDto>> GetTrainerPermissionByIdAsync(string getTrainerPermissionByIdDto)
         {
             return CustomResponseDto<TrainerPermissionDto>.Success(200, _mapper.Map<TrainerPermissionDto>(await _genericService.GetByIdAsync(getTrainerPermissionByIdDto)));
+        }
+
+        public async Task<CustomResponseDto<List<UserDto>>> GetTrainersByTrainerPermissionIdAsync(string trainerPermissionById)
+        {
+            var trainerDetails = await _genericServiceTrainerDetail.Where(item => item.TrainerPermissionId == trainerPermissionById).ToListAsync();
+            if (trainerDetails == null)
+            {
+                return CustomResponseDto<List<UserDto>>.Success(200, new List<UserDto>());
+            }
+            var trainers = new List<User>();
+            for (int i = 0; i < trainerDetails.Count; i++)
+            {
+                trainers.Add(await _userManager.FindByIdAsync(trainerDetails[i].TrainerId));
+            }
+            return CustomResponseDto<List<UserDto>>.Success(200, _mapper.Map<List<UserDto>>(trainers));
+            
         }
 
         public async Task<CustomResponseDto<TrainerPermissionDto>> UpdateTrainerPermissionAsync(TrainerPermissionDto updateTrainerPermissionDto)

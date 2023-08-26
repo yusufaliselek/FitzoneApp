@@ -33,6 +33,8 @@ namespace API.Controllers
             return ActionResultInstance(await _trainerDetailService.GetTrainerDetailByTrainerIdAsync(trainerId));
         }
 
+
+
         [HttpPut]
         public async Task<IActionResult> Update(UpdateTrainerDetailDto updateTrainerDetailDto)
         {

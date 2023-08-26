@@ -41,5 +41,6 @@ namespace API.Controllers
         {
             return ActionResultInstance(await _userService.GetUserByIdAsync(userId));
         }
+
     }
 }
