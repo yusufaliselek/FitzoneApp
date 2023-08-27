@@ -80,8 +80,6 @@ const trainerParams = {
 const trainerDetailsParams = {
     id: "",
     trainerId: "",
-    trainerPermission: trainerPermissionParams,
-    trainerPermissionId: "",
     biography: "",
     location: "",
     profession: "",
@@ -96,6 +94,7 @@ const passwordForm = {
     newPasswordAgain: ""
 }
 
+let trainerDetailAction: "create" | "update";
 
 const Settings = () => {
 
@@ -171,26 +170,44 @@ const Settings = () => {
         setTrainerDetails({ ...trainerDetails, [event.target.id]: event.target.value });
     }
 
-    const updateTrainerDetail = () => {
-        const updateValue = {
-            trainerId: trainer.id,
-            biography: trainerDetails.biography,
-            location: trainerDetails.location,
-            profession: trainerDetails.profession,
-            qualification: trainerDetails.qualification,
-            updatedAt: new Date().toISOString()
-        }
+    const createOrUpdateTrainerDetail = (action: "create" | "update") => () => {
         Toast.fire({
             icon: 'info',
-            title: 'Kullanıcı detayları güncelleniyor...'
+            title: 'Detaylar kaydediliyor...'
         })
-        FitzoneApi.UpdateTrainerDetail(updateValue).then((response) => {
-            Toast.fire({
-                icon: 'success',
-                title: 'Kullanıcı detayları güncellendi'
-            })
-        })
+        if (action === "create") {
+            trainerDetails.trainerId = trainer.id;
+            trainerDetails.createdAt = new Date().toString();
+            trainerDetails.updatedAt = new Date().toString();
+            FitzoneApi.CreateTrainerDetail(trainerDetails).then((response) => {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Detaylar kaydedildi'
+                })
+            }).catch((error) => {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Detaylar kaydedilemedi'
+                })
+            });
+        }
+        if (action === "update") {
+            trainerDetails.updatedAt = new Date().toString();
+            FitzoneApi.UpdateTrainerDetail(trainerDetails).then((response) => {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Detaylar güncellendi'
+                })
+            }).catch((error) => {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Detaylar kaydedilemedi'
+                })
+            });
+        }
     }
+
+
 
     // Password Update
 
@@ -246,8 +263,10 @@ const Settings = () => {
         ]).then((response) => {
             const [user, trainerDetail] = response;
             if (trainerDetail.data.id === null) {
+                trainerDetailAction = "create";
                 setTrainerDetails(trainerDetailsParams);
             } else {
+                trainerDetailAction = "update";
                 setTrainerDetails(trainerDetail.data);
             }
             setTrainer(user.data);
@@ -316,13 +335,13 @@ const Settings = () => {
                                 </div>
 
                                 <TextInput id='profession' label='Uzmanlık' value={trainerDetails.profession} onChange={handleDetailChangeForm} />
-                                <TextInput id='qualification' label='Yeterlilik' value={trainerDetails.qualification} onChange={handleDetailChangeForm} />
+                                <TextInput id='qualification' label='Nitelik' value={trainerDetails.qualification} onChange={handleDetailChangeForm} />
                                 <SelectInput value={trainerDetails.location} id='location' label='Şehir Seçiniz' options={cities.map((item) => ({ value: String(item.plaka), text: item.il_adi }))}
                                     onChange={(e) => setTrainerDetails({ ...trainerDetails, location: e.target.value })}
                                 />
                                 {/* SUBMIT */}
                                 <div className='flex mt-3 flex-col gap-3'>
-                                    <FButton text='Detayları Kaydet' onClick={updateTrainerDetail} />
+                                    <FButton text='Detayları Kaydet' onClick={createOrUpdateTrainerDetail(trainerDetailAction)} />
                                     <FButton text='Detayları Gizle' theme='dark' onClick={() => setDetailsIsOpen(false)} />
                                 </div>
                             </motion.div>

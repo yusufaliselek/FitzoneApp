@@ -4,14 +4,14 @@ import Dashboard from '../pages/Dashboard';
 import Login from '../pages/AuthPages/Login';
 import Signup from '../pages/AuthPages/Signup';
 import Users from '../pages/MemberPages/Members';
-import Coaches from '../pages/CoachPages/Coaches';
 import Settings from '../pages/Settings/Settings';
-import CoachDetail from '../pages/CoachPages/CoachDetail';
+import TrainerDetail from '../pages/TrainerPages/TrainerDetail';
 import AddMember from '../pages/MemberPages/AddMember';
-import AddCoach from '../pages/CoachPages/AddCoach';
+import AddTrainer from '../pages/TrainerPages/AddTrainer';
 import Training from '../pages/TrainingPages/Training';
 import Calendar from '../pages/CalendarPages/Calendar';
 import AdminPanel from '../pages/AdminPanel/AdminPanel';
+import Trainers from '../pages/TrainerPages/Trainers';
 
 const Router = () => {
     return (
@@ -22,9 +22,9 @@ const Router = () => {
                 <Route path='/dashboard' element={<Dashboard />} />
                 <Route path='/members' element={<Users />} />
                 <Route path='/members/add' element={<AddMember />} />
-                <Route path='/coaches' element={<Coaches />} />
-                <Route path='/coaches/add' element={<AddCoach />} />
-                <Route path='/coach/:id' element={<CoachDetail />} />
+                <Route path='/trainers' element={<Trainers />} />
+                <Route path='/trainers/add' element={<AddTrainer />} />
+                <Route path='/trainers/:id' element={<TrainerDetail />} />
                 <Route path='/training' element={<Training />} />
                 <Route path='/calendar' element={<Calendar />} />
                 <Route path='/settings' element={<Settings />} />

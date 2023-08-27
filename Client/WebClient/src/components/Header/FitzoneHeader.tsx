@@ -4,6 +4,7 @@ import { decodeJwt } from 'jose';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { FitzoneApi } from '../../services/fitzoneApi';
+import FButton from '../Button/FButton';
 
 const FitzoneHeader = ({
   pageName, addContent, addContentIcon, addContentAction }
@@ -31,7 +32,7 @@ const FitzoneHeader = ({
     }
   }
 
-  useEffect(() => {}, [RefreshToken()])
+  useEffect(() => { }, [RefreshToken()])
 
   return (
     <div className='px-5 items-start'>
@@ -39,12 +40,9 @@ const FitzoneHeader = ({
         <span className='text-blue-800 font-light text-2xl'>
           {pageName}
         </span>
-        <div className='flex'>
+        <div className='flex items-center'>
           {addContent != null &&
-            <div onClick={addContentAction} className={`flex hover:text-blue-800 hover:bg-white bg-blue-800 text-white px-5 py-1 items-center space-x-4 rounded-md cursor-pointer transition-all duration-700`}>
-              {addContentIcon}
-              <span>{addContent}</span>
-            </div>
+            <FButton onClick={addContentAction} text={addContent} icon={addContentIcon} />
           }
           <div className='flex text-blue-800 px-1 md:px-5 py-1 items-center space-x-1 md:space-x-4 rounded-md '>
             {

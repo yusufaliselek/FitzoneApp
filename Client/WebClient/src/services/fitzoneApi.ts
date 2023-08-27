@@ -12,6 +12,7 @@ export interface IGetData {
 
 export class FitzoneApi {
 
+    //// Auth - Start
     public static async Login(email: string, password: string): Promise<ILoginResponse> {
         return new Promise<any>((resolve, reject) => {
             const form = new FormData();
@@ -36,9 +37,10 @@ export class FitzoneApi {
             })
         })
     }
+    //// Auth - End
+
 
     //// User - Start ////
-
     // Get By Id
     public static async GetUserById(id: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
@@ -71,11 +73,9 @@ export class FitzoneApi {
             })
         })
     }
-
     //// User - End ////
 
-    // Trainer Detail
-
+    //// Trainer Detail - Start ////
     // GetTrainerDetailByIdAsync
     public static async GetTrainerDetailById(id: string): Promise<ITrainerDetails> {
         return new Promise<ITrainerDetails>((resolve, reject) => {
@@ -99,6 +99,17 @@ export class FitzoneApi {
     }
 
     // Update Trainer Detail
+
+    public static async CreateTrainerDetail(data: any): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().post('/TrainerDetail/Create', data).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
     public static async UpdateTrainerDetail(data: any): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             ConfigService.FitzoneApi().put('/TrainerDetail/Update', data).then((response) => {
@@ -108,9 +119,10 @@ export class FitzoneApi {
             })
         })
     }
+    //// Trainer Detail - End ////
+
 
     /////// Trainer Permission - Start ///////
-
     // GetAllTrainerPermission
     public static async GetAllTrainerPermission(): Promise<{ data: IGetTrainerPermissionById[], errors: any }> {
         return new Promise<any>((resolve, reject) => {
@@ -159,6 +171,19 @@ export class FitzoneApi {
     public static async GetTrainersByTrainerPermissionId(id: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             ConfigService.FitzoneApi().get('/TrainerPermission/GetTrainersByTrainerPermissionId?trainerPermissionId=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+    /////// Trainer Permission - End ///////
+
+    /////// Trainer - Start ///////
+    // GetAllTrainer
+    public static async GetAllTrainers(): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().get('/User/GetAllTrainers').then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)

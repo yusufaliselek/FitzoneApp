@@ -6,7 +6,7 @@ interface Param {
     id: string;
 }
 
-const CoachDetail = () => {
+const TrainerDetail = () => {
     const asd: any = useParams();
     const params: Param = asd
     return (
@@ -56,4 +56,4 @@ const CoachDetail = () => {
     )
 }
 
-export default CoachDetail
+export default TrainerDetail

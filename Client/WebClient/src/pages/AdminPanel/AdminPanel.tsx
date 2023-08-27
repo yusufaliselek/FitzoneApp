@@ -14,6 +14,7 @@ import Cookies from 'js-cookie';
 import Toast from '../../components/Toast/Toast';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { BiCheckbox, BiCheckboxChecked } from 'react-icons/bi';
+import { decodeJwt } from 'jose';
 
 const trainerPermissionParamCheckboxes = [
     'canCreateUser', 'canEditUser', 'canDeleteUser', 'canCreateRole', 'canEditRole',
@@ -113,6 +114,10 @@ const AdminPanel = () => {
 
     useEffect(() => {
         RefreshToken();
+        const role = decodeJwt(Cookies.get('token')!).typ;
+        if (role !== 'admin') {
+            clearToken();
+        }
         GetAllTrainerPermissions();
     }, []);
 

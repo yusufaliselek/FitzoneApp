@@ -42,5 +42,16 @@ namespace API.Controllers
             return ActionResultInstance(await _userService.GetUserByIdAsync(userId));
         }
 
+        // Trainers
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetAllTrainers()
+        {
+            return ActionResultInstance(await _userService.GetAllTrainers());
+        }
+
+
+        // Members
+
     }
 }

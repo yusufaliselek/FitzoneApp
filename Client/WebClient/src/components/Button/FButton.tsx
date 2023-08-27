@@ -15,17 +15,18 @@ const themeColorMap: Record<
     link: "bg-transparent hover:bg-gray-200 focus:ring-gray-500",
 };
 
-const FButton = ({ text, onClick, theme = 'primary', ...props }: {
+const FButton = ({ text, onClick, theme = 'primary', icon, ...props }: {
     text: string, onClick: React.MouseEventHandler<HTMLButtonElement>,
     theme?: "primary" | "secondary" | "danger" | "success" | "warning" | "info" | "light" | "dark" | "link",
+    icon?: JSX.Element
 }) => {
     const themeColor = themeColorMap[theme] || themeColorMap.primary;
     return (
         <button onClick={onClick} {...props}
             
-            className={`w-full h-full max-h-10 flex justify-center px-2 py-1 items-center text-white rounded-md cursor-pointer  transition-all 
+            className={`w-full h-full max-h-10 flex gap-2 justify-center px-2 py-1 items-center text-white rounded-md cursor-pointer  transition-all 
             focus:ring-2  focus:ring-opacity-50 ${themeColor}`}
-        >{text}</button>
+        >{icon}{text}</button>
     )
 }
 

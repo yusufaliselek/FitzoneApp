@@ -27,8 +27,9 @@ namespace Service.Services
         public async Task<CustomResponseDto<TrainerDetailDto>> CreateTrainerDetailAsync(CreateTrainerDetailDto createTrainerDetailDto)
         {
             var trainerDetail = _mapper.Map<TrainerDetail>(createTrainerDetailDto);
+            trainerDetail.Id = Guid.NewGuid().ToString();
              await _genericService.AddAsync(trainerDetail);
-            return CustomResponseDto<TrainerDetailDto>.Success(200, _mapper.Map<TrainerDetailDto>(createTrainerDetailDto));
+            return CustomResponseDto<TrainerDetailDto>.Success(200, _mapper.Map<TrainerDetailDto>(trainerDetail));
         }
         
         public async Task<CustomResponseDto<string>> DeleteTrainerDetailAsync(string trainerDetailId)
@@ -65,14 +66,6 @@ namespace Service.Services
                 return CustomResponseDto<UpdateTrainerDetailDto>.Fail(400, "Trainer detail is empty!");
             }
 
-            var oldTrainerDetail = await _genericService.Where(item => item.TrainerId == trainerDetailDto.TrainerId).FirstOrDefaultAsync();
-
-            if (oldTrainerDetail == null)
-            {
-                trainerDetailDto.Id = Guid.NewGuid().ToString();
-                await _genericService.AddAsync(_mapper.Map<TrainerDetail>(trainerDetailDto));
-                return CustomResponseDto<UpdateTrainerDetailDto>.Success(200, trainerDetailDto);
-            }
             await _genericService.UpdateAsync(_mapper.Map<TrainerDetail>(trainerDetailDto));
 
             return CustomResponseDto<UpdateTrainerDetailDto>.Success(200, trainerDetailDto);
