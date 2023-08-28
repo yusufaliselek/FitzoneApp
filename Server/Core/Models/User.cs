@@ -16,7 +16,7 @@ namespace Server.Core.Models
         public string? BirthdayDate { get; set; }
         public string? TCKNO { get; set; }
         public string? Gender { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
         public string? CreatedAt { get; set; }
         public string? UpdatedAt { get; set; }
 

@@ -24,6 +24,16 @@ namespace Server.Service.Services
         public async Task<CustomResponseDto<UserDto>> CreateUserAsync(CreateUserDto createUserDto)
         {
             var user = new User { Email = createUserDto.Email, UserName = createUserDto.UserName, Role = createUserDto.Role };
+            var userWithSameEmail = await _userManager.FindByEmailAsync(createUserDto.Email);
+            var userWithSameUserName = await _userManager.FindByNameAsync(createUserDto.UserName);
+            if (userWithSameEmail != null)
+            {
+                return CustomResponseDto<UserDto>.Fail(400, "Bu email alınamaz!");
+            }
+            if (userWithSameUserName != null)
+            {
+                return CustomResponseDto<UserDto>.Fail(400, "Bu kullanıcı adı alınamaz!");
+            }
 
             var result = await _userManager.CreateAsync(user, createUserDto.Password);
 
