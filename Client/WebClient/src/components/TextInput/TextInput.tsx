@@ -31,7 +31,6 @@ const TextInput = ({
             <input type={type} id={id}
                 value={value} onChange={onChange}
                 placeholder={placeholder} required={required} disabled={disabled}
-
                 className="bg-gray-50 border focus:border-blue-500  text-sm rounded-lg  w-full p-2.5 outline-0  focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
         </div>
     )

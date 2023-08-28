@@ -50,7 +50,7 @@ const Nav = ({ pageName }: { pageName: string }) => {
 
     return (
         <div className="w-64 h-screen p-2">
-            <div className='h-full px-3 py-4 overflow-y-auto bg-slate-50 rounded-lg'>
+            <div className='h-full px-3 py-4 overflow-y-auto bg-[rgb(231,235,236)] bg-opacity-80 rounded-lg'>
                 <div className='flex items-center justify-center'>
                     <h1 className="text-2xl font-normal  text-blue-600">
                         FITZONE

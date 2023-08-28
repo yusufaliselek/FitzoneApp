@@ -8,17 +8,6 @@ import Nav from '../../components/Nav/Nav';
 
 const columns: GridColDef[] = [
     {
-        field: 'photo',
-        headerName: '',
-        sortable: false,
-        filterable: false,
-        hideable: false,
-        groupable: false,
-        renderCell: (params: GridRenderCellParams<any>) => (
-            <img src={params.value} alt={params.row.firstname} className="rounded-full bg-cover bg-center"/>
-        ),
-    },
-    {
         field: 'fullName',
         headerName: 'Ad Soyad',
         // description: 'A',

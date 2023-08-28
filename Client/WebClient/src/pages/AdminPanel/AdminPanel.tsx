@@ -4,7 +4,7 @@ import FitzoneHeader from '../../components/Header/FitzoneHeader';
 import { Box, Checkbox, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, IconButton, Tab, Tabs } from '@mui/material';
 import { FitzoneApi } from '../../services/fitzoneApi';
 import { IGetTrainerPermissionById } from '../../types/Types';
-import { DataGrid, GridCloseIcon, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridCloseIcon, GridColDef, trTR } from '@mui/x-data-grid';
 import TextInput from '../../components/TextInput/TextInput';
 import FButton from '../../components/Button/FButton';
 import { TabPanel, a11yProps } from '../../utils/funcs/TabPanel';
@@ -298,7 +298,7 @@ const AdminPanel = () => {
                                     </div>
                                 </div>
                                 <div className='w-full h-full'>
-                                    <DataGrid rows={filteredTrainerPermissions} columns={columns} pageSize={30} />
+                                    <DataGrid rows={filteredTrainerPermissions} columns={columns} pageSize={30} localeText={trTR.components.MuiDataGrid.defaultProps.localeText}/>
                                 </div>
                             </motion.div>
                             <AnimatePresence>
