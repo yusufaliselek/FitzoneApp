@@ -47,5 +47,12 @@ namespace API.Controllers
             return ActionResultInstance(await _trainerDetailService.DeleteTrainerDetailAsync(trainerDetailId));
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> DeleteByTrainerId(string trainerId)
+        {
+            return ActionResultInstance(await _trainerDetailService.DeleteByTrainerIdAsync(trainerId));
+        }
+
+
     }
 }

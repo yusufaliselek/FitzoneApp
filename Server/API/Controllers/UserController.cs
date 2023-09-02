@@ -45,13 +45,81 @@ namespace API.Controllers
         // Trainers
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAllTrainers()
+        public async Task<IActionResult> GetAllActiveTrainers()
         {
-            return ActionResultInstance(await _userService.GetAllTrainers());
+            return ActionResultInstance(await _userService.GetAllActiveTrainers());
         }
 
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetAllPassiveTrainers()
+        {
+            return ActionResultInstance(await _userService.GetAllPassiveTrainers());
+        }
+
+        [Authorize]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteTrainer(string trainerId)
+        {
+            return ActionResultInstance(await _userService.DeleteTrainerAsync(trainerId));
+        }
+
+        [Authorize]
+        [HttpPut]
+        public async Task<IActionResult> FreezeTrainer(string trainerId)
+        {
+            return ActionResultInstance(await _userService.FreezeTrainer(trainerId));
+        }
+
+        [Authorize]
+        [HttpPut]
+        public async Task<IActionResult> UnfreezeTrainer(string trainerId)
+        {
+            return ActionResultInstance(await _userService.UnfreezeTrainer(trainerId));
+        }
 
         // Members
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetAllActiveMembers()
+        {
+            return ActionResultInstance(await _userService.GetAllActiveMembers());
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetAllPassiveMembers()
+        {
+            return ActionResultInstance(await _userService.GetAllPassiveMembers());
+        }
+
+        [Authorize]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteMember(string memberId)
+        {
+            return ActionResultInstance(await _userService.DeleteMemberAsync(memberId));
+        }
+
+        [Authorize]
+        [HttpPut]
+        public async Task<IActionResult> FreezeMember(string memberId)
+        {
+            return ActionResultInstance(await _userService.FreezeMember(memberId));
+        }
+
+        [Authorize]
+        [HttpPut]
+        public async Task<IActionResult> UnfreezeMember(string memberId)
+        {
+            return ActionResultInstance(await _userService.UnfreezeMember(memberId));
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetMemberById(string memberId)
+        {
+            return ActionResultInstance(await _userService.GetUserByIdAsync(memberId));
+        }
 
     }
 }

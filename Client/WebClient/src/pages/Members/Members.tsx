@@ -1,87 +1,117 @@
-import { DataGrid, GridColDef, GridRenderCellParams, GridValueGetterParams } from '@mui/x-data-grid';
-import React from 'react';
+import { DataGrid, GridColDef, trTR } from '@mui/x-data-grid';
+import React, { useEffect, useState } from 'react';
 import { RiAccountCircleLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 
 import AddContentHeader from '../../components/Header/FitzoneHeader';
 import Nav from '../../components/Nav/Nav';
-
-const columns: GridColDef[] = [
-    {
-        field: 'fullName',
-        headerName: 'Ad Soyad',
-        // description: 'A',
-        width: 300,
-        valueGetter: (params: GridValueGetterParams) =>
-            `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-        resizable: true,
-        hideable: false,
-    },
-    {
-        field: 'age',
-        headerName: 'Yaş',
-        type: 'number',
-        width: 150,
-    },
-    {
-        field: 'weight',
-        headerName: 'Kilo (kg)',
-        type: 'number',
-        width: 150,
-    },
-    {
-        field: 'height',
-        headerName: 'Boy (cm)',
-        type: 'number',
-        width: 150,
-    },
-    {
-        field: 'memberType',
-        headerName: 'Üyelik',
-        width: 150,
-    },
-    {
-        field: 'renewalDate',
-        headerName: 'Üyelik Bitiş Tarihi',
-        type: 'Date',
-        width: 200,
-    },
-    // {
-    //     field: 'id',
-    //     headerName: 'Aksiyonlar',
-    //     renderCell: (params: GridRenderCellParams<Date>) => (
-    //       <strong>
-    //         <button>
-    //           Open
-    //         </button>
-    //       </strong>
-    //     ),
-    //     width: 200,
-    //   },
-];
-const rows = [
-    { id: 1, photo: "https://source.unsplash.com/500x500/?portrait?1", lastName: 'Snow', firstName: 'Jon', age: 35, weight: 120, height: 180, memberType: 'Premium', renewalDate: "22/10/2023" },
-    { id: 2, photo: "https://source.unsplash.com/500x500/?portrait?2", lastName: 'Lannister', firstName: 'Cersei', age: 42, weight: 120, height: 180, memberType: 'Basic', renewalDate: "22/10/2023" },
-    { id: 3, photo: "https://source.unsplash.com/500x500/?portrait?3", lastName: 'Lannister', firstName: 'Jaime', age: 45, weight: 120, height: 180, memberType: 'Premium', renewalDate: "22/10/2023" },
-    { id: 4, photo: "https://source.unsplash.com/500x500/?portrait?4", lastName: 'Stark', firstName: 'Arya', age: 16, weight: 120, height: 180, memberType: 'Basic', renewalDate: "22/10/2023" },
-    { id: 5, photo: "https://source.unsplash.com/500x500/?portrait?5", lastName: 'Targaryen', firstName: 'Daenerys', age: 132, weight: 120, height: 180, memberType: 'Premium', renewalDate: "22/10/2023" },
-    { id: 6, photo: "https://source.unsplash.com/500x500/?portrait?6", lastName: 'Melisandre', firstName: null, age: 150, weight: 120, height: 180, memberType: 'Basic', renewalDate: "22/10/2023" },
-    { id: 7, photo: "https://source.unsplash.com/500x500/?portrait?7", lastName: 'Clifford', firstName: 'Ferrara', age: 44, weight: 120, height: 180, memberType: 'Premium', renewalDate: "22/10/2023" },
-    { id: 8, photo: "https://source.unsplash.com/500x500/?portrait?8", lastName: 'Frances', firstName: 'Rossini', age: 36, weight: 120, height: 180, memberType: 'Basic', renewalDate: "22/10/2023" },
-    { id: 9, photo: "https://source.unsplash.com/500x500/?portrait?9", lastName: 'Roxie', firstName: 'Harvey', age: 65, weight: 120, height: 180, memberType: 'Premium', renewalDate: "22/10/2023" },
-];
+import { Tooltip } from '@mui/material';
+import { BiShow } from 'react-icons/bi';
+import { FaUserSlash } from 'react-icons/fa';
+import { FitzoneApi } from '../../services/fitzoneApi';
+import Cookies from 'js-cookie';
+import { decodeJwt } from 'jose';
 
 const Members = () => {
     const navigate = useNavigate()
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         setLoading(true);
-    //     }, 1500)
-    // })
 
-    function simple() {
+    const [permission, setPermission] = useState(true);
+
+    const [rows, setRows] = useState([]);
+
+    const goLogin = () => navigate('/login')
+
+    const clearToken = () => {
+        Cookies.remove('token');
+        Cookies.remove('refreshToken');
+        goLogin();
+    }
+
+    const RefreshToken = () => {
+        if (!Cookies.get('token')) {
+            return FitzoneApi.ResfreshAccessTokenByRefreshToken().then((response) => {
+                Cookies.set('token', response.data.accessToken, { expires: new Date(response.data.accessTokenExpiration) });
+                Cookies.set('refreshToken', response.data.refreshToken, { expires: new Date(response.data.refreshTokenExpiration) });
+                console.log("Token yenilendi");
+            }).catch((error) => {
+                console.log(error)
+                clearToken()
+            });
+        }
+    }
+
+    useEffect(() => {
+        RefreshToken()
+        FitzoneApi.GetAllActiveMembers().then((res) => {
+            setRows(res.data);
+        })
+        const role = decodeJwt(Cookies.get('token')!).typ;
+        if (role === 'admin') {
+            setPermission(true);
+        }
+    }, [])
+
+    function addMember() {
         navigate("/members/add");
     }
+
+    const columns: GridColDef[] = [
+        {
+            field: 'userName',
+            headerName: 'Kullanıcı Adı',
+            minWidth: 200,
+            flex: 1,
+        },
+        {
+            field: 'firstName',
+            headerName: 'Ad',
+            minWidth: 200,
+            flex: 1,
+        },
+        {
+            field: 'lastName',
+            headerName: 'Soyad',
+            minWidth: 200,
+            flex: 1,
+        },
+        {
+            field: 'email',
+            headerName: 'Email',
+            minWidth: 300,
+            flex: 1,
+        },
+        {
+            field: 'phoneNumber',
+            headerName: 'Telefon',
+            minWidth: 200,
+            flex: 1,
+        },
+        {
+            field: 'id',
+            headerName: 'İşlemler',
+            flex: 1,
+            minWidth: 200,
+            align: 'right',
+            headerAlign: 'right',
+            renderCell: (params) => (
+                <div className='flex gap-3 pr-2'>
+                    <Tooltip title="Üye Detayı">
+                        <button onClick={() => navigate(`/members/${params.value}`)} className='flex items-center justify-center p-2 rounded-full text-blue-400 hover:bg-gray-300 hover:text-blue-500 transition-all'>
+                            <BiShow className='w-5 h-5' />
+                        </button>
+                    </Tooltip>
+                    {
+                        permission &&
+                        <Tooltip title="Üyeyi Dondur">
+                            <button onClick={() => { }} className='flex items-center justify-center p-2 rounded-full text-red-400 hover:bg-gray-300 hover:text-red-500 transition-all'>
+                                <FaUserSlash className='w-5 h-5' />
+                            </button>
+                        </Tooltip>
+                    }
+                </div>
+            )
+        }
+    ];
 
     return (
         <div className='flex w-screen h-screen'>
@@ -89,16 +119,13 @@ const Members = () => {
             <Nav pageName='Üyeler' />
             <div className='flex flex-col w-full h-screen'>
                 {/* Header */}
-                <AddContentHeader pageName='Üyeler' addContent='Üye ekle' addContentIcon={<RiAccountCircleLine className='h-8 w-8' />} addContentAction={simple} />
+                <AddContentHeader pageName='Üyeler' addContent='Üye ekle' addContentIcon={<RiAccountCircleLine className='h-7 w-7' />} addContentAction={addMember} />
                 {/* Content */}
                 <div className='flex items-center p-5 grow'>
                     <DataGrid
                         rows={rows}
                         columns={columns}
-                        rowsPerPageOptions={[15]}
-                        onCellDoubleClick={(e) => { alert(e.id) }}
-                        rowHeight={100}
-                        hideFooterSelectedRowCount
+                        localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
                     />
                 </div>
             </div>

@@ -17,7 +17,7 @@ const addTrainerProps = {
   newPasswordAgain: '',
 }
 
-const TrainerDetail = () => {
+const AddTrainer = () => {
 
   const navigate = useNavigate()
 
@@ -151,4 +151,4 @@ const TrainerDetail = () => {
 }
 
 
-export default TrainerDetail
+export default AddTrainer

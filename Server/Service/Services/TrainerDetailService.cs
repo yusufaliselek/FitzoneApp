@@ -39,6 +39,18 @@ namespace Service.Services
             return CustomResponseDto<string>.Success(200, "Trainer detail deleted!");
         }
 
+        public async Task<CustomResponseDto<string>> DeleteByTrainerIdAsync(string trainerId)
+        {
+            var trainerDetail = await _genericService.Where(x => x.TrainerId == trainerId).FirstOrDefaultAsync();
+            if (trainerDetail == null)
+            {
+                return CustomResponseDto<string>.Fail(200, "Trainer detail not found!");
+            }
+            await _genericService.RemoveAsync(trainerDetail);
+
+            return CustomResponseDto<string>.Success(200, "Trainer detail deleted!");
+        }
+
         public async Task<CustomResponseDto<TrainerDetailDto>> GetTrainerDetailByIdAsync(string trainerDetailId)
         {
             var trainerDetail = await _genericService.GetByIdAsync(trainerDetailId);

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { RiAccountCircleLine, RiEdit2Fill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import { decodeJwt } from 'jose';
 import FitzoneHeader from '../../components/Header/FitzoneHeader';
@@ -7,9 +6,12 @@ import Nav from '../../components/Nav/Nav';
 import { FitzoneApi } from '../../services/fitzoneApi';
 import Cookies from 'js-cookie';
 import { DataGrid, GridColDef, trTR } from '@mui/x-data-grid';
-
-
-
+import { BiShow } from 'react-icons/bi';
+import { FaUserSlash } from 'react-icons/fa';
+import { RiAccountCircleLine } from 'react-icons/ri';
+import { Tooltip } from '@mui/material';
+import Toast from '../../components/Toast/Toast';
+import Swal from 'sweetalert2';
 
 const Trainers = () => {
 
@@ -23,27 +25,32 @@ const Trainers = () => {
     {
       field: 'userName',
       headerName: 'Kullanıcı Adı',
-      width: 200,
+      minWidth: 200,
+      flex: 1,
     },
     {
       field: 'firstName',
       headerName: 'Ad',
-      width: 200,
+      minWidth: 200,
+      flex: 1,
     },
     {
       field: 'lastName',
       headerName: 'Soyad',
-      width: 200,
+      minWidth: 200,
+      flex: 1,
     },
     {
       field: 'email',
       headerName: 'Email',
-      width: 300,
+      minWidth: 300,
+      flex: 1,
     },
     {
       field: 'phoneNumber',
       headerName: 'Telefon',
-      width: 200,
+      minWidth: 200,
+      flex: 1,
     },
     {
       field: 'id',
@@ -51,11 +58,22 @@ const Trainers = () => {
       flex: 1,
       minWidth: 200,
       align: 'right',
+      headerAlign: 'right',
       renderCell: (params) => (
         <div className='flex gap-3 pr-2'>
-          <button onClick={() => navigate(`/trainers/${params.value}`)} className='flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 hover:bg-blue-600 text-white transition-all'>
-            <RiEdit2Fill className='w-5 h-5' />
-          </button>
+          <Tooltip title="Antrenör Detayı">
+            <button onClick={() => navigate(`/trainers/${params.value}`)} className='flex items-center justify-center p-2 rounded-full text-blue-400 hover:bg-gray-300 hover:text-blue-500 transition-all'>
+              <BiShow className='w-5 h-5' />
+            </button>
+          </Tooltip>
+          {
+            permission &&
+            <Tooltip title="Antrenörü Dondur">
+              <button onClick={() => freezeTrainer(params.value)} className='flex items-center justify-center p-2 rounded-full text-red-400 hover:bg-gray-300 hover:text-red-500 transition-all'>
+                <FaUserSlash className='w-5 h-5' />
+              </button>
+            </Tooltip>
+          }
         </div>
       )
     }
@@ -84,7 +102,7 @@ const Trainers = () => {
 
   useEffect(() => {
     RefreshToken()
-    FitzoneApi.GetAllTrainers().then((res) => {
+    FitzoneApi.GetAllActiveTrainers().then((res) => {
       setTrainerData(res.data);
     })
     const role = decodeJwt(Cookies.get('token')!).typ;
@@ -98,6 +116,35 @@ const Trainers = () => {
     navigate("/trainers/add");
   }
 
+  const freezeTrainer = (id: string) => {
+    Swal.fire({
+      title: 'Dondurmak istediğinizden emin misiniz?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Evet, dondur!',
+      cancelButtonText: 'Hayır'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        FitzoneApi.FreezeTrainer(id).then((res) => {
+          Toast.fire({
+            icon: 'success',
+            title: 'Antrenör donduruldu'
+          })
+          FitzoneApi.GetAllActiveTrainers().then((res) => {
+            setTrainerData(res.data);
+          })
+        }).catch((error) => {
+          Toast.fire({
+            icon: 'error',
+            title: 'Antrenör dondurulamadı'
+          })
+        })
+      }
+    })
+  }
+
   return (
     <div className='flex w-screen h-screen'>
       {/* Navbar */}
@@ -106,61 +153,7 @@ const Trainers = () => {
         {/* Header */}
         <FitzoneHeader pageName='Antrenörler' {...(permission && { addContent: 'Antrenör Ekle', addContentIcon: <RiAccountCircleLine className='h-7 w-7' />, addContentAction: navigateAddTrainer })} />
         <div className='w-full h-[calc(100vh-65px)] p-5'>
-          <DataGrid rows={trainerData} columns={columns} pageSize={20} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
-
-          <div>
-            {
-              /* 
-              <div className='w-full px-5'>
-                <TextInput placeholder='Antrenör Arayın' value={filterText} onChange={(e) => setFilterText(e.target.value)} />
-              </div>
-              <div className='flex flex-col gap-3 p-5 overflow-y-scroll overflow-x-hidden flex-wrap items-start'>
-                {filteredTrainerData.map((trainer, i) => {
-                  let trainerName: string;
-                  if (trainer.firstName && trainer.lastName) {
-                    trainerName = trainer.firstName + ' ' + trainer.lastName;
-                  } else {
-                    trainerName = trainer.userName;
-                  }
-    
-                  return (
-                    <motion.div
-                      key={trainer.id}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.95 }}
-                      className='flex justify-center w-full'
-                    >
-                      <div key={i} className='w-full flex flex-col shadow-lg p-5 bg-white bg-opacity-80 rounded-md'>
-                        <div className='flex justify-between'>
-                          <div className='flex items-center gap-2'>
-                            <div className='w-10 h-10 rounded-full bg-gray-300'>
-                              {
-                                trainer.personalPhoto ?
-                                  <img src={trainer.personalPhoto} alt='trainer' className='w-full h-full rounded-full' />
-                                  :
-                                  <div className='flex justify-center items-center w-full h-full text-2xl text-gray-400'>
-                                    {trainerName[0].toUpperCase()}
-                                  </div>
-                              }
-                            </div>
-                            <div className='flex flex-col'>
-                              <div className='text-sm font-medium text-gray-700'>{trainerName}</div>
-                              <div className='text-xs font-normal text-gray-400'>{trainer.email}</div>
-                            </div>
-                          </div>
-                          <div className='flex gap-3'>
-                            <FButton text='Detay' onClick={() => navigate(`/trainers/${trainer.id}`)} />
-                            <FButton text='Düzenle' onClick={() => navigate(`/trainers/edit/${trainer.id}`)} />
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )
-                })}
-              </div> 
-              */
-            } </div>
-
+          <DataGrid rows={trainerData} columns={columns} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
         </div>
       </div>
     </div>

@@ -121,6 +121,16 @@ export class FitzoneApi {
         })
     }
 
+    public static async DeleteTrainerDetailByTrainerId(id: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().delete('/TrainerDetail/DeleteByTrainerId?trainerId=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
     public static async UpdateTrainerDetail(data: any): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             ConfigService.FitzoneApi().put('/TrainerDetail/Update', data).then((response) => {
@@ -192,9 +202,9 @@ export class FitzoneApi {
 
     /////// Trainer - Start ///////
     // GetAllTrainer
-    public static async GetAllTrainers(): Promise<any> {
+    public static async GetAllActiveTrainers(): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().get('/User/GetAllTrainers').then((response) => {
+            ConfigService.FitzoneApi().get('/User/GetAllActiveTrainers').then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)
@@ -202,6 +212,69 @@ export class FitzoneApi {
         })
     }
 
+    public static async GetAllPassiveTrainers(): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().get('/User/GetAllPassiveTrainers').then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+
+    // Delete Trainer
+    public static async DeleteTrainer(id: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().delete('/User/DeleteTrainer?trainerId=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    public static async FreezeTrainer(id: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().put('/User/FreezeTrainer?trainerId=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    public static async UnFreezeTrainer(id: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().put('/User/UnFreezeTrainer?trainerId=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    // Member - Start
+    public static async GetAllActiveMembers(): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().get('/User/GetAllActiveMembers').then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+
+    public static async GetAllPassiveMembers(): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().get('/User/GetAllPassiveMembers').then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
 
 
 }

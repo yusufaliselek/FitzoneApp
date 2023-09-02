@@ -15,5 +15,6 @@ namespace Core.Services
         Task<CustomResponseDto<TrainerDetailDto>> GetTrainerDetailByTrainerIdAsync(string trainerId);
         Task<CustomResponseDto<UpdateTrainerDetailDto>> UpdateTrainerDetailAsync(UpdateTrainerDetailDto trainerDetailDto);
         Task<CustomResponseDto<string>> DeleteTrainerDetailAsync(string trainerDetailId);
+        Task<CustomResponseDto<string>> DeleteByTrainerIdAsync(string trainerId);
     }
 }

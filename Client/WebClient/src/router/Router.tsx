@@ -20,6 +20,7 @@ import TrainerDetail from '../pages/Trainers/TrainerDetail';
 // Members
 import AddMember from '../pages/Members/AddMember';
 import Members from '../pages/Members/Members';
+import MemberDetail from '../pages/Members/MemberDetail';
 
 const Router = () => {
     return (
@@ -27,12 +28,17 @@ const Router = () => {
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path='/signup' element={<Signup />} />
+
                 <Route path='/dashboard' element={<Dashboard />} />
+
                 <Route path='/members' element={<Members />} />
                 <Route path='/members/add' element={<AddMember />} />
+                <Route path='/members/:id' element={<MemberDetail />} />
+
                 <Route path='/trainers' element={<Trainers />} />
                 <Route path='/trainers/add' element={<AddTrainer />} />
                 <Route path='/trainers/:id' element={<TrainerDetail />} />
+
                 <Route path='/training' element={<Training />} />
                 <Route path='/calendar' element={<Calendar />} />
                 <Route path='/settings' element={<Settings />} />

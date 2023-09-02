@@ -14,7 +14,19 @@ namespace Server.Core.Services
         Task<CustomResponseDto<UserDto>> UpdateUserAsync(UpdateUserDto updateUserDto);
         Task<CustomResponseDto<UserDto>> ChangePasswordAsync(UserChangePasswordDto userChangePasswordDto);
         Task<CustomResponseDto<UserDto>> GetUserByIdAsync(string userId);
-        Task<CustomResponseDto<List<UserDto>>> GetAllTrainers();
 
+        // Trainers
+        Task<CustomResponseDto<List<UserDto>>> GetAllActiveTrainers();
+        Task<CustomResponseDto<List<UserDto>>> GetAllPassiveTrainers();
+        Task<CustomResponseDto<UserDto>> DeleteTrainerAsync(string trainerId);
+        Task<CustomResponseDto<UserDto>> FreezeTrainer(string trainerId);
+        Task<CustomResponseDto<UserDto>> UnfreezeTrainer(string trainerId);
+
+        // Members
+        Task<CustomResponseDto<List<UserDto>>> GetAllActiveMembers();
+        Task<CustomResponseDto<List<UserDto>>> GetAllPassiveMembers();
+        Task<CustomResponseDto<UserDto>> DeleteMemberAsync(string memberId);
+        Task<CustomResponseDto<UserDto>> FreezeMember(string memberId);
+        Task<CustomResponseDto<UserDto>> UnfreezeMember(string memberId);
     }
 }

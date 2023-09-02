@@ -234,7 +234,8 @@ const value: any[] = [
 ]
 
 const Dashboard = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
     const RefreshToken = async () => {
         if (!Cookies.get('token')) {
             return FitzoneApi.ResfreshAccessTokenByRefreshToken().then((response) => {
@@ -242,13 +243,14 @@ const Dashboard = () => {
                 Cookies.set('refreshToken', response.data.refreshToken, { expires: new Date(response.data.refreshTokenExpiration) });
                 console.log("Token yenilendi");
             }).catch((error) => {
+                navigate('/')
                 console.log(error)
                 Cookies.remove('token');
                 Cookies.remove('refreshToken');
-                navigate('/login')
                 console.log("Token süresi dolmuş");
             });
         }
+
     }
 
     useEffect(() => {

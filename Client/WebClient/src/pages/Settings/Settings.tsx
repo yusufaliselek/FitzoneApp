@@ -21,6 +21,7 @@ import { BiCheckbox, BiCheckboxChecked } from 'react-icons/bi';
 import { TbListDetails } from 'react-icons/tb';
 import { motion } from 'framer-motion';
 import { cities } from '../../assets/Cities';
+import genders from '../../assets/Genders';
 
 const trainerPermissionParamCheckboxes = [
     'canCreateUser', 'canEditUser', 'canDeleteUser', 'canCreateRole', 'canEditRole',
@@ -56,11 +57,6 @@ const trainerPermissionParams: IGetTrainerPermissionById = {
     canDeleteMember: false,
     canSetRole: false,
 };
-
-const genders = [
-    { value: 'male', text: 'Erkek' },
-    { value: 'female', text: 'Kadın' }
-];
 
 const trainerParams = {
     birthdayDate: "",
