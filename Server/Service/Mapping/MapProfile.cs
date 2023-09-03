@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.DTOs.MemberDetailDTOs;
 using Core.DTOs.TrainerDetailDTOs;
 using Core.DTOs.TrainerPermissionDTOs;
 using Core.DTOs.UserDTOs;
@@ -27,6 +28,11 @@ namespace Service.Mapping
             CreateMap<TrainerDetail, CreateTrainerDetailDto>().ReverseMap();
             CreateMap<TrainerDetail, TrainerDetailDto>().ReverseMap();
             CreateMap<TrainerDetail, UpdateTrainerDetailDto>().ReverseMap();
+
+            // Member Detail
+            CreateMap<MemberDetail, CreateMemberDetailDto>().ReverseMap();
+            CreateMap<MemberDetail, MemberDetailDto>().ReverseMap();
+            CreateMap<MemberDetail, UpdateMemberDetailDto>().ReverseMap();
         }
 
     }

@@ -438,6 +438,16 @@ const AdminPanel = () => {
                         getAllPassiveMembers();
                     })
                 }).catch(err => {
+                    if (err.errors[0] == "Member detail not found!") {
+                        FitzoneApi.DeleteMember(id).then(res => {
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Üye silindi'
+                            });
+                            getAllPassiveMembers();
+                        })
+                        return;
+                    }
                     Toast.fire({
                         icon: 'error',
                         title: 'Üye silinemedi'
