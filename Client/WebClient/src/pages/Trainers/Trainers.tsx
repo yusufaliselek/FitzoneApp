@@ -12,6 +12,7 @@ import { RiAccountCircleLine } from 'react-icons/ri';
 import { Tooltip } from '@mui/material';
 import Toast from '../../components/Toast/Toast';
 import Swal from 'sweetalert2';
+import { BsPersonBadgeFill } from 'react-icons/bs';
 
 const Trainers = () => {
 
@@ -151,7 +152,7 @@ const Trainers = () => {
       <Nav pageName='Antrenörler' />
       <div className='flex flex-col w-full h-screen'>
         {/* Header */}
-        <FitzoneHeader pageName='Antrenörler' {...(permission && { addContent: 'Antrenör Ekle', addContentIcon: <RiAccountCircleLine className='h-7 w-7' />, addContentAction: navigateAddTrainer })} />
+        <FitzoneHeader pageName='Antrenörler' {...(permission && { addContent: 'Antrenör Ekle', addContentIcon: <BsPersonBadgeFill className='h-7 w-7' />, addContentAction: navigateAddTrainer })} />
         <div className='w-full h-[calc(100vh-65px)] p-5'>
           <DataGrid rows={trainerData} columns={columns} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
         </div>

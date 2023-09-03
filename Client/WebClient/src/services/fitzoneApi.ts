@@ -276,6 +276,48 @@ export class FitzoneApi {
         })
     }
 
+    public static async FreezeMember(id: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().put('/User/FreezeMember?memberId=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    public static async UnFreezeMember(id: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().put('/User/UnFreezeMember?memberId=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    public static async DeleteMember(id: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().delete('/User/DeleteMember?memberId=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    public static async DeleteMemberDetailByMemberId(id: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().delete('/MemberDetail/DeleteByMemberId?memberId=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+
+
 
 }
 

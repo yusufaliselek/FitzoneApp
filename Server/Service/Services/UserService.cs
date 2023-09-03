@@ -5,9 +5,7 @@ using Core.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Server.Core.Models;
-using Server.Core.Repositories;
 using Server.Core.Services;
-using System.Collections.Generic;
 
 namespace Server.Service.Services
 {

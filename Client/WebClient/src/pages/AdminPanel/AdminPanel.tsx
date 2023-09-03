@@ -54,32 +54,30 @@ const trainerPermissionParams: IGetTrainerPermissionById = {
 
 const AdminPanel = () => {
 
+    // Default State
     const navigate = useNavigate();
-
     const [value, setValue] = useState(0);
 
-    // Trainer Permissions State -- And With Filter
+    // Trainer Permissions State
     const [filteredTrainerPermissions, setFilteredTrainerPermissions] = useState<IGetTrainerPermissionById[]>([]);
+    const [trainerPermissionForm, setTrainerPermissionForm] = useState<IGetTrainerPermissionById>(trainerPermissionParams);
     const [trainerPermissionData, setTrainerPermissionData] = useState<IGetTrainerPermissionById[]>([]);
     const [filterText, setFilterText] = useState('');
-
-    // Trainer Permission Form State -- And With Edit
-    const [trainerPermissionForm, setTrainerPermissionForm] = useState<IGetTrainerPermissionById>(trainerPermissionParams);
-
-    // Passive Trainers
-    const [passiveTrainers, setPassiveTrainers] = useState<any[]>([]);
-
-    // Form Opener State
-    const [isOpen, setIsOpen] = useState(false);
-
-    // Form Type State -- Create | Edit
+    const [trainers, setTrainers] = useState<any[]>([]);
     const [formType, setFormType] = useState<'create' | 'edit'>('create');
-
-    // Dialog Opener State
+    const [isOpen, setIsOpen] = useState(false);
     const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
-    // Dialog Delete Permission State -- Permission Have Trainer List
-    const [trainers, setTrainers] = useState<any[]>([]);
+    // Freeze Trainer States
+    const [passiveTrainers, setPassiveTrainers] = useState<any[]>([]);
+
+    // Freeze Member States
+    const [passiveMembers, setPassiveMembers] = useState<any[]>([]);
+
+    // Default Functions
+    const handleChangeTabs = (event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+    };
 
     const goLogin = () => navigate('/login');
 
@@ -103,7 +101,41 @@ const AdminPanel = () => {
         }
     };
 
-    const GetAllTrainerPermissions = () => {
+    useEffect(() => {
+        RefreshToken();
+        const role = decodeJwt(Cookies.get('token')!).typ;
+        if (role !== 'admin') {
+            clearToken();
+        }
+        getAllTrainerPermissions();
+        getAllPassiveTrainers();
+        getAllPassiveMembers();
+    }, []);
+
+    ///////////////////////////////////
+    // Trainer Permissions Functions //
+    ///////////////////////////////////
+    const columns: GridColDef[] = [
+        {
+            field: 'name',
+            headerName: 'Yetki Adı',
+            flex: 1,
+            minWidth: 200,
+        },
+        {
+            field: 'actions',
+            headerName: 'İşlemler',
+            minWidth: 200,
+            renderCell: (params) => (
+                <div className='flex justify-center gap-2'>
+                    <FButton text='Düzenle' onClick={() => handleEditTrainerPermission(params.row)} />
+                    <FButton text='Sil' onClick={() => deleteTrainerPermissionDialog(params.row)} theme='danger' />
+                </div>
+            )
+        }
+    ];
+
+    const getAllTrainerPermissions = () => {
         FitzoneApi.GetAllTrainerPermission().then(res => {
             setFilteredTrainerPermissions(res.data);
             setTrainerPermissionData(res.data);
@@ -115,23 +147,6 @@ const AdminPanel = () => {
         });
     }
 
-    const GetAllPassiveTrainers = () => {
-        FitzoneApi.GetAllPassiveTrainers().then(res => {
-            setPassiveTrainers(res.data);
-        })
-    }
-
-
-    useEffect(() => {
-        RefreshToken();
-        const role = decodeJwt(Cookies.get('token')!).typ;
-        if (role !== 'admin') {
-            clearToken();
-        }
-        GetAllTrainerPermissions();
-        GetAllPassiveTrainers();
-    }, []);
-
     useEffect(() => {
         const filteredData = trainerPermissionData.filter((item) =>
             item.name.toLowerCase().includes(filterText.toLowerCase())
@@ -139,18 +154,12 @@ const AdminPanel = () => {
         setFilteredTrainerPermissions(filteredData);
     }, [filterText]);
 
-    const handleChangeTabs = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
-    };
-
-    // RESET TRAINER PERMISSION FORM
     const resetTrainerPermissionForm = () => {
         setTrainerPermissionForm(trainerPermissionParams);
         setIsOpen(false)
         setDialogIsOpen(false);
     };
 
-    // CREATE TRAINER PERMISSION
     const handleCreateTrainerPermission = () => {
         setFormType('create');
         setTrainerPermissionForm(trainerPermissionParams);
@@ -168,7 +177,7 @@ const AdminPanel = () => {
                 icon: 'success',
                 title: 'Yetki eklendi'
             });
-            GetAllTrainerPermissions();
+            getAllTrainerPermissions();
             resetTrainerPermissionForm();
         }).catch(err => {
             console.log(err);
@@ -179,7 +188,6 @@ const AdminPanel = () => {
         });
     }
 
-    // EDIT TRAINER PERMISSION -- Update Trainer Permission Form
     const handleEditTrainerPermission = (item: IGetTrainerPermissionById) => {
         setFormType('edit');
         setIsOpen(true);
@@ -204,7 +212,7 @@ const AdminPanel = () => {
                 icon: 'success',
                 title: 'Yetki düzenlendi'
             });
-            GetAllTrainerPermissions();
+            getAllTrainerPermissions();
             resetTrainerPermissionForm();
         }).catch(err => {
             console.log(err);
@@ -215,7 +223,6 @@ const AdminPanel = () => {
         });
     }
 
-    // DELETE TRAINER PERMISSION
     const deleteTrainerPermissionDialog = (permission: IGetTrainerPermissionById) => {
         setDialogIsOpen(true);
         setTrainerPermissionForm(permission);
@@ -247,7 +254,7 @@ const AdminPanel = () => {
                 icon: 'success',
                 title: 'Yetki silindi'
             });
-            GetAllTrainerPermissions();
+            getAllTrainerPermissions();
         }).catch(err => {
             console.log(err);
             Toast.fire({
@@ -264,60 +271,11 @@ const AdminPanel = () => {
             editTrainerPermission();
         }
     };
+    ////////////////////////////////
 
-    // delete trainer
-    const deleteTrainer = (id: string) => {
-        Swal.fire({
-            title: 'Antrenörü silmek istediğinizden emin misiniz?',
-            text: passiveTrainers.filter(item => item.id === id)[0].email + " - " + passiveTrainers.filter(item => item.id === id)[0].userName,
-            showDenyButton: true,
-            confirmButtonText: `Sil`,
-            denyButtonText: `Vazgeç`,
-            confirmButtonColor: '#dc3545',
-            denyButtonColor: '#6c757d',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                FitzoneApi.DeleteTrainerDetailByTrainerId(id).then(res => {
-                    FitzoneApi.DeleteTrainer(id).then(res => {
-                        Toast.fire({
-                            icon: 'success',
-                            title: 'Antrenör silindi'
-                        });
-                        GetAllTrainerPermissions();
-                        GetAllPassiveTrainers();
-                    })
-                }).catch(err => {
-                    Toast.fire({
-                        icon: 'error',
-                        title: 'Antrenör silinemedi'
-                    });
-                });
-            } else if (result.isDenied) {
-                return;
-            }
-        })
-    }
-
-    const columns: GridColDef[] = [
-        {
-            field: 'name',
-            headerName: 'Yetki Adı',
-            flex: 1,
-            minWidth: 200,
-        },
-        {
-            field: 'actions',
-            headerName: 'İşlemler',
-            minWidth: 200,
-            renderCell: (params) => (
-                <div className='flex justify-center gap-2'>
-                    <FButton text='Düzenle' onClick={() => handleEditTrainerPermission(params.row)} />
-                    <FButton text='Sil' onClick={() => deleteTrainerPermissionDialog(params.row)} theme='danger' />
-                </div>
-            )
-        }
-    ];
-
+    ////////////////////////////////
+    // Passive Trainers Functions //
+    ////////////////////////////////
     const columnsPassiveTrainer: GridColDef[] = [
         {
             field: 'userName',
@@ -378,6 +336,44 @@ const AdminPanel = () => {
         }
     ]
 
+    const getAllPassiveTrainers = () => {
+        FitzoneApi.GetAllPassiveTrainers().then(res => {
+            setPassiveTrainers(res.data);
+        })
+    }
+
+    const deleteTrainer = (id: string) => {
+        Swal.fire({
+            title: 'Antrenörü silmek istediğinizden emin misiniz?',
+            text: passiveTrainers.filter(item => item.id === id)[0].email + " - " + passiveTrainers.filter(item => item.id === id)[0].userName,
+            showDenyButton: true,
+            confirmButtonText: `Sil`,
+            denyButtonText: `Vazgeç`,
+            confirmButtonColor: '#dc3545',
+            denyButtonColor: '#6c757d',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                FitzoneApi.DeleteTrainerDetailByTrainerId(id).then(res => {
+                    FitzoneApi.DeleteTrainer(id).then(res => {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Antrenör silindi'
+                        });
+                        getAllTrainerPermissions();
+                        getAllPassiveTrainers();
+                    })
+                }).catch(err => {
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Antrenör silinemedi'
+                    });
+                });
+            } else if (result.isDenied) {
+                return;
+            }
+        })
+    }
+
     const unfreezeTrainer = (id: string) => {
         Swal.fire({
             title: 'Aktif etmek istediğinizden emin misiniz?',
@@ -399,8 +395,8 @@ const AdminPanel = () => {
                         icon: 'success',
                         title: 'Antrenör aktif edildi'
                     });
-                    GetAllTrainerPermissions();
-                    GetAllPassiveTrainers();
+                    getAllTrainerPermissions();
+                    getAllPassiveTrainers();
                 }).catch((error) => {
                     console.log(error);
                     Toast.fire({
@@ -411,6 +407,140 @@ const AdminPanel = () => {
             }
         })
     }
+    ////////////////////////////////
+
+    ////////////////////////////////
+    // Passive Members Functions //
+    ///////////////////////////////
+    const getAllPassiveMembers = () => {
+        FitzoneApi.GetAllPassiveMembers().then(res => {
+            setPassiveMembers(res.data);
+        })
+    }
+
+    const deleteMember = (id: string) => {
+        Swal.fire({
+            title: 'Üyeyi silmek istediğinizden emin misiniz?',
+            text: passiveMembers.filter(item => item.id === id)[0].email + " - " + passiveMembers.filter(item => item.id === id)[0].userName,
+            showDenyButton: true,
+            confirmButtonText: `Sil`,
+            denyButtonText: `Vazgeç`,
+            confirmButtonColor: '#dc3545',
+            denyButtonColor: '#6c757d',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                FitzoneApi.DeleteMemberDetailByMemberId(id).then(res => {
+                    FitzoneApi.DeleteMember(id).then(res => {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Üye silindi'
+                        });
+                        getAllPassiveMembers();
+                    })
+                }).catch(err => {
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Üye silinemedi'
+                    });
+                });
+            } else if (result.isDenied) {
+                return;
+            }
+        })
+    }
+
+    const unFreezeMember = (id: string) => {
+        Swal.fire({
+            title: 'Aktif etmek istediğinizden emin misiniz?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet, aktif et!',
+            cancelButtonText: 'Hayır'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Toast.fire({
+                    icon: 'info',
+                    title: 'Üye aktif ediliyor...'
+                });
+                FitzoneApi.UnFreezeMember(id).then(res => {
+                    console.log(res);
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Üye aktif edildi'
+                    });
+                    getAllPassiveMembers();
+                }).catch((error) => {
+                    console.log(error);
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Üye aktif edilemedi'
+                    });
+                })
+            }
+        })
+    }
+
+    const freezeMemberColumns: GridColDef[] = [
+        {
+            field: 'userName',
+            headerName: 'Kullanıcı Adı',
+            minWidth: 200,
+            flex: 1,
+        },
+        {
+            field: 'firstName',
+            headerName: 'Ad',
+            minWidth: 200,
+            flex: 1,
+        },
+        {
+            field: 'lastName',
+            headerName: 'Soyad',
+            minWidth: 200,
+            flex: 1,
+        },
+        {
+            field: 'email',
+            headerName: 'Email',
+            minWidth: 300,
+            flex: 1,
+        },
+        {
+            field: 'phoneNumber',
+            headerName: 'Telefon',
+            minWidth: 200,
+            flex: 1,
+        },
+        {
+            field: 'id',
+            headerName: 'İşlemler',
+            flex: 1,
+            minWidth: 200,
+            align: 'right',
+            headerAlign: 'right',
+            renderCell: (params) => (
+                <div className='flex gap-3 pr-2'>
+                    <Tooltip title="Üye Detayı">
+                        <button onClick={() => navigate(`/members/${params.value}`)} className='flex items-center justify-center p-2 rounded-full text-blue-400 hover:bg-gray-300 hover:text-blue-500 transition-all'>
+                            <BiShow className='w-5 h-5' />
+                        </button>
+                    </Tooltip>
+                    <Tooltip title="Üyeyi Aktif Et">
+                        <button onClick={() => unFreezeMember(params.value)} className='flex items-center justify-center p-2 rounded-full text-green-600 hover:bg-gray-300 hover:text-green-700 transition-all'>
+                            <BiUserCheck className='w-5 h-5' />
+                        </button>
+                    </Tooltip>
+                    <Tooltip title="Üyeyi Sil">
+                        <button onClick={() => deleteMember(params.value)} className='flex items-center justify-center p-2 rounded-full text-red-400 hover:bg-gray-300 hover:text-red-500 transition-all'>
+                            <AiFillDelete className='w-5 h-5' />
+                        </button>
+                    </Tooltip>
+                </div>
+            )
+        }
+    ];
 
     return (
         <div className='flex w-screen h-screen overflow-hidden'>
@@ -551,6 +681,11 @@ const AdminPanel = () => {
                     <TabPanel value={value} index={1}>
                         <div className='flex justify-center items-center w-full h-[calc(100vh-120px)] mt-1'>
                             <DataGrid rows={passiveTrainers} columns={columnsPassiveTrainer} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
+                        </div>
+                    </TabPanel>
+                    <TabPanel value={value} index={2}>
+                        <div className='flex justify-center items-center w-full h-[calc(100vh-120px)] mt-1'>
+                            <DataGrid rows={passiveMembers} columns={freezeMemberColumns} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
                         </div>
                     </TabPanel>
                 </Box>

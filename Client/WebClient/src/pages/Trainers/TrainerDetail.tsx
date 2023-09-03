@@ -4,7 +4,7 @@ import Nav from '../../components/Nav/Nav';
 import FitzoneHeader from '../../components/Header/FitzoneHeader';
 import { FitzoneApi } from '../../services/fitzoneApi';
 import { motion } from 'framer-motion';
-import { BsPersonCircle } from 'react-icons/bs';
+import { BsPersonBadgeFill } from 'react-icons/bs';
 import TextInput from '../../components/TextInput/TextInput';
 import FButton from '../../components/Button/FButton';
 import SelectInput from '../../components/SelectInput/SelectInput';
@@ -13,6 +13,7 @@ import { TbListDetails } from 'react-icons/tb';
 import genders from '../../assets/Genders';
 import Cookies from 'js-cookie';
 import { decodeJwt } from 'jose';
+import Toast from '../../components/Toast/Toast';
 
 const trainerParams = {
     birthdayDate: "",
@@ -98,9 +99,17 @@ const TrainerDetail = () => {
     }
 
     const updateUser = () => {
-        // FitzoneApi.UpdateUser(trainer).then((res) => {
-        //     console.log(res);
-        // })
+        Toast.fire({
+            icon: 'info',
+            title: 'Güncelleniyor...'
+        })
+        FitzoneApi.UpdateUser(trainer).then((res) => {
+            Toast.fire({
+                icon: 'success',
+                title: 'Kullanıcı bilgileri güncellendi.'
+            })
+            navigate('/trainers/')
+        })
     }
 
     return (
@@ -109,14 +118,14 @@ const TrainerDetail = () => {
             <Nav pageName='Antrenörler' />
             <div className='flex flex-col w-full h-screen'>
                 {/* Header */}
-                <FitzoneHeader pageName='Antrenör Detayı' />
+                <FitzoneHeader pageName='Antrenör Bilgisi' />
                 <div className='w-full h-[calc(100vh-65px)] p-5 flex justify-center'>
                     {/* FORM SIDE */}
                     <motion.div
                         className={`w-2/5 gap-4 mt-[3%] p-5 ${!detailsIsOpen ? "flex flex-col" : "hidden"}`}
                     >
                         <div className='mt-3 flex items-center justify-center'>
-                            <BsPersonCircle size={40} color='lightgray' />
+                            <BsPersonBadgeFill size={40} color='lightgray' />
                         </div>
                         <div className='flex gap-3'>
                             <TextInput id='firstName' label='Ad' value={trainer.firstName} onChange={handleChangeForm} disabled={!isAdmin} />

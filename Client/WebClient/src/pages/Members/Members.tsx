@@ -11,6 +11,8 @@ import { FaUserSlash } from 'react-icons/fa';
 import { FitzoneApi } from '../../services/fitzoneApi';
 import Cookies from 'js-cookie';
 import { decodeJwt } from 'jose';
+import Toast from '../../components/Toast/Toast';
+import Swal from 'sweetalert2';
 
 const Members = () => {
     const navigate = useNavigate()
@@ -51,10 +53,7 @@ const Members = () => {
         }
     }, [])
 
-    function addMember() {
-        navigate("/members/add");
-    }
-
+    
     const columns: GridColDef[] = [
         {
             field: 'userName',
@@ -103,7 +102,7 @@ const Members = () => {
                     {
                         permission &&
                         <Tooltip title="Üyeyi Dondur">
-                            <button onClick={() => { }} className='flex items-center justify-center p-2 rounded-full text-red-400 hover:bg-gray-300 hover:text-red-500 transition-all'>
+                            <button onClick={() => freezeMember(params.value)} className='flex items-center justify-center p-2 rounded-full text-red-400 hover:bg-gray-300 hover:text-red-500 transition-all'>
                                 <FaUserSlash className='w-5 h-5' />
                             </button>
                         </Tooltip>
@@ -112,6 +111,41 @@ const Members = () => {
             )
         }
     ];
+
+    function addMember() {
+        navigate("/members/add");
+    }
+
+    const freezeMember = (id: string) => {
+        Swal.fire({
+            title: 'Dondurmak istediğinizden emin misiniz?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Evet, dondur!',
+            cancelButtonText: 'Hayır'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                FitzoneApi.FreezeMember(id).then((res) => {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Üye donduruldu'
+                    })
+                    RefreshToken()
+                    FitzoneApi.GetAllActiveMembers().then((res) => {
+                        setRows(res.data);
+                    })
+                }).catch((error) => {
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Üye dondurulamadı'
+                    })
+                })
+            }
+          })
+    }
+
 
     return (
         <div className='flex w-screen h-screen'>
