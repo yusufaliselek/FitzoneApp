@@ -52,6 +52,16 @@ export class FitzoneApi {
         })
     }
 
+    public static async RegisterUser(data: any): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().post('/User/Register', data).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
     // Get By Id
     public static async GetUserById(id: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {

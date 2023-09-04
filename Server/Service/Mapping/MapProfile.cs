@@ -14,11 +14,10 @@ namespace Service.Mapping
         {
             // User
             CreateMap<User, CreateUserDto>().ReverseMap();
+            CreateMap<RegisterUserDto, User>();
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<User, UpdateUserDto>().ReverseMap();
             CreateMap<User, UserChangePasswordDto>().ReverseMap();
-
-
 
             // Trainer Permission
             CreateMap<TrainerPermission, CreateTrainerPermissionDto>().ReverseMap();

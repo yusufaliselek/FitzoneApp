@@ -45,6 +45,32 @@ namespace Server.Service.Services
             return CustomResponseDto<UserDto>.Success(200, _mapper.Map<UserDto>(user));
         }
 
+        public async Task<CustomResponseDto<UserDto>> RegisterUserAsync(RegisterUserDto registerUserDto)
+        {
+            var user = new User { Email = registerUserDto.Email, UserName = registerUserDto.UserName, IsActive = false };
+            var userWithSameEmail = await _userManager.FindByEmailAsync(registerUserDto.Email);
+            var userWithSameUserName = await _userManager.FindByNameAsync(registerUserDto.UserName);
+            if (userWithSameEmail != null)
+            {
+                return CustomResponseDto<UserDto>.Fail(400, "Bu email alınamaz!");
+            }
+            if (userWithSameUserName != null)
+            {
+                return CustomResponseDto<UserDto>.Fail(400, "Bu kullanıcı adı alınamaz!");
+            }
+
+            var result = await _userManager.CreateAsync(user, registerUserDto.Password);
+
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(x => x.Description).ToList();
+
+                return CustomResponseDto<UserDto>.Fail(400, errors);
+            }
+
+            return CustomResponseDto<UserDto>.Success(200, _mapper.Map<UserDto>(user));
+        }
+
         public async Task<CustomResponseDto<UserDto>> UpdateUserAsync(UpdateUserDto updateUserDto)
         {
             var user = _userManager.Users.SingleOrDefault(x => x.Id == updateUserDto.Id);

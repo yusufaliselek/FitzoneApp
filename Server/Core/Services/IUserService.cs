@@ -11,6 +11,7 @@ namespace Server.Core.Services
     public interface IUserService
     {
         Task<CustomResponseDto<UserDto>> CreateUserAsync(CreateUserDto createUserDto);
+        Task<CustomResponseDto<UserDto>> RegisterUserAsync(RegisterUserDto registerUserDto);
         Task<CustomResponseDto<UserDto>> UpdateUserAsync(UpdateUserDto updateUserDto);
         Task<CustomResponseDto<UserDto>> ChangePasswordAsync(UserChangePasswordDto userChangePasswordDto);
         Task<CustomResponseDto<UserDto>> GetUserByIdAsync(string userId);
