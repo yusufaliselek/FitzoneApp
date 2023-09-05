@@ -59,14 +59,13 @@ const Login = () => {
             else {
                 Toast.fire({
                     icon: "error",
-                    title: "Hata oluştu.",
+                    title: error.errors[0],
                 });
             }
         })
     }
 
     return (
-        <>
             <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
                 <img src={bg} alt="description of" className={`object-cover w-full h-full absolute`} />
                 {
@@ -136,8 +135,6 @@ const Login = () => {
                 }
 
             </div>
-        </>
-
     )
 }
 

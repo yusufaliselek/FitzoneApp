@@ -15,6 +15,7 @@ namespace Server.Core.Services
         Task<CustomResponseDto<UserDto>> UpdateUserAsync(UpdateUserDto updateUserDto);
         Task<CustomResponseDto<UserDto>> ChangePasswordAsync(UserChangePasswordDto userChangePasswordDto);
         Task<CustomResponseDto<UserDto>> GetUserByIdAsync(string userId);
+        Task<CustomResponseDto<List<UserDto>>> GetRegisterUsersAsync();
 
         // Trainers
         Task<CustomResponseDto<List<UserDto>>> GetAllActiveTrainers();

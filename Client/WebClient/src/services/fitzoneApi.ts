@@ -94,6 +94,17 @@ export class FitzoneApi {
             })
         })
     }
+
+    // Get Waiting Users - Register
+    public static async GetRegisterUsers(): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().get('/User/GetRegisterUsers').then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
     //// User - End ////
 
     //// Trainer Detail - Start ////

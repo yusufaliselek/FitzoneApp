@@ -47,7 +47,7 @@ namespace Server.Service.Services
 
         public async Task<CustomResponseDto<UserDto>> RegisterUserAsync(RegisterUserDto registerUserDto)
         {
-            var user = new User { Email = registerUserDto.Email, UserName = registerUserDto.UserName, IsActive = false };
+            var user = new User { Email = registerUserDto.Email, UserName = registerUserDto.UserName, IsActive = false, Role = "" };
             var userWithSameEmail = await _userManager.FindByEmailAsync(registerUserDto.Email);
             var userWithSameUserName = await _userManager.FindByNameAsync(registerUserDto.UserName);
             if (userWithSameEmail != null)
@@ -90,7 +90,15 @@ namespace Server.Service.Services
 
         }
 
-
+        public async Task<CustomResponseDto<List<UserDto>>> GetRegisterUsersAsync()
+        {
+            var users = await _userManager.Users.Where(x => x.IsActive == false && x.Role == "").ToListAsync();
+            if (users == null)
+            {
+                return CustomResponseDto<List<UserDto>>.Fail(404, "Register users not found!");
+            }
+            return CustomResponseDto<List<UserDto>>.Success(200, _mapper.Map<List<UserDto>>(users));
+        }
 
         public async Task<CustomResponseDto<UserDto>> ChangePasswordAsync(UserChangePasswordDto userChangePasswordDto)
         {
@@ -258,5 +266,7 @@ namespace Server.Service.Services
             }
             return CustomResponseDto<UserDto>.Success(200, _mapper.Map<UserDto>(user));
         }
+
+
     }
 }

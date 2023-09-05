@@ -42,6 +42,11 @@ namespace  Service.Services
                 return CustomResponseDto<TokenDto>.Fail(400, "Email or Password is wrong!");
             }
 
+            if (user.IsActive == false)
+            {
+                return CustomResponseDto<TokenDto>.Fail(400, "Kullanıcı aktif değil!");
+            }
+
             var token = _tokenService.CreateToken(user);
 
             var userRefreshToken = await _userRefreshTokenService.Where(x => x.UserId == user.Id).SingleOrDefaultAsync();
