@@ -45,6 +45,25 @@ namespace Server.Service.Services
             return CustomResponseDto<UserDto>.Success(200, _mapper.Map<UserDto>(user));
         }
 
+        public async Task<CustomResponseDto<UserDto>> UpdateUserAsync(UpdateUserDto updateUserDto)
+        {
+            var user = _userManager.Users.SingleOrDefault(x => x.Id == updateUserDto.Id);
+            if (user == null)
+            {
+                return CustomResponseDto<UserDto>.Fail(404, "User not found!");
+            }
+
+            var result = await _userManager.UpdateAsync(_mapper.Map(updateUserDto, user));
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(x => x.Description).ToList();
+                return CustomResponseDto<UserDto>.Fail(400, errors);
+            }
+
+            return CustomResponseDto<UserDto>.Success(200, _mapper.Map<UserDto>(user));
+
+        }
+
         public async Task<CustomResponseDto<UserDto>> RegisterUserAsync(RegisterUserDto registerUserDto)
         {
             var user = new User { Email = registerUserDto.Email, UserName = registerUserDto.UserName, IsActive = false, Role = "" };
@@ -69,25 +88,6 @@ namespace Server.Service.Services
             }
 
             return CustomResponseDto<UserDto>.Success(200, _mapper.Map<UserDto>(user));
-        }
-
-        public async Task<CustomResponseDto<UserDto>> UpdateUserAsync(UpdateUserDto updateUserDto)
-        {
-            var user = _userManager.Users.SingleOrDefault(x => x.Id == updateUserDto.Id);
-            if (user == null)
-            {
-                return CustomResponseDto<UserDto>.Fail(404, "User not found!");
-            }
-
-            var result = await _userManager.UpdateAsync(_mapper.Map(updateUserDto, user));
-            if (!result.Succeeded)
-            {
-                var errors = result.Errors.Select(x => x.Description).ToList();
-                return CustomResponseDto<UserDto>.Fail(400, errors);
-            }
-
-            return CustomResponseDto<UserDto>.Success(200, _mapper.Map<UserDto>(user));
-
         }
 
         public async Task<CustomResponseDto<List<UserDto>>> GetRegisterUsersAsync()
@@ -123,6 +123,39 @@ namespace Server.Service.Services
             if (user == null)
             {
                 return CustomResponseDto<UserDto>.Fail(404, "User not found!");
+            }
+            return CustomResponseDto<UserDto>.Success(200, _mapper.Map<UserDto>(user));
+        }
+
+        public async Task<CustomResponseDto<UserDto>> DeleteUserAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return CustomResponseDto<UserDto>.Fail(404, "User not found!");
+            }
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(x => x.Description).ToList();
+                return CustomResponseDto<UserDto>.Fail(400, errors);
+            }
+            return CustomResponseDto<UserDto>.Success(200, _mapper.Map<UserDto>(user));
+        }
+
+        public async Task<CustomResponseDto<UserDto>> UpdateUserRole(string userId, string role)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return CustomResponseDto<UserDto>.Fail(404, "User not found!");
+            }
+            user.Role = role;
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(x => x.Description).ToList();
+                return CustomResponseDto<UserDto>.Fail(400, errors);
             }
             return CustomResponseDto<UserDto>.Success(200, _mapper.Map<UserDto>(user));
         }

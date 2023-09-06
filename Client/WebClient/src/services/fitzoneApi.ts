@@ -2,6 +2,7 @@
 import Cookies from "js-cookie";
 import { IGetTrainerPermissionById, ILoginResponse, ITrainerDetails } from "../types/Types";
 import { ConfigService } from "./configService"
+import { resolve } from "path";
 
 export interface IGetData {
     date: string;
@@ -52,16 +53,6 @@ export class FitzoneApi {
         })
     }
 
-    public static async RegisterUser(data: any): Promise<any> {
-        return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().post('/User/Register', data).then((response) => {
-                resolve(response.data)
-            }).catch((error) => {
-                reject(error.response.data)
-            })
-        })
-    }
-
     // Get By Id
     public static async GetUserById(id: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
@@ -84,10 +75,41 @@ export class FitzoneApi {
         })
     }
 
+    public static async UpdateUserRole(userId: string, role: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().put('/User/UpdateUserRole?userId=' + userId + '&role=' + role).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
     // Change Password
     public static async ChangePassword(data: any): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             ConfigService.FitzoneApi().put('/User/ChangePassword', data).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    public static async DeleteUser(id: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().delete('/User/Delete?userId=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+
+    public static async RegisterUser(data: any): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().post('/User/Register', data).then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)

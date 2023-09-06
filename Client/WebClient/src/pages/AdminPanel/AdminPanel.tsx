@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Nav from '../../components/Nav/Nav';
 import FitzoneHeader from '../../components/Header/FitzoneHeader';
-import { Box, Checkbox, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, IconButton, Tab, Tabs, Tooltip, DialogContentText, TextField } from '@mui/material';
+import { Box, Checkbox, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, IconButton, Tab, Tabs, Tooltip, DialogContentText, TextField, Select, FormControl, InputLabel, MenuItem } from '@mui/material';
 import { FitzoneApi } from '../../services/fitzoneApi';
 import { IGetTrainerPermissionById } from '../../types/Types';
 import { DataGrid, GridCloseIcon, GridColDef, trTR } from '@mui/x-data-grid';
@@ -18,6 +18,7 @@ import { decodeJwt } from 'jose';
 import Swal from 'sweetalert2';
 import PassiveTrainers from './PassiveTrainers';
 import TrainerPermissions from './TrainerPermissions';
+import SelectInput from '../../components/SelectInput/SelectInput';
 
 const trainerPermissionParamCheckboxes = [
     'canCreateUser', 'canEditUser', 'canDeleteUser', 'canCreateRole', 'canEditRole',
@@ -257,13 +258,101 @@ const AdminPanel = () => {
 
     const [open, setOpen] = React.useState(false);
 
+    const [registerUser, setRegisterUser] = useState<any>({
+        id: '',
+        userName: '',
+        email: '',
+        role: '',
+    });
+
     const handleClickOpen = () => {
         setOpen(true);
     };
 
     const handleClose = () => {
         setOpen(false);
+        setRegisterUser({
+            id: '',
+            userName: '',
+            email: '',
+            role: '',
+        });
     };
+
+    const getRegisterUsers = () => {
+        FitzoneApi.GetRegisterUsers().then(res => {
+            setRegisterUsers(res.data);
+        })
+    }
+
+    const checkRegisterUser = (user: any) => {
+        setRegisterUser(user);
+        handleClickOpen();
+        console.log(registerUser)
+    }
+
+    const handleDeleteRegisterUser = (id: string) => {
+        Swal.fire({
+            title: 'Üyeyi silmek istediğinizden emin misiniz?',
+            text: registerUsers.filter(item => item.id === id)[0].email + " - " + registerUsers.filter(item => item.id === id)[0].userName,
+            showDenyButton: true,
+            confirmButtonText: `Sil`,
+            denyButtonText: `Vazgeç`,
+            confirmButtonColor: '#dc3545',
+            denyButtonColor: '#6c757d',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                FitzoneApi.DeleteUser(id).then(res => {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Üye silindi'
+                    });
+                    getRegisterUsers();
+                }).catch(err => {
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Üye silinemedi'
+                    });
+                });
+            } else if (result.isDenied) {
+                return;
+            }
+        })
+    }
+
+    const handleVerifyRegisterUser = () => {
+        if (registerUser.role === '') {
+            Toast.fire({
+                icon: 'error',
+                title: 'Lütfen rol seçiniz'
+            });
+            handleClose();
+            return;
+        }
+        handleClose();
+        Toast.fire({
+            icon: 'info',
+            title: 'Üye onaylanıyor...'
+        });
+        FitzoneApi.UpdateUserRole(registerUser.id, registerUser.role).then(res => {
+            setRegisterUser({
+                id: '',
+                userName: '',
+                email: '',
+                role: '',
+            });
+            Toast.fire({
+                icon: 'success',
+                title: 'Üye onaylandı'
+            });
+            getRegisterUsers();
+        }).catch(err => {
+            Toast.fire({
+                icon: 'error',
+                title: 'Üye onaylanamadı'
+            });
+        })
+    }
 
     const columnsRegisterUsers: GridColDef[] = [
         {
@@ -288,12 +377,12 @@ const AdminPanel = () => {
             renderCell: (params) => (
                 <div className='flex gap-3 pr-2'>
                     <Tooltip title="Üyeyi Aktif Et">
-                        <button onClick={() => handleClickOpen()} className='flex items-center justify-center p-2 rounded-full text-green-600 hover:bg-gray-300 hover:text-green-700 transition-all'>
+                        <button onClick={() => checkRegisterUser(params.row)} className='flex items-center justify-center p-2 rounded-full text-green-600 hover:bg-gray-300 hover:text-green-700 transition-all'>
                             <BiUserCheck className='w-5 h-5' />
                         </button>
                     </Tooltip>
                     <Tooltip title="Üyeyi Sil">
-                        <button onClick={() => handleClickOpen()} className='flex items-center justify-center p-2 rounded-full text-red-400 hover:bg-gray-300 hover:text-red-500 transition-all'>
+                        <button onClick={() => handleDeleteRegisterUser(params.value)} className='flex items-center justify-center p-2 rounded-full text-red-400 hover:bg-gray-300 hover:text-red-500 transition-all'>
                             <AiFillDelete className='w-5 h-5' />
                         </button>
                     </Tooltip>
@@ -302,12 +391,6 @@ const AdminPanel = () => {
         }
     ]
 
-
-    const getRegisterUsers = () => {
-        FitzoneApi.GetRegisterUsers().then(res => {
-            setRegisterUsers(res.data);
-        })
-    }
 
     return (
         <div className='flex w-screen h-screen overflow-hidden'>
@@ -321,7 +404,7 @@ const AdminPanel = () => {
                         <Tab label="Yetki Altyapısı" {...a11yProps(0)} />
                         <Tab label="Dondurulmuş Antrenörler" {...a11yProps(1)} />
                         <Tab label="Dondurulmuş Üyeler" {...a11yProps(2)} />
-                        <Tab label="Kayıt Bekleyen Kullanıcılar" {...a11yProps(1)} />
+                        <Tab label="Kayıt Onayı Bekleyen Kullanıcılar" {...a11yProps(1)} />
                     </Tabs>
                     <TabPanel value={value} index={0}>
                         <TrainerPermissions />
@@ -339,25 +422,50 @@ const AdminPanel = () => {
                             <DataGrid rows={registerUsers} columns={columnsRegisterUsers} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
                             <div>
                                 <Dialog open={open} onClose={handleClose}>
-                                    <DialogTitle>Subscribe</DialogTitle>
+                                    <DialogTitle>Kullanıcı Onayı</DialogTitle>
                                     <DialogContent>
                                         <DialogContentText>
-                                            To subscribe to this website, please enter your email address here. We
-                                            will send updates occasionally.
+                                            Kullanıcıyı onaylamak istediğinizden emin misiniz?
                                         </DialogContentText>
                                         <TextField
                                             autoFocus
-                                            margin="dense"
+                                            margin="normal"
                                             id="name"
-                                            label="Email Address"
+                                            label="Kullanıcı Adı"
+                                            type="text"
+                                            fullWidth
+                                            value={registerUser.userName}
+                                            disabled
+                                            size='small'
+                                        />
+                                        <TextField
+                                            autoFocus
+                                            margin="normal"
+                                            id="name"
+                                            label="E-posta"
                                             type="email"
                                             fullWidth
-                                            variant="standard"
+                                            value={registerUser.email}
+                                            disabled
+                                            size='small'
                                         />
+                                        <FormControl fullWidth size='small' margin='normal'>
+                                            <InputLabel>Kullanıcı Rolü</InputLabel>
+                                            <Select
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                                value={registerUser.role}
+                                                label="Kullanıcı Rolü"
+                                                onChange={(e) => setRegisterUser({ ...registerUser, role: e.target.value })}
+                                            >
+                                                <MenuItem value="trainer">Antrenör</MenuItem>
+                                                <MenuItem value="member">Üye</MenuItem>
+                                            </Select>
+                                        </FormControl>
                                     </DialogContent>
                                     <DialogActions>
-                                        <Button onClick={handleClose}>Cancel</Button>
-                                        <Button onClick={handleClose}>Subscribe</Button>
+                                        <Button onClick={handleClose} variant='contained' color='warning'>İptal</Button>
+                                        <Button onClick={handleVerifyRegisterUser} variant='contained' color='success'>Onayla</Button>
                                     </DialogActions>
                                 </Dialog>
                             </div>

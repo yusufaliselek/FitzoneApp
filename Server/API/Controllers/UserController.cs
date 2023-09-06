@@ -24,12 +24,6 @@ namespace API.Controllers
             return ActionResultInstance(await _userService.CreateUserAsync(createUserDto));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterUserDto registerUserDto)
-        {
-            return ActionResultInstance(await _userService.RegisterUserAsync(registerUserDto));
-        }
-
         [HttpPut]
         public async Task<IActionResult> Update(UpdateUserDto updateUserDto)
         {
@@ -52,6 +46,24 @@ namespace API.Controllers
         public async Task<IActionResult> GetRegisterUsers()
         {
             return ActionResultInstance(await _userService.GetRegisterUsersAsync());
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateUserRole(string userId, string role)
+        {
+            return ActionResultInstance(await _userService.UpdateUserRole(userId, role));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterUserDto registerUserDto)
+        {
+            return ActionResultInstance(await _userService.RegisterUserAsync(registerUserDto));
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(string userId)
+        {
+            return ActionResultInstance(await _userService.DeleteUserAsync(userId));
         }
 
         // Trainers
