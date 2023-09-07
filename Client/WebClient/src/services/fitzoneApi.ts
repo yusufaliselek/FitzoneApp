@@ -241,6 +241,16 @@ export class FitzoneApi {
             })
         })
     }
+
+    public static async GetTrainerPermissionById(id: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().get('/TrainerPermission/GetById?trainerPermissionId=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
     /////// Trainer Permission - End ///////
 
     /////// Trainer - Start ///////

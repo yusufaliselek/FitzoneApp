@@ -17,14 +17,14 @@ const TextInput = ({
     id?: string;
     disabled?: boolean;
     value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
     return (
         <div className='w-full text-blue-700'>
             {
                 label && <label
                     htmlFor={id}
-                    className="block mb-2 text-sm font-medium pl-1">
+                    className="block mb-1 text-sm font-medium pl-1">
                     {label}
                 </label>
             }

@@ -21,7 +21,7 @@ import TrainerDetail from '../pages/Trainers/TrainerDetail';
 import AddMember from '../pages/Members/AddMember';
 import Members from '../pages/Members/Members';
 import MemberDetail from '../pages/Members/MemberDetail';
-import AssignRole from '../pages/AdminPanel/AssignRole';
+import AssignPermission from '../pages/AdminPanel/AssignPermission';
 
 const Router = () => {
     return (
@@ -45,7 +45,7 @@ const Router = () => {
                 <Route path='/settings' element={<Settings />} />
 
                 <Route path='/admin' element={<AdminPanel />} />
-                <Route path='/admin/assignrole/:id' element={<AssignRole />} />
+                <Route path='/admin/assignpermission/:id' element={<AssignPermission />} />
 
                 <Route path='*' element={<Login />} />
             </Routes>

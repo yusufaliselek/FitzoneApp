@@ -12,41 +12,10 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { BiCheckbox, BiCheckboxChecked } from 'react-icons/bi';
 import { decodeJwt } from 'jose';
+import { TrainerPermissionParamCheckboxes } from '../../utils/constants/TrainerPermissionParamCheckboxes';
+import { TrainerPermissionParamLabels } from '../../utils/constants/TrainerPermissionParamLabels';
+import { TrainerPermissionParams } from '../../utils/constants/TrainerPermissionParams';
 
-const trainerPermissionParamCheckboxes = [
-    'canCreateUser', 'canEditUser', 'canDeleteUser', 'canCreateRole', 'canEditRole',
-    'canDeleteRole', 'canCreateTraining', 'canEditTraining', 'canDeleteTraining',
-    'canCreateTrainingCategory', 'canEditTrainingCategory', 'canDeleteTrainingCategory',
-    'canCreateMember', 'canEditMember', 'canDeleteMember', 'canSetRole'
-];
-
-const trainerPermissionParamLabels = [
-    'Kullanıcı Oluşturabilir', 'Kullanıcı Düzenleyebilir', 'Kullanıcı Silebilir', 'Rol Oluşturabilir', 'Rol Düzenleyebilir',
-    'Rol Silebilir', 'Eğitim Oluşturabilir', 'Eğitim Düzenleyebilir', 'Eğitim Silebilir', 'Eğitim Kategorisi Oluşturabilir',
-    'Eğitim Kategorisi Düzenleyebilir', 'Eğitim Kategorisi Silebilir', 'Üye Oluşturabilir', 'Üye Düzenleyebilir',
-    'Üye Silebilir', 'Rol Atayabilir'
-];
-
-const trainerPermissionParams: IGetTrainerPermissionById = {
-    id: '',
-    name: '',
-    canCreateUser: false,
-    canEditUser: false,
-    canDeleteUser: false,
-    canCreateRole: false,
-    canEditRole: false,
-    canDeleteRole: false,
-    canCreateTraining: false,
-    canEditTraining: false,
-    canDeleteTraining: false,
-    canCreateTrainingCategory: false,
-    canEditTrainingCategory: false,
-    canDeleteTrainingCategory: false,
-    canCreateMember: false,
-    canEditMember: false,
-    canDeleteMember: false,
-    canSetRole: false,
-};
 
 const TrainerPermissions = () => {
 
@@ -54,7 +23,7 @@ const TrainerPermissions = () => {
 
     // Trainer Permissions State
     const [filteredTrainerPermissions, setFilteredTrainerPermissions] = useState<IGetTrainerPermissionById[]>([]);
-    const [trainerPermissionForm, setTrainerPermissionForm] = useState<IGetTrainerPermissionById>(trainerPermissionParams);
+    const [trainerPermissionForm, setTrainerPermissionForm] = useState<IGetTrainerPermissionById>(TrainerPermissionParams);
     const [trainerPermissionData, setTrainerPermissionData] = useState<IGetTrainerPermissionById[]>([]);
     const [filterText, setFilterText] = useState('');
     const [trainers, setTrainers] = useState<any[]>([]);
@@ -119,13 +88,13 @@ const TrainerPermissions = () => {
             minWidth: 200,
         },
         {
-            field: 'actions',
+            field: 'id',
             headerName: 'İşlemler',
-            minWidth: 200,
+            minWidth: 250,
             renderCell: (params) => (
                 <div className='flex justify-center gap-2'>
                     <FButton text='Düzenle' onClick={() => handleEditTrainerPermission(params.row)} />
-                    <FButton text="Rol Ata" onClick={() => navigate(`/admin/assignrole/${params.row.id}`)} theme='success' />
+                    <FButton text="Yetki Ata" onClick={() => navigate(`/admin/assignpermission/${params.value}`)} theme='success' />
                     <FButton text='Sil' onClick={() => deleteTrainerPermissionDialog(params.row)} theme='danger' />
                 </div>
             )
@@ -152,14 +121,14 @@ const TrainerPermissions = () => {
     }, [filterText]);
 
     const resetTrainerPermissionForm = () => {
-        setTrainerPermissionForm(trainerPermissionParams);
+        setTrainerPermissionForm(TrainerPermissionParams);
         setIsOpen(false)
         setDialogIsOpen(false);
     };
 
     const handleCreateTrainerPermission = () => {
         setFormType('create');
-        setTrainerPermissionForm(trainerPermissionParams);
+        setTrainerPermissionForm(TrainerPermissionParams);
         setIsOpen(true);
     }
 
@@ -254,7 +223,7 @@ const TrainerPermissions = () => {
                     </div>
                 </div>
                 <div className='w-full h-full'>
-                    <DataGrid rows={filteredTrainerPermissions} columns={columns} pageSize={30} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
+                    <DataGrid rows={filteredTrainerPermissions} columns={columns} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
                 </div>
             </motion.div>
             <AnimatePresence>
@@ -278,11 +247,11 @@ const TrainerPermissions = () => {
                                     <div className='px-2 py-1'>
                                         <TextInput placeholder='Yetki Adı' value={trainerPermissionForm.name} onChange={(e) => setTrainerPermissionForm({ ...trainerPermissionForm, name: e.target.value })} />
                                     </div>
-                                    {trainerPermissionParamCheckboxes.map((item, index) => (
+                                    {TrainerPermissionParamCheckboxes.map((item, index) => (
                                         <FormControlLabel
                                             key={index}
                                             control={<Checkbox checked={Boolean(trainerPermissionForm[item as keyof IGetTrainerPermissionById])} onChange={handleTrainerPermissionForm} name={item} />}
-                                            label={trainerPermissionParamLabels[index]}
+                                            label={TrainerPermissionParamLabels[index]}
                                         />
                                     ))}
                                 </div>
@@ -346,9 +315,9 @@ const TrainerPermissions = () => {
                             <div>
                                 <span className='font-semibold'>Yetkiler:</span>
                                 <div>
-                                    {trainerPermissionParamCheckboxes.map((item, index) => (
+                                    {TrainerPermissionParamCheckboxes.map((item, index) => (
                                         <div key={index} className={`flex items-center gap-2 ${index === 0 ? "" : "border-t"} py-1`}>
-                                            <span>{trainerPermissionParamLabels[index]}</span>
+                                            <span>{TrainerPermissionParamLabels[index]}</span>
                                             <span>{Boolean(trainerPermissionForm[item as keyof IGetTrainerPermissionById]) ? <BiCheckboxChecked size={20} color='green' /> : <BiCheckbox size={20} color='red' />}</span>
                                         </div>
                                     ))}

@@ -13,6 +13,7 @@ import { Tooltip } from '@mui/material';
 import Toast from '../../components/Toast/Toast';
 import Swal from 'sweetalert2';
 import { BsPersonBadgeFill } from 'react-icons/bs';
+import Content from '../../components/Content/Content';
 
 const Trainers = () => {
 
@@ -147,9 +148,7 @@ const Trainers = () => {
   }
 
   return (
-    <div className='flex w-screen h-screen'>
-      {/* Navbar */}
-      <Nav pageName='Antrenörler' />
+    <Content title='Antrenörler' content={
       <div className='flex flex-col w-full h-screen'>
         {/* Header */}
         <Header pageName='Antrenörler' {...(permission && { addContent: 'Antrenör Ekle', addContentIcon: <BsPersonBadgeFill className='h-7 w-7' />, addContentAction: navigateAddTrainer })} />
@@ -157,7 +156,7 @@ const Trainers = () => {
           <DataGrid rows={trainerData} columns={columns} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
         </div>
       </div>
-    </div>
+    } />
   )
 }
 
