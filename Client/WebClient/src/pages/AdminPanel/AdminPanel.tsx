@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Nav from '../../components/Nav/Nav';
-import FitzoneHeader from '../../components/Header/FitzoneHeader';
+import Header from '../../components/Header/Header';
 import { Box, Checkbox, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, IconButton, Tab, Tabs, Tooltip, DialogContentText, TextField, Select, FormControl, InputLabel, MenuItem } from '@mui/material';
 import { FitzoneApi } from '../../services/fitzoneApi';
 import { IGetTrainerPermissionById } from '../../types/Types';
@@ -398,7 +398,7 @@ const AdminPanel = () => {
             <Nav pageName='' />
             <div className='flex flex-col w-full h-screen'>
                 {/* Header */}
-                <FitzoneHeader pageName='Admin Paneli' />
+                <Header pageName='Admin Paneli' />
                 <Box sx={{ width: '100%', paddingX: 2, height: "calc(100vh-112px)" }}>
                     <Tabs value={value} onChange={handleChangeTabs}>
                         <Tab label="Yetki Altyapısı" {...a11yProps(0)} />

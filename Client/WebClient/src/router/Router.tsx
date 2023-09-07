@@ -21,6 +21,7 @@ import TrainerDetail from '../pages/Trainers/TrainerDetail';
 import AddMember from '../pages/Members/AddMember';
 import Members from '../pages/Members/Members';
 import MemberDetail from '../pages/Members/MemberDetail';
+import AssignRole from '../pages/AdminPanel/AssignRole';
 
 const Router = () => {
     return (
@@ -42,7 +43,10 @@ const Router = () => {
                 <Route path='/training' element={<Training />} />
                 <Route path='/calendar' element={<Calendar />} />
                 <Route path='/settings' element={<Settings />} />
+
                 <Route path='/admin' element={<AdminPanel />} />
+                <Route path='/admin/assignrole/:id' element={<AssignRole />} />
+
                 <Route path='*' element={<Login />} />
             </Routes>
         </BrowserRouter>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Nav from '../../components/Nav/Nav';
-import FitzoneHeader from '../../components/Header/FitzoneHeader';
+import Header from '../../components/Header/Header';
 import { FitzoneApi } from '../../services/fitzoneApi';
 import { motion } from 'framer-motion';
 import { BsPersonBadgeFill } from 'react-icons/bs';
@@ -118,7 +118,7 @@ const TrainerDetail = () => {
             <Nav pageName='Antrenörler' />
             <div className='flex flex-col w-full h-screen'>
                 {/* Header */}
-                <FitzoneHeader pageName='Antrenör Bilgisi' />
+                <Header pageName='Antrenör Bilgisi' />
                 <div className='w-full h-[calc(100vh-65px)] p-5 flex justify-center'>
                     {/* FORM SIDE */}
                     <motion.div

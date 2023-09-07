@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { decodeJwt } from 'jose';
-import FitzoneHeader from '../../components/Header/FitzoneHeader';
+import Header from '../../components/Header/Header';
 import Nav from '../../components/Nav/Nav';
 import { FitzoneApi } from '../../services/fitzoneApi';
 import Cookies from 'js-cookie';
@@ -152,7 +152,7 @@ const Trainers = () => {
       <Nav pageName='Antrenörler' />
       <div className='flex flex-col w-full h-screen'>
         {/* Header */}
-        <FitzoneHeader pageName='Antrenörler' {...(permission && { addContent: 'Antrenör Ekle', addContentIcon: <BsPersonBadgeFill className='h-7 w-7' />, addContentAction: navigateAddTrainer })} />
+        <Header pageName='Antrenörler' {...(permission && { addContent: 'Antrenör Ekle', addContentIcon: <BsPersonBadgeFill className='h-7 w-7' />, addContentAction: navigateAddTrainer })} />
         <div className='w-full h-[calc(100vh-65px)] p-5'>
           <DataGrid rows={trainerData} columns={columns} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
         </div>

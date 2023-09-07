@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { FitzoneApi } from '../../services/fitzoneApi'
 import Toast from '../../components/Toast/Toast'
 import Nav from '../../components/Nav/Nav'
-import FitzoneHeader from '../../components/Header/FitzoneHeader'
+import Header from '../../components/Header/Header'
 import TextInput from '../../components/TextInput/TextInput'
 import { RiAccountCircleLine } from 'react-icons/ri'
 import FButton from '../../components/Button/FButton'
@@ -93,7 +93,7 @@ const MemberDetail = () => {
       <Nav pageName='Üyeler' />
       <div className='flex flex-col w-full h-screen'>
         {/* Header */}
-        <FitzoneHeader pageName='Üye Bilgisi' />
+        <Header pageName='Üye Bilgisi' />
         <div className='flex justify-center w-full h-full'>
           <div className='flex flex-col w-2/5 gap-4 mt-[3%] p-5'>
             <div className='mt-3 flex items-center justify-center'>

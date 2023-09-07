@@ -4,7 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import FitzoneHeader from '../../components/Header/FitzoneHeader';
+import Header from '../../components/Header/Header';
 import Nav from '../../components/Nav/Nav';
 import { FitzoneApi } from '../../services/fitzoneApi';
 import { BsDiagram3, BsPersonCircle } from 'react-icons/bs';
@@ -278,7 +278,7 @@ const Settings = () => {
             <Nav pageName='Ayarlar' />
             <div className='flex flex-col w-full h-screen'>
                 {/* Header */}
-                <FitzoneHeader pageName='Ayarlar' />
+                <Header pageName='Ayarlar' />
                 <Box sx={{ width: '100%', paddingX: 2, overflowY: "auto", height: "calc(100vh-112px)" }}>
                     <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                         <Tab label="Bilgilerim" {...a11yProps(0)} />

@@ -125,6 +125,7 @@ const TrainerPermissions = () => {
             renderCell: (params) => (
                 <div className='flex justify-center gap-2'>
                     <FButton text='Düzenle' onClick={() => handleEditTrainerPermission(params.row)} />
+                    <FButton text="Rol Ata" onClick={() => navigate(`/admin/assignrole/${params.row.id}`)} theme='success' />
                     <FButton text='Sil' onClick={() => deleteTrainerPermissionDialog(params.row)} theme='danger' />
                 </div>
             )

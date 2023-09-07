@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { RiAccountCircleLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 
-import AddContentHeader from '../../components/Header/FitzoneHeader';
+import AddContentHeader from '../../components/Header/Header';
 import Nav from '../../components/Nav/Nav';
 import { Tooltip } from '@mui/material';
 import { BiShow } from 'react-icons/bi';

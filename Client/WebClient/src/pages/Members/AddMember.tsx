@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Nav from '../../components/Nav/Nav';
 import FButton from '../../components/Button/FButton';
 import { useNavigate } from 'react-router-dom';
-import FitzoneHeader from '../../components/Header/FitzoneHeader';
+import Header from '../../components/Header/Header';
 import TextInput from '../../components/TextInput/TextInput';
 import Cookies from 'js-cookie';
 import { decodeJwt } from 'jose';
@@ -125,7 +125,7 @@ const AddMember = () => {
       <Nav pageName='Üyeler' />
       <div className='flex flex-col w-full h-screen'>
         {/* Header */}
-        <FitzoneHeader pageName='Üye Kayıt' />
+        <Header pageName='Üye Kayıt' />
         <div className='flex justify-center w-full h-full'>
           <form onSubmit={handleSubmit} className='flex flex-col w-2/5 gap-4 mt-[3%] p-5'>
             <div className='mt-3 flex items-center justify-center'>

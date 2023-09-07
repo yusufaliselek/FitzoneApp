@@ -1,6 +1,6 @@
 import React from 'react'
 import Nav from '../../components/Nav/Nav';
-import AddContentHeader from '../../components/Header/FitzoneHeader';
+import AddContentHeader from '../../components/Header/Header';
 
 
 

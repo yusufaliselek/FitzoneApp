@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { FitzoneApi } from '../../services/fitzoneApi';
 import FButton from '../Button/FButton';
 
-const FitzoneHeader = ({
+const Header = ({
   pageName, addContent, addContentIcon, addContentAction }
   :
   { pageName: string, addContent?: string, addContentIcon?: JSX.Element, addContentAction?: any }) => {
@@ -57,4 +57,4 @@ const FitzoneHeader = ({
   )
 }
 
-export default FitzoneHeader;
+export default Header;
