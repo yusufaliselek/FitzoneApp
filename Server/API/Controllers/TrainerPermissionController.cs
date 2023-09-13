@@ -46,6 +46,12 @@ namespace API.Controllers
             return ActionResultInstance(await _trainerPermissionService.UpdateTrainerPermissionAsync(updateTrainerPermissionDto));
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateTrainer(UpdateTrainerPermissionTrainerDto updateTrainerPermissionTrainerDto)
+        {
+            return ActionResultInstance(await _trainerPermissionService.UpdateTrainerPermissionTrainerAsync(updateTrainerPermissionTrainerDto));
+        }
+
         [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
