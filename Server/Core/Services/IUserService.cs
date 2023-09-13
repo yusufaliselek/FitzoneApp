@@ -1,4 +1,5 @@
 ﻿using Core.DTOs;
+using Core.DTOs.TrainerPermissionDTOs;
 using Core.DTOs.UserDTOs;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ namespace Server.Core.Services
         Task<CustomResponseDto<UserDto>> DeleteTrainerAsync(string trainerId);
         Task<CustomResponseDto<UserDto>> FreezeTrainer(string trainerId);
         Task<CustomResponseDto<UserDto>> UnfreezeTrainer(string trainerId);
+        Task<CustomResponseDto<List<TrainerWithPermissionDto>>> GetTrainersWithTrainerPermissionsAsync();
+
 
         // Members
         Task<CustomResponseDto<List<UserDto>>> GetAllActiveMembers();

@@ -5,9 +5,7 @@ import Header from '../../components/Header/Header'
 import { FitzoneApi } from '../../services/fitzoneApi'
 import TextInput from '../../components/TextInput/TextInput'
 import { TrainerPermissionParams } from '../../utils/constants/TrainerPermissionParams'
-import { motion } from 'framer-motion'
 import FButton from '../../components/Button/FButton'
-import Spinner from '../../components/Spinner/Spinner'
 
 const AssignPermission = () => {
     const { id } = useParams()
@@ -16,12 +14,22 @@ const AssignPermission = () => {
     const [trainerPermission, setTrainerPermission] = useState(TrainerPermissionParams)
     const [trainers, setTrainers] = useState<any>([])
 
+    const assingPermissionToTrainer = (trainerId: string) => {
+        const data = {
+            trainerId: trainerId,
+            permissionId: id
+        }
+        FitzoneApi.UpdateTrainerPermissionTrainer(data).then((result) => {
+            console.log(result)
+        })
+    }
+
     useEffect(() => {
         if (!id) {
             navigate('/dashboard')
         }
         Promise.all([
-            FitzoneApi.GetAllActiveTrainers(),
+            FitzoneApi.GetTrainersWithTrainerPermissions(),
             FitzoneApi.GetTrainerPermissionById(String(id))
         ]).then((result) => {
             const [trainers, permission] = result
@@ -48,7 +56,7 @@ const AssignPermission = () => {
                                     >
                                         <label className="ml-2 text-gray-700">{trainer.userName} - {trainer.email}</label>
                                         <div className='w-fit'>
-                                            <FButton text='Yetki Ver' onClick={() => console.log(trainer.id)} />
+                                            <FButton text='Yetki Ver' onClick={() => assingPermissionToTrainer(trainer.id)} />
                                         </div>
                                     </div>
                                 )

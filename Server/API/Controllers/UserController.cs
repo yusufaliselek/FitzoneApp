@@ -102,6 +102,12 @@ namespace API.Controllers
             return ActionResultInstance(await _userService.UnfreezeTrainer(trainerId));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetTrainersWithTrainerPermissions()
+        {
+            return ActionResultInstance(await _userService.GetTrainersWithTrainerPermissionsAsync());
+        }
+
         // Members
         [Authorize]
         [HttpGet]

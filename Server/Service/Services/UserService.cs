@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Core.DTOs;
+using Core.DTOs.TrainerPermissionDTOs;
 using Core.DTOs.UserDTOs;
+using Core.Models;
 using Core.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +15,14 @@ namespace Server.Service.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
-        public UserService(UserManager<User> userManager, IMapper mapper, IUserRepository userRepository)
+        private readonly IGenericService<TrainerPermission> _genericServiceTrainerPermission;
+        private readonly IGenericService<TrainerDetail> _genericServiceTrainerDetail;
+        public UserService(UserManager<User> userManager, IMapper mapper, IUserRepository userRepository, IGenericService<TrainerPermission> genericServiceTrainerPermission, IGenericService<TrainerDetail> genericServiceTrainerDetail)
         {
             _userManager = userManager;
             _mapper = mapper;
+            _genericServiceTrainerPermission = genericServiceTrainerPermission;
+            _genericServiceTrainerDetail = genericServiceTrainerDetail;
         }
 
         public async Task<CustomResponseDto<UserDto>> CreateUserAsync(CreateUserDto createUserDto)
@@ -228,6 +234,36 @@ namespace Server.Service.Services
                 return CustomResponseDto<UserDto>.Fail(400, errors);
             }
             return CustomResponseDto<UserDto>.Success(200, _mapper.Map<UserDto>(user));
+        }
+
+        public async Task<CustomResponseDto<List<TrainerWithPermissionDto>>> GetTrainersWithTrainerPermissionsAsync()
+        {
+            var trainers = await _userManager.Users.Where(x => x.Role == "trainer" && x.IsActive == true).ToListAsync();
+            var trainerDetails = await _genericServiceTrainerDetail.GetAllAsync();
+            var trainerPermissions = await _genericServiceTrainerPermission.GetAllAsync();
+            var trainerWithPermissions = new List<TrainerWithPermissionDto>();
+            for (int i = 0; i < trainers.Count; i++)
+            {
+                var trainer = trainers[i];
+                var trainerDetail = trainerDetails.Where(item => item.TrainerId == trainer.Id).FirstOrDefault();
+                var trainerPermissionId = "";
+                var trainerPermissionName = "";
+                if (trainerDetail != null && trainerDetail.TrainerPermissionId != null)
+                {
+                    trainerPermissionId = trainerPermissions.Where(item => item.Id == trainerDetail.TrainerPermissionId).FirstOrDefault().Id;
+                    trainerPermissionName = trainerPermissions.Where(item => item.Id == trainerDetail.TrainerPermissionId).FirstOrDefault().Name;
+                }
+                var trainerWithPermission = new TrainerWithPermissionDto
+                {
+                    Id = trainer.Id,
+                    UserName = trainer.UserName,
+                    Email = trainer.Email,
+                    TrainerPermissionId = trainerPermissionId,
+                    TrainerPermissionName = trainerPermissionName
+                };
+                trainerWithPermissions.Add(trainerWithPermission);
+            }
+            return CustomResponseDto<List<TrainerWithPermissionDto>>.Success(200, trainerWithPermissions);
         }
 
         public async Task<CustomResponseDto<List<UserDto>>> GetAllActiveMembers()

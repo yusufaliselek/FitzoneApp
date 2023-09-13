@@ -285,6 +285,16 @@ export class FitzoneApi {
         })
     }
 
+    public static async GetTrainersWithTrainerPermissions(): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().get('/User/GetTrainersWithTrainerPermissions').then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
 
     // Delete Trainer
     public static async DeleteTrainer(id: string): Promise<any> {
