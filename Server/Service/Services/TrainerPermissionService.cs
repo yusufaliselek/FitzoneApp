@@ -80,5 +80,26 @@ namespace Service.Services
             await _genericService.UpdateAsync(trainerPermissionUpdate);
             return CustomResponseDto<TrainerPermissionDto>.Success(200, _mapper.Map<TrainerPermissionDto>(trainerPermissionUpdate));
         }
+
+        public async Task<CustomResponseDto<TrainerPermissionDto>> UpdateTrainerPermissionTrainerAsync(UpdateTrainerPermissionTrainerDto updateTrainerPermissionTrainerDto)
+        {
+            var trainerPermission = await _genericService.GetByIdAsync(updateTrainerPermissionTrainerDto.PermissionId);
+            var trainer = await _userManager.FindByIdAsync(updateTrainerPermissionTrainerDto.TrainerId);
+            var trainerDetail = await _genericServiceTrainerDetail.Where(item => item.TrainerId == updateTrainerPermissionTrainerDto.TrainerId).FirstOrDefaultAsync();
+            if (trainerDetail == null)
+            {
+                var trainerDetailNew = new TrainerDetail
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    TrainerId = updateTrainerPermissionTrainerDto.TrainerId,
+                    TrainerPermissionId = updateTrainerPermissionTrainerDto.PermissionId
+                };
+                await _genericServiceTrainerDetail.AddAsync(trainerDetailNew);
+                return CustomResponseDto<TrainerPermissionDto>.Success(200, _mapper.Map<TrainerPermissionDto>(trainerPermission));
+            }
+            trainerDetail.TrainerPermissionId = updateTrainerPermissionTrainerDto.PermissionId;
+            await _genericServiceTrainerDetail.UpdateAsync(trainerDetail);
+            return CustomResponseDto<TrainerPermissionDto>.Success(200, _mapper.Map<TrainerPermissionDto>(trainerPermission));
+        }
     }
 }

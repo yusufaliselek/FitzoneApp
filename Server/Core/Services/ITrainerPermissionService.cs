@@ -16,6 +16,7 @@ namespace Core.Services
         Task<CustomResponseDto<List<TrainerPermissionDto>>> GetAllTrainerPermissionsAsync();
         Task<CustomResponseDto<List<UserDto>>> GetTrainersByTrainerPermissionIdAsync(string trainerPermissionById);
         Task<CustomResponseDto<TrainerPermissionDto>> UpdateTrainerPermissionAsync(TrainerPermissionDto updateTrainerPermissionDto);
+        Task<CustomResponseDto<TrainerPermissionDto>> UpdateTrainerPermissionTrainerAsync(UpdateTrainerPermissionTrainerDto updateTrainerPermissionTrainerDto);
         Task<CustomResponseDto<string>> DeleteTrainerPermissionAsync(string trainerPermissionById);
     }
 }

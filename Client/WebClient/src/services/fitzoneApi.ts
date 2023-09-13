@@ -251,6 +251,16 @@ export class FitzoneApi {
             })
         })
     }
+
+    public static async UpdateTrainerPermissionTrainer(data: any): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().put('/TrainerPermission/UpdateTrainer', data).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
     /////// Trainer Permission - End ///////
 
     /////// Trainer - Start ///////
