@@ -157,6 +157,7 @@ namespace Server.Service.Services
                 return CustomResponseDto<UserDto>.Fail(404, "User not found!");
             }
             user.Role = role;
+            user.IsActive = true;
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
