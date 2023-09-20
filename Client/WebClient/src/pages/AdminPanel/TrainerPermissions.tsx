@@ -1,4 +1,4 @@
-import { DataGrid, GridCloseIcon, GridColDef, trTR } from '@mui/x-data-grid';
+import { GridCloseIcon, GridColDef, trTR } from '@mui/x-data-grid';
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import FButton from '../../components/Button/FButton';
@@ -15,6 +15,7 @@ import { decodeJwt } from 'jose';
 import { TrainerPermissionParamCheckboxes } from '../../utils/constants/TrainerPermissionParamCheckboxes';
 import { TrainerPermissionParamLabels } from '../../utils/constants/TrainerPermissionParamLabels';
 import { TrainerPermissionParams } from '../../utils/constants/TrainerPermissionParams';
+import StyledDataGrid from '../../components/StyledDataGrid/StyledDataGrid';
 
 
 const TrainerPermissions = () => {
@@ -92,9 +93,9 @@ const TrainerPermissions = () => {
             headerName: 'İşlemler',
             minWidth: 250,
             renderCell: (params) => (
-                <div className='flex justify-center gap-2'>
+                <div className='flex justify-center gap-2 w-full'>
                     <FButton text='Düzenle' onClick={() => handleEditTrainerPermission(params.row)} />
-                    <FButton text="Yetki Ata" onClick={() => navigate(`/admin/assignpermission/${params.value}`)} theme='success' />
+                    <FButton text="Atamalar" onClick={() => navigate(`/admin/assignpermission/${params.value}`)} theme='success' />
                     <FButton text='Sil' onClick={() => deleteTrainerPermissionDialog(params.row)} theme='danger' />
                 </div>
             )
@@ -216,14 +217,14 @@ const TrainerPermissions = () => {
             <motion.div className={`${isOpen ? "w-[80%]" : "w-full"} h-[calc(100vh-112px)] overflow-y-auto flex flex-col gap-2 items-center`} layout>
                 <div className='w-full mt-5 flex'>
                     <div className='w-[80%] px-1'>
-                        <TextInput placeholder='Yetki Arayın' value={filterText} onChange={(e) => setFilterText(e.target.value)} />
+                        <TextInput placeholder='Hızlı Ara..' value={filterText} onChange={(e) => setFilterText(e.target.value)} />
                     </div>
                     <div className='w-[20%] px-1'>
                         <FButton text='Yetki Ekle' onClick={handleCreateTrainerPermission} />
                     </div>
                 </div>
                 <div className='w-full h-full'>
-                    <DataGrid rows={filteredTrainerPermissions} columns={columns} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
+                    <StyledDataGrid rows={filteredTrainerPermissions} columns={columns} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
                 </div>
             </motion.div>
             <AnimatePresence>

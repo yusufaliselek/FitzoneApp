@@ -22,6 +22,7 @@ import { TbListDetails } from 'react-icons/tb';
 import { motion } from 'framer-motion';
 import { cities } from '../../assets/Cities';
 import genders from '../../assets/Genders';
+import { AntTab, AntTabs } from '../../components/Tabs/Tabs';
 
 const trainerPermissionParamCheckboxes = [
     'canCreateUser', 'canEditUser', 'canDeleteUser', 'canCreateRole', 'canEditRole',
@@ -280,11 +281,11 @@ const Settings = () => {
                 {/* Header */}
                 <Header pageName='Ayarlar' />
                 <Box sx={{ width: '100%', paddingX: 2, overflowY: "auto", height: "calc(100vh-112px)" }}>
-                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                        <Tab label="Bilgilerim" {...a11yProps(0)} />
-                        <Tab label="Güvenlik Ayarlarım" {...a11yProps(1)} />
-                        <Tab label="Yetkilerim" {...a11yProps(2)} />
-                    </Tabs>
+                    <AntTabs value={value} onChange={handleChange}>
+                        <AntTab label="Bilgilerim" {...a11yProps(0)} />
+                        <AntTab label="Güvenlik Ayarlarım" {...a11yProps(1)} />
+                        <AntTab label="Yetkilerim" {...a11yProps(2)} />
+                    </AntTabs>
                     <TabPanel value={value} index={0}>
                         <div className='w-full h-[calc(100vh-112px)] overflow-y-auto flex flex-col gap-2 items-center'>
                             {/* FORM SIDE */}

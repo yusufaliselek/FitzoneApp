@@ -3,10 +3,12 @@ import Swal from 'sweetalert2';
 import Toast from '../../components/Toast/Toast';
 import { FitzoneApi } from '../../services/fitzoneApi';
 import { useNavigate } from 'react-router-dom';
-import { DataGrid, GridColDef, trTR } from '@mui/x-data-grid';
+import { GridColDef, trTR } from '@mui/x-data-grid';
 import { BiShow, BiUserCheck } from 'react-icons/bi';
 import { Tooltip } from '@mui/material';
 import { AiFillDelete } from 'react-icons/ai';
+import StyledDataGrid from '../../components/StyledDataGrid/StyledDataGrid';
+import TextInput from '../../components/TextInput/TextInput';
 
 const PassiveTrainers = () => {
 
@@ -150,15 +152,20 @@ const PassiveTrainers = () => {
         })
     }
     return (
-        <div className='flex justify-center items-center w-full h-[calc(100vh-120px)] mt-1'>
-            <DataGrid 
-            rows={passiveTrainers} 
-            columns={columnsPassiveTrainer} 
-            localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
-            disableColumnFilter={true}
-            disableColumnMenu={true}
-            disableColumnSelector={true}       
-            />
+        <div className='h-[calc(100vh-112px)] overflow-y-auto flex flex-col gap-2 items-center'>
+            <div className='w-full px-1 mt-5'>
+                <TextInput placeholder='Hızlı Ara..' value={""} onChange={(e) => { }} />
+            </div>
+            <div className='w-full h-full'>
+                <StyledDataGrid
+                    rows={passiveTrainers}
+                    columns={columnsPassiveTrainer}
+                    localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
+                    disableColumnFilter={true}
+                    disableColumnMenu={true}
+                    disableColumnSelector={true}
+                />
+            </div>
         </div>
     )
 }

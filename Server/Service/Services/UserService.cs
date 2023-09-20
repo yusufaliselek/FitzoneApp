@@ -267,6 +267,44 @@ namespace Server.Service.Services
             return CustomResponseDto<List<TrainerWithPermissionDto>>.Success(200, trainerWithPermissions);
         }
 
+        public async Task<CustomResponseDto<List<TrainerWithPermissionDto>>> GetTrainersWithPermissionIncludeNoOtherIdByPermissionIdAsync(string permissionId)
+        {
+            var trainers = await _userManager.Users.Where(x => x.Role == "trainer" && x.IsActive == true).ToListAsync();
+            // if have another id dont add but if dont have id add
+            var trainerDetails = await _genericServiceTrainerDetail.GetAllAsync();
+            var trainerPermissions = await _genericServiceTrainerPermission.GetAllAsync();
+            var trainerWithPermissions = new List<TrainerWithPermissionDto>();
+            for (int i = 0; i < trainers.Count; i++)
+            {
+                var trainer = trainers[i];
+                var trainerDetail = trainerDetails.Where(item => item.TrainerId == trainer.Id).FirstOrDefault();
+                var trainerPermissionId = "";
+                var trainerPermissionName = "";
+                if (trainerDetail != null && trainerDetail.TrainerPermissionId != null)
+                {
+                    trainerPermissionId = trainerPermissions.Where(item => item.Id == trainerDetail.TrainerPermissionId).FirstOrDefault().Id;
+                    trainerPermissionName = trainerPermissions.Where(item => item.Id == trainerDetail.TrainerPermissionId).FirstOrDefault().Name;
+                }
+                var trainerWithPermission = new TrainerWithPermissionDto
+                {
+                    Id = trainer.Id,
+                    UserName = trainer.UserName,
+                    Email = trainer.Email,
+                    TrainerPermissionId = trainerPermissionId,
+                    TrainerPermissionName = trainerPermissionName
+                };
+                if (trainerPermissionId == permissionId || trainerPermissionId == "")
+                {
+                    trainerWithPermissions.Add(trainerWithPermission);
+                }
+            }
+            trainerWithPermissions.Sort((x, y) => string.Compare(x.UserName, y.UserName));
+           
+            return CustomResponseDto<List<TrainerWithPermissionDto>>.Success(200, trainerWithPermissions);
+        }
+
+        // Member
+
         public async Task<CustomResponseDto<List<UserDto>>> GetAllActiveMembers()
         {
             var users = await _userManager.Users.Where(x => x.Role == "member" && x.IsActive == true).ToListAsync();

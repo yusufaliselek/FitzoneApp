@@ -27,6 +27,7 @@ namespace Server.Core.Services
         Task<CustomResponseDto<UserDto>> FreezeTrainer(string trainerId);
         Task<CustomResponseDto<UserDto>> UnfreezeTrainer(string trainerId);
         Task<CustomResponseDto<List<TrainerWithPermissionDto>>> GetTrainersWithTrainerPermissionsAsync();
+        Task<CustomResponseDto<List<TrainerWithPermissionDto>>> GetTrainersWithPermissionIncludeNoOtherIdByPermissionIdAsync(string permissionId);
 
 
         // Members

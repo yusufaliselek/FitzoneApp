@@ -5,15 +5,15 @@ import Header from '../../components/Header/Header';
 import Nav from '../../components/Nav/Nav';
 import { FitzoneApi } from '../../services/fitzoneApi';
 import Cookies from 'js-cookie';
-import { DataGrid, GridColDef, trTR } from '@mui/x-data-grid';
+import { GridColDef, trTR } from '@mui/x-data-grid';
 import { BiShow } from 'react-icons/bi';
 import { FaUserSlash } from 'react-icons/fa';
-import { RiAccountCircleLine } from 'react-icons/ri';
 import { Tooltip } from '@mui/material';
 import Toast from '../../components/Toast/Toast';
 import Swal from 'sweetalert2';
 import { BsPersonBadgeFill } from 'react-icons/bs';
 import Content from '../../components/Content/Content';
+import StyledDataGrid from '../../components/StyledDataGrid/StyledDataGrid';
 
 const Trainers = () => {
 
@@ -153,7 +153,7 @@ const Trainers = () => {
         {/* Header */}
         <Header pageName='Antrenörler' {...(permission && { addContent: 'Antrenör Ekle', addContentIcon: <BsPersonBadgeFill className='h-7 w-7' />, addContentAction: navigateAddTrainer })} />
         <div className='w-full h-[calc(100vh-65px)] p-5'>
-          <DataGrid rows={trainerData} columns={columns} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
+          <StyledDataGrid rows={trainerData} columns={columns} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
         </div>
       </div>
     } />

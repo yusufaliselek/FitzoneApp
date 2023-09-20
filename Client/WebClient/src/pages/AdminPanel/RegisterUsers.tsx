@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Tooltip, DialogContentText, TextField, Select, FormControl, InputLabel, MenuItem } from '@mui/material';
 import { FitzoneApi } from '../../services/fitzoneApi';
-import { DataGrid, GridColDef, trTR } from '@mui/x-data-grid';
+import { GridColDef, trTR } from '@mui/x-data-grid';
 import Toast from '../../components/Toast/Toast';
 import { AiFillDelete } from 'react-icons/ai';
 import { BiUserCheck } from 'react-icons/bi';
 import Swal from 'sweetalert2';
+import StyledDataGrid from '../../components/StyledDataGrid/StyledDataGrid';
+import TextInput from '../../components/TextInput/TextInput';
 
 const RegisterUsers = () => {
     // Register Users State
@@ -156,8 +158,13 @@ const RegisterUsers = () => {
 
 
     return (
-        <div className='flex justify-center items-center w-full h-[calc(100vh-120px)] mt-1'>
-            <DataGrid rows={registerUsers} columns={columnsRegisterUsers} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
+        <div className='h-[calc(100vh-112px)] overflow-y-auto flex flex-col gap-2 items-center'>
+            <div className='w-full px-1 mt-5'>
+                <TextInput placeholder='Hızlı Ara..' value={""} onChange={(e) => { }} />
+            </div>
+            <div className='w-full h-full'>
+                <StyledDataGrid rows={registerUsers} columns={columnsRegisterUsers} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
+            </div>
             <div>
                 <Dialog open={open} onClose={handleClose}>
                     <DialogTitle>Kullanıcı Onayı</DialogTitle>

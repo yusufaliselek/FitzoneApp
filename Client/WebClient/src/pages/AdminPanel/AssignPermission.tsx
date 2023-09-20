@@ -6,6 +6,7 @@ import { FitzoneApi } from '../../services/fitzoneApi'
 import TextInput from '../../components/TextInput/TextInput'
 import { TrainerPermissionParams } from '../../utils/constants/TrainerPermissionParams'
 import FButton from '../../components/Button/FButton'
+import { AiFillCaretLeft, AiFillLeftSquare, AiOutlineArrowLeft } from 'react-icons/ai'
 
 const AssignPermission = () => {
     const { id } = useParams()
@@ -29,7 +30,7 @@ const AssignPermission = () => {
             navigate('/dashboard')
         }
         Promise.all([
-            FitzoneApi.GetTrainersWithTrainerPermissions(),
+            FitzoneApi.GetTrainersWithPermissionIncludeNoOtherIdByPermissionIdAsync(String(id)),
             FitzoneApi.GetTrainerPermissionById(String(id))
         ]).then((result) => {
             const [trainers, permission] = result
@@ -47,7 +48,12 @@ const AssignPermission = () => {
                     trainerPermission.name &&
                     <div className='w-full h-[calc(100vh-65px)] p-5 flex justify-center'>
                         <div className='flex flex-col gap-5 w-1/2'>
-                            <TextInput label="Yetki Adı" value={trainerPermission.name} disabled />
+                            <div className='flex gap-3 items-end'>
+                                <div className='p-3 cursor-pointer hover:bg-gray-300' onClick={()=> { navigate('/admin/')}}>
+                                    <AiOutlineArrowLeft color='rgb(59 130 250)' size={20} />
+                                </div>
+                                <TextInput label="Yetki Adı" value={trainerPermission.name} disabled />
+                            </div>
                             {trainers.map((trainer: any) => {
                                 return (
                                     <div
@@ -56,7 +62,13 @@ const AssignPermission = () => {
                                     >
                                         <label className="ml-2 text-gray-700">{trainer.userName} - {trainer.email}</label>
                                         <div className='w-fit'>
-                                            <FButton text='Yetki Ver' onClick={() => assingPermissionToTrainer(trainer.id)} />
+                                            {
+                                                trainer.trainerPermissionId === trainerPermission.id ?
+                                                <FButton text='Yetkiyi Sil' theme='danger'/>
+                                                :
+                                                <FButton text='Yetki Ver' onClick={() => assingPermissionToTrainer(trainer.id)} />
+                                            }
+                                            
                                         </div>
                                     </div>
                                 )

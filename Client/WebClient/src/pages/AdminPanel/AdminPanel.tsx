@@ -11,8 +11,7 @@ import PassiveTrainers from './PassiveTrainers';
 import TrainerPermissions from './TrainerPermissions';
 import PassiveMembers from './PassiveMembers';
 import RegisterUsers from './RegisterUsers';
-
-
+import { AntTab, AntTabs } from '../../components/Tabs/Tabs';
 
 const AdminPanel = () => {
 
@@ -63,12 +62,12 @@ const AdminPanel = () => {
                 {/* Header */}
                 <Header pageName='Admin Paneli' />
                 <Box sx={{ width: '100%', paddingX: 2, height: "calc(100vh-112px)" }}>
-                    <Tabs value={value} onChange={handleChangeTabs}>
-                        <Tab label="Yetki Altyapısı" {...a11yProps(0)} />
-                        <Tab label="Dondurulmuş Antrenörler" {...a11yProps(1)} />
-                        <Tab label="Dondurulmuş Üyeler" {...a11yProps(2)} />
-                        <Tab label="Kayıt Onayı Bekleyen Kullanıcılar" {...a11yProps(3)} />
-                    </Tabs>
+                    <AntTabs value={value} onChange={handleChangeTabs}>
+                        <AntTab label="Yetki Altyapısı" {...a11yProps(0)} />
+                        <AntTab label="Dondurulmuş Antrenörler" {...a11yProps(1)} />
+                        <AntTab label="Dondurulmuş Üyeler" {...a11yProps(2)} />
+                        <AntTab label="Kayıt Onayı Bekleyen Kullanıcılar" {...a11yProps(3)} />
+                    </AntTabs>
                     <TabPanel value={value} index={0}>
                         <TrainerPermissions />
                     </TabPanel>

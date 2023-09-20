@@ -1,4 +1,4 @@
-import { DataGrid, GridColDef, trTR } from '@mui/x-data-grid';
+import { GridColDef, trTR } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { RiAccountCircleLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +13,7 @@ import Cookies from 'js-cookie';
 import { decodeJwt } from 'jose';
 import Toast from '../../components/Toast/Toast';
 import Swal from 'sweetalert2';
+import StyledDataGrid from '../../components/StyledDataGrid/StyledDataGrid';
 
 const Members = () => {
     const navigate = useNavigate()
@@ -156,7 +157,7 @@ const Members = () => {
                 <AddContentHeader pageName='Üyeler' addContent='Üye ekle' addContentIcon={<RiAccountCircleLine className='h-7 w-7' />} addContentAction={addMember} />
                 {/* Content */}
                 <div className='flex items-center p-5 grow'>
-                    <DataGrid
+                    <StyledDataGrid
                         rows={rows}
                         columns={columns}
                         localeText={trTR.components.MuiDataGrid.defaultProps.localeText}

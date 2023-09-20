@@ -261,6 +261,8 @@ export class FitzoneApi {
             })
         })
     }
+
+
     /////// Trainer Permission - End ///////
 
     /////// Trainer - Start ///////
@@ -320,6 +322,17 @@ export class FitzoneApi {
     public static async UnFreezeTrainer(id: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             ConfigService.FitzoneApi().put('/User/UnFreezeTrainer?trainerId=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    
+    public static async GetTrainersWithPermissionIncludeNoOtherIdByPermissionIdAsync(permissionId: string) {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().get('/User/GetTrainersWithPermissionIncludeNoOtherIdByPermissionId?permissionId=' + permissionId).then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)

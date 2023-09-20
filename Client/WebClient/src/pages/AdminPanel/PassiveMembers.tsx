@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import {  Tooltip} from '@mui/material';
+import { Tooltip } from '@mui/material';
 import { FitzoneApi } from '../../services/fitzoneApi';
-import { DataGrid, GridColDef, trTR } from '@mui/x-data-grid';
+import { GridColDef, trTR } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import Toast from '../../components/Toast/Toast';
 import { AiFillDelete } from 'react-icons/ai';
-import {BiShow, BiUserCheck } from 'react-icons/bi';
+import { BiShow, BiUserCheck } from 'react-icons/bi';
 import Swal from 'sweetalert2';
+import StyledDataGrid from '../../components/StyledDataGrid/StyledDataGrid';
+import TextInput from '../../components/TextInput/TextInput';
 
 const PassiveMembers = () => {
 
@@ -163,8 +165,13 @@ const PassiveMembers = () => {
     }, []);
 
     return (
-        <div className='flex justify-center items-center w-full h-[calc(100vh-120px)] mt-1'>
-            <DataGrid rows={passiveMembers} columns={freezeMemberColumns} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
+        <div className='h-[calc(100vh-112px)] overflow-y-auto flex flex-col gap-2 items-center'>
+            <div className='w-full px-1 mt-5'>
+                <TextInput placeholder='Hızlı Ara..' value={""} onChange={(e) => { }} />
+            </div>
+            <div className='w-full h-full'>
+                <StyledDataGrid rows={passiveMembers} columns={freezeMemberColumns} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} />
+            </div>
         </div>
     )
 }

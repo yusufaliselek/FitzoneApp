@@ -108,6 +108,12 @@ namespace API.Controllers
             return ActionResultInstance(await _userService.GetTrainersWithTrainerPermissionsAsync());
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetTrainersWithPermissionIncludeNoOtherIdByPermissionIdAsync(string permissionId)
+        {
+            return ActionResultInstance(await _userService.GetTrainersWithPermissionIncludeNoOtherIdByPermissionIdAsync(permissionId));
+        }
+
         // Members
         [Authorize]
         [HttpGet]
