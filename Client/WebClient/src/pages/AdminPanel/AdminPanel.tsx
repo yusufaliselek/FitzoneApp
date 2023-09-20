@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Nav from '../../components/Nav/Nav';
 import Header from '../../components/Header/Header';
-import { Box, Tab, Tabs } from '@mui/material';
+import { Box } from '@mui/material';
 import { FitzoneApi } from '../../services/fitzoneApi';
 import { TabPanel, a11yProps } from '../../utils/funcs/TabPanel';
 import { useNavigate } from 'react-router-dom';
