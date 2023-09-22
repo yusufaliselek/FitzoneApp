@@ -8,7 +8,7 @@ import { TrainerPermissionParams } from '../../utils/constants/TrainerPermission
 import FButton from '../../components/Button/FButton'
 import { AiFillCheckCircle, AiFillCloseCircle, AiOutlineArrowLeft } from 'react-icons/ai'
 import Swal from 'sweetalert2';
-import { GridColDef, trTR, GridToolbar } from '@mui/x-data-grid'
+import { GridColDef, trTR } from '@mui/x-data-grid'
 import StyledDataGrid from '../../components/StyledDataGrid/StyledDataGrid'
 
 const AssignPermission = () => {
@@ -37,7 +37,7 @@ const AssignPermission = () => {
         {
             field: 'trainerPermissionName',
             headerName: 'Yetki',
-            minWidth: 200,
+            minWidth: 50,
             editable: false,
             flex: 1,
             renderCell: (params) => {
@@ -57,7 +57,7 @@ const AssignPermission = () => {
             headerName: 'Yetki',
             align: 'right',
             headerAlign: 'right',
-            minWidth: 200,
+            minWidth: 100,
             editable: false,
             flex: 1,
             renderCell: (params) => {
@@ -134,20 +134,20 @@ const AssignPermission = () => {
                 {
                     trainerPermission.name &&
                     <div className='w-full h-[calc(100vh-65px)] p-5 flex justify-center'>
-                        <div className='flex flex-col gap-5 w-1/2'>
+                        <div className='flex flex-col gap-5 w-2/3'>
                             <div className='flex gap-3 items-end'>
                                 <div className='p-3 cursor-pointer hover:bg-gray-300' onClick={() => { navigate('/admin/') }}>
                                     <AiOutlineArrowLeft color='rgb(59 130 250)' size={20} />
                                 </div>
                                 <TextInput label="Yetki Adı" value={trainerPermission.name} disabled />
+
                             </div>
-                            <div className='w-full h-[calc(100vh-65px-100px)]'>
+                            <div className='w-full h-[calc(100vh-200px)]'>
                                 <StyledDataGrid columns={columns} rows={trainers} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} 
                                />
                             </div>
                         </div>
                     </div>
-
                 }
             </div>
         } />

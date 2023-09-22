@@ -91,6 +91,7 @@ const AddMember = () => {
       Toast.fire({
         icon: 'error',
         title: 'Üye oluşturulamadı!',
+        text: error.errors[0]
       })
     })
   }
