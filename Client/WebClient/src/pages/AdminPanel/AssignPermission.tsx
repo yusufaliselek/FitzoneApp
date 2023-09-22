@@ -6,14 +6,74 @@ import { FitzoneApi } from '../../services/fitzoneApi'
 import TextInput from '../../components/TextInput/TextInput'
 import { TrainerPermissionParams } from '../../utils/constants/TrainerPermissionParams'
 import FButton from '../../components/Button/FButton'
-import { AiFillCaretLeft, AiFillLeftSquare, AiOutlineArrowLeft } from 'react-icons/ai'
+import { AiFillCheckCircle, AiFillCloseCircle, AiOutlineArrowLeft } from 'react-icons/ai'
+import Swal from 'sweetalert2';
+import { GridColDef, trTR, GridToolbar } from '@mui/x-data-grid'
+import StyledDataGrid from '../../components/StyledDataGrid/StyledDataGrid'
 
 const AssignPermission = () => {
+
     const { id } = useParams()
     const navigate = useNavigate()
 
     const [trainerPermission, setTrainerPermission] = useState(TrainerPermissionParams)
-    const [trainers, setTrainers] = useState<any>([])
+    const [trainers, setTrainers] = useState<any[]>([])
+
+    const columns: GridColDef[] = [
+        {
+            field: 'userName',
+            headerName: 'Kullanıcı Adı',
+            minWidth: 200,
+            editable: false,
+            flex: 1,
+        },
+        {
+            field: 'email',
+            headerName: 'E-Posta',
+            minWidth: 200,
+            editable: false,
+            flex: 1,
+        },
+        {
+            field: 'trainerPermissionName',
+            headerName: 'Yetki',
+            minWidth: 200,
+            editable: false,
+            flex: 1,
+            renderCell: (params) => {
+                return (
+                    <div className='flex justify-center'>
+                        {params.value ?
+                            <AiFillCheckCircle color='green' size={20} />
+                            :
+                            <AiFillCloseCircle color='red' size={20} />
+                        }
+                    </div>
+                )
+            }
+        },
+        {
+            field: 'id',
+            headerName: 'Yetki',
+            align: 'right',
+            headerAlign: 'right',
+            minWidth: 200,
+            editable: false,
+            flex: 1,
+            renderCell: (params) => {
+                return (
+                    <div className='flex justify-center'>
+                        {
+                            params.row.trainerPermissionId === trainerPermission.id ?
+                                <FButton text='Yetkiyi Sil' theme='danger' onClick={() => deletePermissionFromTrainer(trainerPermission.id, params.row.id)} />
+                                :
+                                <FButton text='Yetki Ver' onClick={() => assingPermissionToTrainer(params.row.id)} />
+                        }
+                    </div>
+                )
+            }
+        }
+    ]
 
     const assingPermissionToTrainer = (trainerId: string) => {
         const data = {
@@ -23,6 +83,33 @@ const AssignPermission = () => {
         FitzoneApi.UpdateTrainerPermissionTrainer(data).then((result) => {
             console.log(result)
         })
+    }
+
+    const deletePermissionFromTrainer = (permissionId: string, trainerId: string) => {
+        if (permissionId && trainerId) {
+            Swal.fire({
+                title: 'Antrenörün yetkisini almak istediğinizden emin misiniz?',
+                text: "Bu işlemi geri alamazsınız!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Evet, sil!',
+                cancelButtonText: 'Hayır'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    FitzoneApi.DeleteTrainerPermissionFromTrainerAsync(permissionId, trainerId).then((result) => {
+                        setTrainers(result.data)
+                        Swal.fire({
+                            title: 'Antrenör yetkisini aldınız!',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    })
+                }
+            })
+        }
     }
 
     useEffect(() => {
@@ -36,9 +123,9 @@ const AssignPermission = () => {
             const [trainers, permission] = result
             setTrainers(trainers.data)
             setTrainerPermission(permission.data)
+
         })
     }, [])
-
 
     return (
         <Content title='Yetki Ata' content={
@@ -49,30 +136,15 @@ const AssignPermission = () => {
                     <div className='w-full h-[calc(100vh-65px)] p-5 flex justify-center'>
                         <div className='flex flex-col gap-5 w-1/2'>
                             <div className='flex gap-3 items-end'>
-                                <div className='p-3 cursor-pointer hover:bg-gray-300' onClick={()=> { navigate('/admin/')}}>
+                                <div className='p-3 cursor-pointer hover:bg-gray-300' onClick={() => { navigate('/admin/') }}>
                                     <AiOutlineArrowLeft color='rgb(59 130 250)' size={20} />
                                 </div>
                                 <TextInput label="Yetki Adı" value={trainerPermission.name} disabled />
                             </div>
-                            {trainers.map((trainer: any) => {
-                                return (
-                                    <div
-                                        key={trainer.id}
-                                        className="flex justify-between items-center bg-gray-50 gap-2 border border-gray-300 rounded-md p-2 hover:scale-[1.01] transition-all cursor-pointer"
-                                    >
-                                        <label className="ml-2 text-gray-700">{trainer.userName} - {trainer.email}</label>
-                                        <div className='w-fit'>
-                                            {
-                                                trainer.trainerPermissionId === trainerPermission.id ?
-                                                <FButton text='Yetkiyi Sil' theme='danger'/>
-                                                :
-                                                <FButton text='Yetki Ver' onClick={() => assingPermissionToTrainer(trainer.id)} />
-                                            }
-                                            
-                                        </div>
-                                    </div>
-                                )
-                            })}
+                            <div className='w-full h-[calc(100vh-65px-100px)]'>
+                                <StyledDataGrid columns={columns} rows={trainers} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} 
+                               />
+                            </div>
                         </div>
                     </div>
 

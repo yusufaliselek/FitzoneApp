@@ -28,6 +28,7 @@ namespace Server.Core.Services
         Task<CustomResponseDto<UserDto>> UnfreezeTrainer(string trainerId);
         Task<CustomResponseDto<List<TrainerWithPermissionDto>>> GetTrainersWithTrainerPermissionsAsync();
         Task<CustomResponseDto<List<TrainerWithPermissionDto>>> GetTrainersWithPermissionIncludeNoOtherIdByPermissionIdAsync(string permissionId);
+        Task<CustomResponseDto<List<TrainerWithPermissionDto>>> DeleteTrainerPermissionFromTrainerAsync(string permissionId, string trainderId);
 
 
         // Members

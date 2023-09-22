@@ -329,10 +329,20 @@ export class FitzoneApi {
         })
     }
 
-    
+
     public static async GetTrainersWithPermissionIncludeNoOtherIdByPermissionIdAsync(permissionId: string) {
         return new Promise<any>((resolve, reject) => {
             ConfigService.FitzoneApi().get('/User/GetTrainersWithPermissionIncludeNoOtherIdByPermissionId?permissionId=' + permissionId).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    public static async DeleteTrainerPermissionFromTrainerAsync(permissionId:string, trainerId:string) {
+       return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().delete('/User/DeleteTrainerPermissionFromTrainer?permissionId=' + permissionId + '&trainerId=' + trainerId).then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)

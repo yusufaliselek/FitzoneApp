@@ -280,7 +280,7 @@ namespace Server.Service.Services
                 var trainerDetail = trainerDetails.Where(item => item.TrainerId == trainer.Id).FirstOrDefault();
                 var trainerPermissionId = "";
                 var trainerPermissionName = "";
-                if (trainerDetail != null && trainerDetail.TrainerPermissionId != null)
+                if (trainerDetail != null && trainerDetail.TrainerPermissionId != null && trainerDetail.TrainerPermissionId != "")
                 {
                     trainerPermissionId = trainerPermissions.Where(item => item.Id == trainerDetail.TrainerPermissionId).FirstOrDefault().Id;
                     trainerPermissionName = trainerPermissions.Where(item => item.Id == trainerDetail.TrainerPermissionId).FirstOrDefault().Name;
@@ -301,6 +301,17 @@ namespace Server.Service.Services
             trainerWithPermissions.Sort((x, y) => string.Compare(x.UserName, y.UserName));
            
             return CustomResponseDto<List<TrainerWithPermissionDto>>.Success(200, trainerWithPermissions);
+        }
+
+        public async Task<CustomResponseDto<List<TrainerWithPermissionDto>>> DeleteTrainerPermissionFromTrainerAsync(string permissionId, string trainerId)
+        {
+            var trainerDetail = await _genericServiceTrainerDetail.Where(x => x.TrainerId == trainerId).FirstOrDefaultAsync();
+            if (trainerDetail != null)
+            {
+                trainerDetail.TrainerPermissionId = "";
+                await _genericServiceTrainerDetail.UpdateAsync(trainerDetail);
+            }
+            return await GetTrainersWithPermissionIncludeNoOtherIdByPermissionIdAsync(permissionId);
         }
 
         // Member
