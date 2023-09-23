@@ -127,6 +127,24 @@ export class FitzoneApi {
             })
         })
     }
+
+    public static async UpdateUserPhoto(userId: string, photo: File) {
+        return new Promise<any>((resolve, reject) => {
+            const form = new FormData();
+            form.append('fileData', photo);
+            form.append('userId', userId);
+            ConfigService.FitzoneApi().post('/File/New', form, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+
+    }
     //// User - End ////
 
     //// Trainer Detail - Start ////
@@ -340,8 +358,8 @@ export class FitzoneApi {
         })
     }
 
-    public static async DeleteTrainerPermissionFromTrainerAsync(permissionId:string, trainerId:string) {
-       return new Promise<any>((resolve, reject) => {
+    public static async DeleteTrainerPermissionFromTrainerAsync(permissionId: string, trainerId: string) {
+        return new Promise<any>((resolve, reject) => {
             ConfigService.FitzoneApi().delete('/User/DeleteTrainerPermissionFromTrainer?permissionId=' + permissionId + '&trainerId=' + trainerId).then((response) => {
                 resolve(response.data)
             }).catch((error) => {

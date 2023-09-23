@@ -93,7 +93,7 @@ const Login = () => {
                                     form="email"
                                     className="block text-sm font-semibold text-gray-300"
                                 >
-                                    Kullanıcı Adı
+                                    E-posta
                                 </label>
                                 <input
                                     type="email"

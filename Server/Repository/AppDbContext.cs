@@ -26,6 +26,7 @@ namespace Server.Data
         public DbSet<TrainerDetail> TrainerDetail { get; set; }
         public DbSet<TrainerPermission> TrainerPermission { get; set; }
         public DbSet<MemberDetail> MemberDetail { get; set; }
+        public DbSet<FileDetail> FileDetail { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

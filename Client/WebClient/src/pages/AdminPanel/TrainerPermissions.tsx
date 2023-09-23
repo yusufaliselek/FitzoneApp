@@ -52,7 +52,7 @@ const TrainerPermissions = () => {
             icon: 'error',
             title: title
         });
-    
+
     const ToastSuccess = (title: string) =>
         Toast.fire({
             icon: 'success',
@@ -236,29 +236,31 @@ const TrainerPermissions = () => {
                         transition={{ duration: 0.3, origin: 1 }}
                         className='w-[20%] pl-3 pt-5'
                     >
-                        <div className='w-full h-full border border-gray-200 rounded-md flex flex-col px-3 py-2 gap-[3%]'>
-                            <div className='flex justify-between items-center'>
-                                <h1 className='text-center'>{formType === "create" ? "Yeni Yetki Ekleyin" : "Yetkiyi Düzenleyin"}</h1>
-                                <div className='p-1 hover:bg-gray-300 rounded-full cursor-pointer transition-all' onClick={resetTrainerPermissionForm}>
-                                    <AiOutlineCloseCircle size={25} className='text-gray-700' />
-                                </div>
-                            </div>
-                            <form action="" className='max-h-[calc(100vh-250px)] overflow-y-auto flex flex-col gap-2'>
-                                <div className='flex flex-col gap-2'>
-                                    <div className='px-2 py-1'>
-                                        <TextInput placeholder='Yetki Adı' value={trainerPermissionForm.name} onChange={(e) => setTrainerPermissionForm({ ...trainerPermissionForm, name: e.target.value })} />
+                        <form onSubmit={(e) => saveTrainerPermission(formType)}>
+                            <div className='w-full h-full border border-gray-200 rounded-md flex flex-col px-3 py-2 gap-[3%]'>
+                                <div className='flex justify-between items-center'>
+                                    <h1 className='text-center'>{formType === "create" ? "Yeni Yetki Ekleyin" : "Yetkiyi Düzenleyin"}</h1>
+                                    <div className='p-1 hover:bg-gray-300 rounded-full cursor-pointer transition-all' onClick={resetTrainerPermissionForm}>
+                                        <AiOutlineCloseCircle size={25} className='text-gray-700' />
                                     </div>
-                                    {TrainerPermissionParamCheckboxes.map((item, index) => (
-                                        <FormControlLabel
-                                            key={index}
-                                            control={<Checkbox checked={Boolean(trainerPermissionForm[item as keyof IGetTrainerPermissionById])} onChange={handleTrainerPermissionForm} name={item} />}
-                                            label={TrainerPermissionParamLabels[index]}
-                                        />
-                                    ))}
                                 </div>
-                            </form>
-                            <FButton text='Kaydet' theme={formType === "create" ? 'primary' : "success"} onClick={() => saveTrainerPermission(formType)} />
-                        </div>
+                                <div className='max-h-[calc(100vh-250px)] overflow-y-auto flex flex-col gap-2'>
+                                    <div className='flex flex-col gap-2'>
+                                        <div className='px-2 py-1'>
+                                            <TextInput placeholder='Yetki Adı' value={trainerPermissionForm.name} onChange={(e) => setTrainerPermissionForm({ ...trainerPermissionForm, name: e.target.value })} required />
+                                        </div>
+                                        {TrainerPermissionParamCheckboxes.map((item, index) => (
+                                            <FormControlLabel
+                                                key={index}
+                                                control={<Checkbox checked={Boolean(trainerPermissionForm[item as keyof IGetTrainerPermissionById])} onChange={handleTrainerPermissionForm} name={item} />}
+                                                label={TrainerPermissionParamLabels[index]}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                                <FButton text='Kaydet' theme={formType === "create" ? 'primary' : "success"} type='submit' />
+                            </div>
+                        </form>
                     </motion.div>
                 )}
             </AnimatePresence>

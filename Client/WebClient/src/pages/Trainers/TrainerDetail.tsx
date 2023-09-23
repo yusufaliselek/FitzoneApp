@@ -14,6 +14,7 @@ import genders from '../../assets/Genders';
 import Cookies from 'js-cookie';
 import { decodeJwt } from 'jose';
 import Toast from '../../components/Toast/Toast';
+import { BiCheckCircle } from 'react-icons/bi';
 
 const trainerParams = {
     birthdayDate: "",
@@ -23,7 +24,6 @@ const trainerParams = {
     gender: "",
     id: "",
     lastName: "",
-    personalPhoto: "",
     phoneNumber: "",
     role: "",
     tckno: "",
@@ -45,6 +45,9 @@ const TrainerDetail = () => {
 
     const params = useParams();
     const navigate = useNavigate();
+
+    const [trainerPhoto, setTrainerPhoto] = useState<File | null>(null); // Trainer Photo
+    const [isPhotoChanged, setIsPhotoChanged] = useState<boolean>(false); // Trainer Photo
 
     const [trainer, setTrainer] = useState(trainerParams);
     const [trainerDetails, setTrainerDetails] = useState(trainerDetailsParams);
@@ -112,6 +115,21 @@ const TrainerDetail = () => {
         })
     }
 
+    const updateUserPhoto = () => {
+        if (!trainerPhoto) { alert("Fotoğraf seçiniz!"); return }
+        Toast.fire({
+            icon: 'info',
+            title: 'Güncelleniyor...'
+        })
+        FitzoneApi.UpdateUserPhoto(trainer.id, trainerPhoto).then((res) => {
+            Toast.fire({
+                icon: 'success',
+                title: 'Fotoğraf güncellendi.'
+            })
+            setIsPhotoChanged(false);
+        })
+    }
+
     return (
         <div className='flex w-screen h-screen'>
             {/* Navbar */}
@@ -125,7 +143,43 @@ const TrainerDetail = () => {
                         className={`w-2/5 gap-4 mt-[3%] p-5 ${!detailsIsOpen ? "flex flex-col" : "hidden"}`}
                     >
                         <div className='mt-3 flex items-center justify-center'>
-                            <BsPersonBadgeFill size={40} color='lightgray' />
+                            {/* Photo Upload */}
+                            {trainerPhoto ?
+                                <div className='w-32 h-32 rounded-full  flex flex-col items-center justify-center'>
+                                    <img src={URL.createObjectURL(trainerPhoto)} alt='trainer' className='h-[80px] w-[80px] max-h-[80px] max-w-[80px] rounded-full' />
+                                    <div className='flex flex-col gap-2'>
+                                        <label htmlFor="personalPhoto" className="block mt-2 text-xs font-medium text-gray-700 cursor-pointer">
+                                            Fotoğrafı Değiştir
+                                        </label>
+                                        {isPhotoChanged &&
+                                            <FButton text='Kaydet' theme='primary' onClick={() => {
+                                                updateUserPhoto();
+                                            }} />
+                                        }
+                                    </div>
+                                    <input id="personalPhoto" name="personalPhoto" type="file" className="sr-only" accept="image/*"
+                                        onChange={(e) => {
+                                            if (!e.target.files) { alert("Fotoğraf seçiniz!"); return };
+                                            setTrainerPhoto(e.target.files[0])
+                                            setIsPhotoChanged(true);
+                                        }}
+                                    />
+                                </div>
+                                :
+                                <div className='w-28 h-28 rounded-full bg-gray-300 flex flex-col items-center justify-center'>
+                                    <BsPersonBadgeFill size={40} color='gray' />
+                                    <label htmlFor="personalPhoto" className="block mt-2 text-xs font-medium text-gray-700 cursor-pointer">
+                                        Fotoğraf Yükle
+                                    </label>
+                                    <input id="personalPhoto" name="personalPhoto" type="file" className="sr-only" accept="image/*"
+                                        onChange={(e) => {
+                                            if (!e.target.files) { alert("Fotoğraf seçiniz!"); return };
+                                            setTrainerPhoto(e.target.files[0])
+                                            setIsPhotoChanged(true);
+                                        }}
+                                    />
+                                </div>
+                            }
                         </div>
                         <div className='flex gap-3'>
                             <TextInput id='firstName' label='Ad' value={trainer.firstName} onChange={handleChangeForm} disabled={!isAdmin} />
