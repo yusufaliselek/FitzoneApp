@@ -1,8 +1,6 @@
 ﻿using Core.DTOs;
-using Core.DTOs.FileDTOs;
-using Core.DTOs.MemberDetailDTOs;
-using Core.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +11,10 @@ namespace Core.Services
 {
         public interface IFileService
         {
-            Task<CustomResponseDto<ResponseFileDetailDto>> UploadFileAsync(IFormFile fileData, string fileId);
-    }
+            Task<CustomResponseDto<string>> UploadFileAsync(IFormFile file, string fileId, string path); // Dönüş tipleri
+            CustomResponseDto<IActionResult> GetFileById(string fileId, string path);
+            CustomResponseDto<PhysicalFileResult> GetFileById2(string fileId, string path);
+            CustomResponseDto<IActionResult> GetFileById3(string fileId, string path);
+        }
     
 }

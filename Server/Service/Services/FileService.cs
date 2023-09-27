@@ -1,5 +1,4 @@
 ﻿using Core.DTOs;
-using Core.DTOs.FileDTOs;
 using Core.Models;
 using Core.Services;
 using Microsoft.AspNetCore.Http;
@@ -16,37 +15,111 @@ namespace Service.Services
 {
     public class FileService : IFileService
     {
-        private readonly IGenericService<FileDetail> _genericService;
-        public FileService(IGenericService<FileDetail> genericService)
+        private string GetContentType(string fileName)
         {
-            _genericService = genericService;
+            var type = "." + fileName.Split('.').LastOrDefault();
+            switch (type)
+            {
+                case ".pdf":
+                    return "application/pdf";
+                case ".jpg":
+                case ".jpeg":
+                    return "image/jpeg";
+                case ".png":
+                    return "image/png";
+                case ".mp4":
+                    return "video/mp4";
+                case ".mp3":
+                    return "audio/mp3";
+                case ".docx":
+                    return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                case ".xlsx":
+                    return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                case ".pptx":
+                    return "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+                case ".txt":
+                    return "text/plain";
+                case ".zip":
+                    return "application/zip";
+                case ".rar":
+                    return "application/x-rar-compressed";
+                default:
+                    return "application/octet-stream";
+            }
         }
 
-        public async Task<CustomResponseDto<ResponseFileDetailDto>> UploadFileAsync(IFormFile file, string fileId)
+        public async Task<CustomResponseDto<string>> UploadFileAsync(IFormFile file, string fileId, string path)
         {
-            if (file != null && file.Length == 0) 
-            { 
-                return CustomResponseDto<ResponseFileDetailDto>.Fail(404, "File can not be empty!");
+            if (file == null || file.Length == 0 || fileId == null)
+            {
+                return CustomResponseDto<string>.Fail(400, "File is empty");
+            }
+            var fileName = $"{fileId}{Path.GetExtension(file.FileName)}";
+
+            var filePath = Path.Combine(path, fileName);
+
+            Directory.CreateDirectory(path);
+
+            // Create a FileStream to write the file to the specified path
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
             }
 
-            using (var memoryStream = new MemoryStream())
+            return CustomResponseDto<string>.Success(200, fileName);
+
+        }
+
+        public CustomResponseDto<IActionResult> GetFileById(string fileId, string path)
+        {
+            var filePath = Path.Combine(path, fileId);
+
+            if (!File.Exists(filePath))
             {
-                await file.CopyToAsync(memoryStream);
-                var fileDetail = new FileDetail
-                {
-                    Id = fileId,
-                    FileName = file.FileName,
-                    ContentType = file.ContentType,
-                    Content = memoryStream.ToArray()
-                };
-                await _genericService.AddAsync(fileDetail);
-                return CustomResponseDto<ResponseFileDetailDto>.Success(200, new ResponseFileDetailDto
-                {
-                    Data = fileDetail.Content,
-                    Message = "File uploaded successfully!",
-                    Success = true
-                }, 200);
+                return CustomResponseDto<IActionResult>.Fail(400, "File not found");
             }
+
+            var contentType = GetContentType(fileId);
+
+            return CustomResponseDto<IActionResult>.Success(200, new PhysicalFileResult(filePath, contentType));
+        }
+
+        public CustomResponseDto<PhysicalFileResult> GetFileById2(string fileId, string path)
+        {
+            var filePath = Path.Combine(path, fileId);
+
+            var contentType = GetContentType(fileId);
+
+            if (contentType == null)
+            {
+                return CustomResponseDto<PhysicalFileResult>.Fail(400, "File not found");
+            }
+
+            if (!File.Exists(filePath))
+            {
+                return CustomResponseDto<PhysicalFileResult>.Fail(400, "File not found");
+            }
+
+            return CustomResponseDto<PhysicalFileResult>.Success(200, new PhysicalFileResult(filePath, contentType));
+        }
+
+        public CustomResponseDto<IActionResult> GetFileById3(string fileId, string path)
+        {
+            var filePath = Path.Combine(path, fileId);
+
+            var contentType = GetContentType(fileId);
+
+            if (contentType == null)
+            {
+                return CustomResponseDto<IActionResult>.Fail(400, "File not found");
+            }
+
+            if (!File.Exists(filePath))
+            {
+                return CustomResponseDto<IActionResult>.Fail(400, "File not found");
+            }
+
+            return CustomResponseDto<IActionResult>.Success(200, new FileStreamResult(new FileStream(filePath, FileMode.Open, FileAccess.Read), contentType));
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Core.DTOs
         public List<String> Errors { get; set; }
 
 
-        public static CustomResponseDto<T> Success(int statusCode, T data, int v)
+        public static CustomResponseDto<T> Success(int statusCode, T data)
         {
             return new CustomResponseDto<T> { Data = data, StatusCode = statusCode };
         }

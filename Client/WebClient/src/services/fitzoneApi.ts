@@ -430,7 +430,16 @@ export class FitzoneApi {
         })
     }
 
-
+    // File - Start
+    public static async GetFileById(id: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().get('/File/GetFileById?fileId=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
 
 
 }

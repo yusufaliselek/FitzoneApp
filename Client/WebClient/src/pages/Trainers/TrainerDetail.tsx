@@ -14,7 +14,6 @@ import genders from '../../assets/Genders';
 import Cookies from 'js-cookie';
 import { decodeJwt } from 'jose';
 import Toast from '../../components/Toast/Toast';
-import { BiCheckCircle } from 'react-icons/bi';
 
 const trainerParams = {
     birthdayDate: "",
