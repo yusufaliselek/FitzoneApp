@@ -314,6 +314,17 @@ namespace Server.Service.Services
             return await GetTrainersWithPermissionIncludeNoOtherIdByPermissionIdAsync(permissionId);
         }
 
+        public async Task<CustomResponseDto<List<TrainerWithPermissionDto>>> AddTrainerPermissionToTrainerAsync(string permissionId, string trainerId)
+        {
+            var trainerDetail = await _genericServiceTrainerDetail.Where(x => x.TrainerId == trainerId).FirstOrDefaultAsync();
+            if (trainerDetail != null)
+            {
+                trainerDetail.TrainerPermissionId = permissionId;
+                await _genericServiceTrainerDetail.UpdateAsync(trainerDetail);
+            }
+            return await GetTrainersWithPermissionIncludeNoOtherIdByPermissionIdAsync(permissionId);
+        }
+
         // Member
 
         public async Task<CustomResponseDto<List<UserDto>>> GetAllActiveMembers()

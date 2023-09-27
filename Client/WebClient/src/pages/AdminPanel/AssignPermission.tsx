@@ -65,9 +65,9 @@ const AssignPermission = () => {
                     <div className='flex justify-center'>
                         {
                             params.row.trainerPermissionId === trainerPermission.id ?
-                                <FButton text='Yetkiyi Sil' theme='danger' onClick={() => deletePermissionFromTrainer(trainerPermission.id, params.row.id)} />
+                                <FButton text='Yetkiyi Sil' theme='danger' onClick={() => deletePermissionFromTrainer(trainerPermission.id, params.value)} />
                                 :
-                                <FButton text='Yetki Ver' onClick={() => assingPermissionToTrainer(params.row.id)} />
+                                <FButton text='Yetki Ver' onClick={() => assingPermissionToTrainer(trainerPermission.id, params.value)} />
                         }
                     </div>
                 )
@@ -75,14 +75,31 @@ const AssignPermission = () => {
         }
     ]
 
-    const assingPermissionToTrainer = (trainerId: string) => {
-        const data = {
-            trainerId: trainerId,
-            permissionId: id
-        }
-        FitzoneApi.UpdateTrainerPermissionTrainer(data).then((result) => {
-            console.log(result)
+    const assingPermissionToTrainer = (permissionId: string, trainerId: string) => {
+        if (!trainerId) return;
+        Swal.fire({
+            title: 'Antrenöre yetki vermek istediğinizden emin misiniz?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Evet, ver!',
+            cancelButtonText: 'Hayır'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                FitzoneApi.AddTrainerPermissionToTrainerAsync(permissionId, trainerId).then((result) => {
+                    console.log(result)
+                    Swal.fire({
+                        title: 'Antrenöre yetki verdiniz!',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    setTrainers(result.data)
+                })
+            }
         })
+
     }
 
     const deletePermissionFromTrainer = (permissionId: string, trainerId: string) => {
@@ -143,8 +160,8 @@ const AssignPermission = () => {
 
                             </div>
                             <div className='w-full h-[calc(100vh-200px)]'>
-                                <StyledDataGrid columns={columns} rows={trainers} localeText={trTR.components.MuiDataGrid.defaultProps.localeText} 
-                               />
+                                <StyledDataGrid columns={columns} rows={trainers} localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
+                                />
                             </div>
                         </div>
                     </div>

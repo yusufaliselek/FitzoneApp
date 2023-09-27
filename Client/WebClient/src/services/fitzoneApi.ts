@@ -337,6 +337,7 @@ export class FitzoneApi {
         })
     }
 
+
     public static async UnFreezeTrainer(id: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             ConfigService.FitzoneApi().put('/User/UnFreezeTrainer?trainerId=' + id).then((response) => {
@@ -361,6 +362,16 @@ export class FitzoneApi {
     public static async DeleteTrainerPermissionFromTrainerAsync(permissionId: string, trainerId: string) {
         return new Promise<any>((resolve, reject) => {
             ConfigService.FitzoneApi().delete('/User/DeleteTrainerPermissionFromTrainer?permissionId=' + permissionId + '&trainerId=' + trainerId).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    public static async AddTrainerPermissionToTrainerAsync(permissionId: string, trainerId: string) {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().post('/User/AddTrainerPermissionToTrainer?permissionId=' + permissionId + '&trainerId=' + trainerId).then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)

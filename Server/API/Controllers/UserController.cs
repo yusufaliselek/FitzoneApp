@@ -116,9 +116,16 @@ namespace API.Controllers
 
         [Authorize]
         [HttpDelete]
-        public async Task<IActionResult> DeleteTrainerPermissionFromTrainerAsync(string permissionId, string trainerId)
+        public async Task<IActionResult> DeleteTrainerPermissionFromTrainer(string permissionId, string trainerId)
         {
             return ActionResultInstance(await _userService.DeleteTrainerPermissionFromTrainerAsync(permissionId, trainerId));
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> AddTrainerPermissionToTrainer(string permissionId, string trainerId)
+        {
+            return ActionResultInstance(await _userService.AddTrainerPermissionToTrainerAsync(permissionId, trainerId));
         }
 
         // Members

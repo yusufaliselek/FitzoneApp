@@ -29,6 +29,7 @@ namespace Server.Core.Services
         Task<CustomResponseDto<List<TrainerWithPermissionDto>>> GetTrainersWithTrainerPermissionsAsync();
         Task<CustomResponseDto<List<TrainerWithPermissionDto>>> GetTrainersWithPermissionIncludeNoOtherIdByPermissionIdAsync(string permissionId);
         Task<CustomResponseDto<List<TrainerWithPermissionDto>>> DeleteTrainerPermissionFromTrainerAsync(string permissionId, string trainderId);
+        Task<CustomResponseDto<List<TrainerWithPermissionDto>>> AddTrainerPermissionToTrainerAsync(string permissionId, string trainderId);
 
 
         // Members
