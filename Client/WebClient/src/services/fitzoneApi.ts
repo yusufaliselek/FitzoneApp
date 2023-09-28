@@ -444,8 +444,8 @@ export class FitzoneApi {
     // File - Start
     public static async GetFileById(id: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().get('/File/GetFileById?fileId=' + id).then((response) => {
-                resolve(response.data)
+            ConfigService.FitzoneApi().get('/File/GetFileById2?fileId=' + id).then((response) => {
+                resolve(response)
             }).catch((error) => {
                 reject(error.response.data)
             })

@@ -12,7 +12,7 @@ namespace Core.Services
         public interface IFileService
         {
             Task<CustomResponseDto<string>> UploadFileAsync(IFormFile file, string fileId, string path); // Dönüş tipleri
-            CustomResponseDto<IActionResult> GetFileById(string fileId, string path);
+            IActionResult GetFileById(string fileId, string path);
             CustomResponseDto<PhysicalFileResult> GetFileById2(string fileId, string path);
             CustomResponseDto<IActionResult> GetFileById3(string fileId, string path);
         }

@@ -70,18 +70,18 @@ namespace Service.Services
 
         }
 
-        public CustomResponseDto<IActionResult> GetFileById(string fileId, string path)
+        public IActionResult GetFileById(string fileId, string path)
         {
             var filePath = Path.Combine(path, fileId);
 
             if (!File.Exists(filePath))
             {
-                return CustomResponseDto<IActionResult>.Fail(400, "File not found");
+                return new NotFoundResult();
             }
 
             var contentType = GetContentType(fileId);
 
-            return CustomResponseDto<IActionResult>.Success(200, new PhysicalFileResult(filePath, contentType));
+            return new PhysicalFileResult(filePath, contentType);
         }
 
         public CustomResponseDto<PhysicalFileResult> GetFileById2(string fileId, string path)

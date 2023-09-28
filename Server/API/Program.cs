@@ -75,15 +75,15 @@ builder.Host.UseServiceProviderFactory
     (new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder => containerBuilder.RegisterModule(new RepoServiceModule()));
 
-builder.Services.AddCors(optios =>
+builder.Services.AddCors(options =>
 {
-    optios.AddPolicy("CORSPolicy",
+    options.AddPolicy("CORSPolicy",
         builder =>
         {
             builder
+            .WithOrigins("http://localhost:3000") // Sadece bu kaynağa izin ver
             .AllowAnyMethod()
-            .AllowAnyHeader()
-            .WithOrigins("http://localhost:3000", "https://appname.azurestaticapps.net");
+            .AllowAnyHeader();
         });
 });
 

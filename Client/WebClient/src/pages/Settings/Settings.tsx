@@ -107,8 +107,6 @@ const Settings = () => {
 
     const [passwordParams, setPasswordParams] = useState(passwordForm);
 
-    const [userPhoto, setUserPhoto] = useState<any>(null);
-
     // Trainer Permission Form State -- And With Edit
     const [trainerPermissionForm, setTrainerPermissionForm] = useState<IGetTrainerPermissionById>(trainerPermissionParams);
 
@@ -206,8 +204,6 @@ const Settings = () => {
         }
     }
 
-
-
     // Password Update
 
     const changePassword = () => {
@@ -259,9 +255,8 @@ const Settings = () => {
         Promise.all([
             FitzoneApi.GetUserById(String(GetUserIdFromToken())),
             FitzoneApi.GetTrainerDetailByTrainerId(String(GetUserIdFromToken())),
-            FitzoneApi.GetFileById("4447b8d0-91a9-42dc-89ce-b772c02738f2.jpg")
         ]).then((response) => {
-            const [user, trainerDetail, photo] = response;
+            const [user, trainerDetail] = response;
             if (trainerDetail.data.id === null) {
                 trainerDetailAction = "create";
                 setTrainerDetails(trainerDetailsParams);
@@ -269,7 +264,6 @@ const Settings = () => {
                 trainerDetailAction = "update";
                 setTrainerDetails(trainerDetail.data);
             }
-            setUserPhoto(photo);
             setTrainer(user.data);
         }).catch((error) => {
             console.log(error);
@@ -297,9 +291,10 @@ const Settings = () => {
                                 className={`w-2/5 gap-4 mt-[3%] p-5 ${!detailsIsOpen ? "flex flex-col" : "hidden"}`}
                             >
                                 <div className='mt-3 flex items-center justify-center'>
-                                    {userPhoto == null ?
-                                        <BsPersonCircle size={40} color='lightgray' /> :
-                                        <img src={""} />
+                                    {
+                                        // trainer.personalPhoto === null ?
+                                        //     <BsPersonCircle size={40} color='lightgray' /> :
+                                        <img src={"https://localhost:7045/api/File/" + trainer.id + ".jpg"} alt='user' className=' w-20 h-20 bg-cover bg-center' />
                                     }
                                 </div>
                                 <div className='flex gap-3'>

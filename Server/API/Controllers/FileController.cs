@@ -1,12 +1,13 @@
 ﻿using Core.DTOs;
 using Core.Models;
 using Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class FileController : CustomBaseController
     {
@@ -24,6 +25,7 @@ namespace API.Controllers
                 case ".pdf":
                     return "application/pdf";
                 case ".jpg":
+                    return "image/jpg";
                 case ".jpeg":
                     return "image/jpeg";
                 case ".png":
@@ -60,36 +62,18 @@ namespace API.Controllers
             return ActionResultInstance(await _fileService.UploadFileAsync(file, fileId, ContentPath()));
         }
 
-        [HttpGet]
+        [HttpGet("{fileId}")]
         public IActionResult GetFileById(string fileId)
         {
-            // Define the physical path to the file
-            var filePath = Path.Combine(ContentPath(), fileId);
-
-            if (!System.IO.File.Exists(filePath))
+            // check the origin of the request
+            if (Request.Host.Value == "http://localhost:3000")
             {
-                return NotFound("File not found.");
+                return _fileService.GetFileById(fileId, ContentPath());
             }
-
-            // Read the file content
-            var fileBytes = System.IO.File.ReadAllBytes(filePath);
-
-            var contentType = GetContentType(fileId);
-
-            // Return the file as a FileResult
-            return File(fileBytes, contentType, fileId);  
-        }
-
-        [HttpGet]
-        public IActionResult GetFileById2(string fileId)
-        {
-            return ActionResultInstance(_fileService.GetFileById2(fileId, ContentPath()));
-        }
-
-        [HttpGet]
-        public IActionResult GetFileById3(string fileId)
-        {
-            return ActionResultInstance(_fileService.GetFileById3(fileId, ContentPath()));
+            else
+            {
+                return Unauthorized();
+            }
         }
 
     }
