@@ -1,4 +1,5 @@
 ﻿using Core.DTOs.UserDTOs;
+using Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,16 @@ namespace API.Controllers
     public class UserController : CustomBaseController
     {
         private readonly IUserService _userService;
+        private readonly IDocumentService _documentService;
+        private string ContentPath()
+        {
+            return Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+        }
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IDocumentService documentService)
         {
             _userService = userService;
+            _documentService = documentService;
         }
 
         [HttpPost]
@@ -126,6 +133,18 @@ namespace API.Controllers
         public async Task<IActionResult> AddTrainerPermissionToTrainer(string permissionId, string trainerId)
         {
             return ActionResultInstance(await _userService.AddTrainerPermissionToTrainerAsync(permissionId, trainerId));
+        }
+
+        [HttpGet("{trainerId}")]
+        public Task<IActionResult> TrainerPhoto(string trainerId)
+        {
+            return _documentService.GetTrainerPhotoByIdAsync(trainerId, ContentPath());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateTrainerPhoto(IFormFile file, string trainerId)
+        {
+            return ActionResultInstance(await _documentService.CreateTrainerPhotoAsync(file, trainerId, ContentPath()));
         }
 
         // Members

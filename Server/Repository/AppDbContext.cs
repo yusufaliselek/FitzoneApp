@@ -22,10 +22,12 @@ namespace Server.Data
         }
 
         public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
+        public DbSet<Document> Document { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<TrainerDetail> TrainerDetail { get; set; }
         public DbSet<TrainerPermission> TrainerPermission { get; set; }
         public DbSet<MemberDetail> MemberDetail { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -11,10 +11,10 @@ namespace API.Controllers
     [ApiController]
     public class FileController : CustomBaseController
     {
-        private readonly IFileService _fileService;
-        public FileController(IFileService fileService)
+        private readonly IDocumentService _documentService;
+        public FileController(IDocumentService fileService)
         {
-            _fileService = fileService;
+            _documentService = fileService;
         }
 
         private string GetContentType(string fileName)
@@ -59,7 +59,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadFile(IFormFile file, string fileId)
         {
-            return ActionResultInstance(await _fileService.UploadFileAsync(file, fileId, ContentPath()));
+            return ActionResultInstance(await _documentService.UploadDocumentAsync(file, fileId, ContentPath()));
         }
 
         [HttpGet("{fileId}")]
@@ -68,7 +68,7 @@ namespace API.Controllers
             // check the origin of the request
             if (Request.Host.Value == "http://localhost:3000")
             {
-                return _fileService.GetFileById(fileId, ContentPath());
+                return _documentService.GetDocumentById(fileId, ContentPath());
             }
             else
             {
