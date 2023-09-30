@@ -15,6 +15,7 @@ namespace Core.DTOs.UserDTOs
         public string? Gender { get; set; }
         public string? Role { get; set; }
         public string? TCKNO { get; set; }
+        public string? PhotoId { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? PhoneNumber { get; set; }

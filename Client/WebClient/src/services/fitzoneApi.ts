@@ -287,7 +287,7 @@ export class FitzoneApi {
     // GetAllTrainer
     public static async GetAllActiveTrainers(): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().get('/User/GetAllActiveTrainers').then((response) => {
+            ConfigService.FitzoneApi().get('/Trainer/GetAllActiveTrainers').then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)
@@ -297,29 +297,18 @@ export class FitzoneApi {
 
     public static async GetAllPassiveTrainers(): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().get('/User/GetAllPassiveTrainers').then((response) => {
+            ConfigService.FitzoneApi().get('/Trainer/GetAllPassiveTrainers').then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)
             })
         })
     }
-
-    public static async GetTrainersWithTrainerPermissions(): Promise<any> {
-        return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().get('/User/GetTrainersWithTrainerPermissions').then((response) => {
-                resolve(response.data)
-            }).catch((error) => {
-                reject(error.response.data)
-            })
-        })
-    }
-
 
     // Delete Trainer
     public static async DeleteTrainer(id: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().delete('/User/DeleteTrainer?trainerId=' + id).then((response) => {
+            ConfigService.FitzoneApi().delete('/Trainer/DeleteTrainer?trainerId=' + id).then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)
@@ -329,7 +318,7 @@ export class FitzoneApi {
 
     public static async FreezeTrainer(id: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().put('/User/FreezeTrainer?trainerId=' + id).then((response) => {
+            ConfigService.FitzoneApi().put('/Trainer/FreezeTrainer?trainerId=' + id).then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)
@@ -340,7 +329,17 @@ export class FitzoneApi {
 
     public static async UnFreezeTrainer(id: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().put('/User/UnFreezeTrainer?trainerId=' + id).then((response) => {
+            ConfigService.FitzoneApi().put('/Trainer/UnFreezeTrainer?trainerId=' + id).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    public static async GetTrainersWithTrainerPermissions(): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().get('/Trainer/GetTrainersWithTrainerPermissions').then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)
@@ -349,9 +348,10 @@ export class FitzoneApi {
     }
 
 
+
     public static async GetTrainersWithPermissionIncludeNoOtherIdByPermissionIdAsync(permissionId: string) {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().get('/User/GetTrainersWithPermissionIncludeNoOtherIdByPermissionId?permissionId=' + permissionId).then((response) => {
+            ConfigService.FitzoneApi().get('/Trainer/GetTrainersWithPermissionIncludeNoOtherIdByPermissionId?permissionId=' + permissionId).then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)
@@ -361,7 +361,7 @@ export class FitzoneApi {
 
     public static async DeleteTrainerPermissionFromTrainerAsync(permissionId: string, trainerId: string) {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().delete('/User/DeleteTrainerPermissionFromTrainer?permissionId=' + permissionId + '&trainerId=' + trainerId).then((response) => {
+            ConfigService.FitzoneApi().delete('/Trainer/DeleteTrainerPermissionFromTrainer?permissionId=' + permissionId + '&trainerId=' + trainerId).then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)
@@ -371,7 +371,24 @@ export class FitzoneApi {
 
     public static async AddTrainerPermissionToTrainerAsync(permissionId: string, trainerId: string) {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().post('/User/AddTrainerPermissionToTrainer?permissionId=' + permissionId + '&trainerId=' + trainerId).then((response) => {
+            ConfigService.FitzoneApi().post('/Trainer/AddTrainerPermissionToTrainer?permissionId=' + permissionId + '&trainerId=' + trainerId).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+    
+    public static async CreateTrainerPhoto(trainerId: string, file: File) {
+        return new Promise<any>((resolve, reject) => {
+            const form = new FormData();
+            form.append('fileData', file);
+            form.append('trainerId', trainerId);
+            ConfigService.FitzoneApi().post('/File/New', form, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)
@@ -382,7 +399,7 @@ export class FitzoneApi {
     // Member - Start
     public static async GetAllActiveMembers(): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().get('/User/GetAllActiveMembers').then((response) => {
+            ConfigService.FitzoneApi().get('/Member/GetAllActiveMembers').then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)
@@ -393,7 +410,7 @@ export class FitzoneApi {
 
     public static async GetAllPassiveMembers(): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().get('/User/GetAllPassiveMembers').then((response) => {
+            ConfigService.FitzoneApi().get('/Member/GetAllPassiveMembers').then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)
@@ -403,7 +420,7 @@ export class FitzoneApi {
 
     public static async FreezeMember(id: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().put('/User/FreezeMember?memberId=' + id).then((response) => {
+            ConfigService.FitzoneApi().put('/Member/FreezeMember?memberId=' + id).then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)
@@ -413,7 +430,7 @@ export class FitzoneApi {
 
     public static async UnFreezeMember(id: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().put('/User/UnFreezeMember?memberId=' + id).then((response) => {
+            ConfigService.FitzoneApi().put('/Member/UnFreezeMember?memberId=' + id).then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)
@@ -423,7 +440,7 @@ export class FitzoneApi {
 
     public static async DeleteMember(id: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().delete('/User/DeleteMember?memberId=' + id).then((response) => {
+            ConfigService.FitzoneApi().delete('/Member/DeleteMember?memberId=' + id).then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)

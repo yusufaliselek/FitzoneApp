@@ -56,7 +56,7 @@ namespace Server.Service.Services
             var user = _userManager.Users.SingleOrDefault(x => x.Id == updateUserDto.Id);
             if (user == null)
             {
-                return CustomResponseDto<UserDto>.Fail(404, "User not found!");
+                return CustomResponseDto<UserDto>.Fail(404, "Kullanıcı bulunamadı!");
             }
 
             var result = await _userManager.UpdateAsync(_mapper.Map(updateUserDto, user));
@@ -101,7 +101,7 @@ namespace Server.Service.Services
             var users = await _userManager.Users.Where(x => x.IsActive == false && x.Role == "").ToListAsync();
             if (users == null)
             {
-                return CustomResponseDto<List<UserDto>>.Fail(404, "Register users not found!");
+                return CustomResponseDto<List<UserDto>>.Fail(404, "Kayıt kullanıcıları bulunamadı!");
             }
             return CustomResponseDto<List<UserDto>>.Success(200, _mapper.Map<List<UserDto>>(users));
         }
@@ -111,7 +111,7 @@ namespace Server.Service.Services
             var user = _userManager.Users.SingleOrDefault(x => x.Id == userChangePasswordDto.Id);
             if (user == null)
             {
-                return CustomResponseDto<UserDto>.Fail(404, "User not found!");
+                return CustomResponseDto<UserDto>.Fail(404, "Kullanıcı bulunamadı!");
             }
 
             var result = await _userManager.ChangePasswordAsync(user, userChangePasswordDto.CurrentPassword, userChangePasswordDto.NewPassword);
@@ -128,7 +128,7 @@ namespace Server.Service.Services
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return CustomResponseDto<UserDto>.Fail(404, "User not found!");
+                return CustomResponseDto<UserDto>.Fail(404, "Kullanıcı bulunamadı!");
             }
             return CustomResponseDto<UserDto>.Success(200, _mapper.Map<UserDto>(user));
         }
@@ -138,7 +138,7 @@ namespace Server.Service.Services
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return CustomResponseDto<UserDto>.Fail(404, "User not found!");
+                return CustomResponseDto<UserDto>.Fail(404, "Kullanıcı bulunamadı!");
             }
             var result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
@@ -154,7 +154,7 @@ namespace Server.Service.Services
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return CustomResponseDto<UserDto>.Fail(404, "User not found!");
+                return CustomResponseDto<UserDto>.Fail(404, "Kullanıcı bulunamadı!");
             }
             user.Role = role;
             user.IsActive = true;
@@ -192,7 +192,7 @@ namespace Server.Service.Services
             var user = await _userManager.FindByIdAsync(trainerId);
             if (user == null)
             {
-                return CustomResponseDto<UserDto>.Fail(404, "User not found!");
+                return CustomResponseDto<UserDto>.Fail(404, "Kullanıcı bulunamadı!");
             }
             var result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
@@ -208,7 +208,7 @@ namespace Server.Service.Services
             var user = await _userManager.FindByIdAsync(trainerId);
             if (user == null)
             {
-                return CustomResponseDto<UserDto>.Fail(404, "User not found!");
+                return CustomResponseDto<UserDto>.Fail(404, "Kullanıcı bulunamadı!");
             }
             user.IsActive = false;
             var result = await _userManager.UpdateAsync(user);
@@ -225,7 +225,7 @@ namespace Server.Service.Services
             var user = await _userManager.FindByIdAsync(trainerId);
             if (user == null)
             {
-                return CustomResponseDto<UserDto>.Fail(404, "User not found!");
+                return CustomResponseDto<UserDto>.Fail(404, "Kullanıcı bulunamadı!");
             }
             user.IsActive = true;
             var result = await _userManager.UpdateAsync(user);
@@ -352,7 +352,7 @@ namespace Server.Service.Services
             var member = await _userManager.FindByIdAsync(memberId);
             if (member == null)
             {
-                return CustomResponseDto<UserDto>.Fail(404, "User not found!");
+                return CustomResponseDto<UserDto>.Fail(404, "Kullanıcı bulunamadı!");
             }
             var result = await _userManager.DeleteAsync(member);
             if (!result.Succeeded)
@@ -368,7 +368,7 @@ namespace Server.Service.Services
             var user = await _userManager.FindByIdAsync(memberId);
             if (user == null)
             {
-                return CustomResponseDto<UserDto>.Fail(404, "User not found!");
+                return CustomResponseDto<UserDto>.Fail(404, "Kullanıcı bulunamadı!");
             }
             user.IsActive = false;
             var result = await _userManager.UpdateAsync(user);
@@ -385,7 +385,7 @@ namespace Server.Service.Services
             var user = await _userManager.FindByIdAsync(memberId);
             if (user == null)
             {
-                return CustomResponseDto<UserDto>.Fail(404, "User not found!");
+                return CustomResponseDto<UserDto>.Fail(404, "Kullanıcı bulunamadı!");
             }
             user.IsActive = true;
             var result = await _userManager.UpdateAsync(user);

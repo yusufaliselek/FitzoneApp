@@ -67,11 +67,12 @@ const trainerParams = {
     gender: "",
     id: "",
     lastName: "",
-    personalPhoto: "",
+    photoId: null,
     phoneNumber: "",
     role: "",
     tckno: "",
     userName: "",
+
 }
 
 const trainerDetailsParams = {
@@ -292,9 +293,9 @@ const Settings = () => {
                             >
                                 <div className='mt-3 flex items-center justify-center'>
                                     {
-                                        // trainer.personalPhoto === null ?
-                                        //     <BsPersonCircle size={40} color='lightgray' /> :
-                                        <img src={"https://localhost:7045/api/File/" + trainer.id + ".jpg"} alt='user' className=' w-20 h-20 bg-cover bg-center' />
+                                        trainer.photoId === null ?
+                                            <BsPersonCircle size={40} color='lightgray' /> :
+                                            <img src={"https://localhost:7045/api/Trainer/TrainerPhoto/" + trainer.id} alt='user' className=' w-20 h-20 bg-cover bg-center rounded-3xl' />
                                     }
                                 </div>
                                 <div className='flex gap-3'>
