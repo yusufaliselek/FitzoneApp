@@ -28,6 +28,7 @@ import { BsCheckCircleFill } from 'react-icons/bs';
 import { Tooltip } from '@mui/material';
 import { MdDeleteOutline } from 'react-icons/md';
 import Swal from 'sweetalert2';
+import API_LINK from '../../utils/constants/apiLink';
 
 const trainerPermissionParamCheckboxes = [
     'canCreateUser', 'canEditUser', 'canDeleteUser', 'canCreateRole', 'canEditRole',
@@ -402,7 +403,7 @@ const Settings = () => {
                                                                 selectedImage != null ?
                                                                     <img src={URL.createObjectURL(selectedImage)} alt='user' className='w-20 h-20 bg-center rounded-full' />
                                                                     :
-                                                                    <img src={"https://localhost:7045/api/Trainer/Photo/" + trainer.id} alt='user' className='w-20 h-20 bg-center rounded-full' />
+                                                                    <img src={API_LINK + "/Trainer/Photo/" + trainer.id} alt='user' className='w-20 h-20 bg-center rounded-full' />
                                                             }
                                                         </>
 

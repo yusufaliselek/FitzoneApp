@@ -85,6 +85,7 @@ namespace API.Controllers
             return ActionResultInstance(await _userService.AddTrainerPermissionToTrainerAsync(permissionId, trainerId));
         }
 
+        [Authorize]
         [HttpPost("{trainerId}")]
         public async Task<IActionResult> CreatePhoto(IFormFile file, string trainerId)
         {
@@ -97,13 +98,15 @@ namespace API.Controllers
             return _documentService.GetTrainerPhotoByIdAsync(trainerId, ContentPath());
         }
 
+        [Authorize]
         [HttpPut("{trainerId}")]
         public async Task<IActionResult> UpdatePhoto(IFormFile file, string trainerId)
         {
             return ActionResultInstance(await _documentService.UpdateTrainerPhotoAsync(file, trainerId, ContentPath()));
         }
 
-        [HttpDelete]
+        [Authorize]
+        [HttpDelete("{trainerId}")]
         public async Task<IActionResult> DeletePhoto(string trainerId)
         {
             return ActionResultInstance(await _documentService.DeleteTrainerPhotoAsync(trainerId, ContentPath()));
