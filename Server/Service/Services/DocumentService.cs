@@ -98,9 +98,13 @@ namespace Service.Services
         // Trainer Document Service //
         public async Task<CustomResponseDto<string>> CreateTrainerPhotoAsync(IFormFile file, string trainerId, string path)
         {
-            if (file == null || file.Length == 0 || trainerId == null)
+            if (file == null || file.Length == 0)
             {
                 return CustomResponseDto<string>.Fail(400, "Dosya boş olamaz");
+            }
+            if (trainerId == null)
+            {
+                return CustomResponseDto<string>.Fail(400, "Antrenör bilgisi eksik olamaz");
             }
             var contentType = GetContentType(file.FileName);
             if (contentType != "image/jpeg" && contentType != "image/png" && contentType != "image/jpg")
@@ -150,6 +154,8 @@ namespace Service.Services
             if (document == null)
             {
                 trainer.PhotoId = null;
+                var photo = await _documentService.GetByIdAsync(photoId);
+                await _documentService.RemoveAsync(photo);
                 await _userManager.UpdateAsync(trainer);
                 return new NotFoundResult();
             }
@@ -157,6 +163,8 @@ namespace Service.Services
             if (!File.Exists(filePath))
             {
                 trainer.PhotoId = null;
+                var photo = await _documentService.GetByIdAsync(photoId);
+                await _documentService.RemoveAsync(photo);
                 await _userManager.UpdateAsync(trainer);
                 return new NotFoundResult();
             }
@@ -165,42 +173,65 @@ namespace Service.Services
 
         public async Task<CustomResponseDto<string>> UpdateTrainerPhotoAsync(IFormFile file, string trainerId, string path)
         {
-            if (file == null || file.Length == 0 || trainerId == null)
+            if (file == null || file.Length == 0)
             {
                 return CustomResponseDto<string>.Fail(400, "Dosya boş olamaz");
+            }
+            if (trainerId == null)
+            {
+                return CustomResponseDto<string>.Fail(400, "Antrenör bilgisi eksik olamaz");
             }
             var contentType = GetContentType(file.FileName);
             if (contentType != "image/jpeg" && contentType != "image/png" && contentType != "image/jpg")
             {
                 return CustomResponseDto<string>.Fail(400, "Dosya türü desteklenmiyor");
             }
+
             var trainer = await _userManager.FindByIdAsync(trainerId);
             if (trainer == null)
             {
                 return CustomResponseDto<string>.Fail(404, "Antrenör bulunamadı");
             }
-            var photoId = trainer.PhotoId;
-            var document = await _documentService.GetByIdAsync(photoId);
-            if (document == null)
+
+            var existingPhotoId = trainer.PhotoId;
+            if (!string.IsNullOrEmpty(existingPhotoId))
             {
-                return CustomResponseDto<string>.Fail(404, "Fotoğraf bulunamadı");
-            }
-            var filePath = Path.Combine(path, document.Name);
-            if (!File.Exists(filePath))
-            {
-                return CustomResponseDto<string>.Fail(404, "Fotoğraf bulunamadı");
+                var existingPhoto = await _documentService.GetByIdAsync(existingPhotoId);
+                var existingPhotoPath = Path.Combine(path, existingPhoto.Name);
+                if (File.Exists(existingPhotoPath))
+                {
+                    File.Delete(existingPhotoPath);
+                }
+                await _documentService.RemoveAsync(existingPhoto);
             }
             var fileName = $"{trainerId}{Path.GetExtension(file.FileName)}";
-            var newFilePath = Path.Combine(path, fileName);
-            if (!File.Exists(newFilePath))
+            var filePath = Path.Combine(path, fileName);
+
+            if (!File.Exists(filePath))
             {
                 Directory.CreateDirectory(path);
             }
-            document.Name = fileName;
-            document.Path = newFilePath;
-            document.ContentType = contentType;
-            await _documentService.UpdateAsync(document);
-            return CustomResponseDto<string>.Success(200, document.Id);
+
+            var documentId = Guid.NewGuid().ToString();
+            var document = new Document
+            {
+                Id = documentId,
+                Name = fileName,
+                Path = filePath,
+                ContentType = contentType,
+            };
+
+            await _documentService.AddAsync(document);
+
+            trainer.PhotoId = documentId;
+            await _userManager.UpdateAsync(trainer);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return CustomResponseDto<string>.Success(200, documentId);
         }
 
         public async Task<CustomResponseDto<string>> DeleteTrainerPhotoAsync(string trainerId, string path)

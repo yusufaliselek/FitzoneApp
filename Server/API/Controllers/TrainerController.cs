@@ -85,18 +85,29 @@ namespace API.Controllers
             return ActionResultInstance(await _userService.AddTrainerPermissionToTrainerAsync(permissionId, trainerId));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateTrainerPhoto(IFormFile file, string trainerId)
+        [HttpPost("{trainerId}")]
+        public async Task<IActionResult> CreatePhoto(IFormFile file, string trainerId)
         {
             return ActionResultInstance(await _documentService.CreateTrainerPhotoAsync(file, trainerId, ContentPath()));
         }
 
         [HttpGet("{trainerId}")]
-        public Task<IActionResult> TrainerPhoto(string trainerId)
+        public Task<IActionResult> Photo(string trainerId)
         {
             return _documentService.GetTrainerPhotoByIdAsync(trainerId, ContentPath());
         }
 
+        [HttpPut("{trainerId}")]
+        public async Task<IActionResult> UpdatePhoto(IFormFile file, string trainerId)
+        {
+            return ActionResultInstance(await _documentService.UpdateTrainerPhotoAsync(file, trainerId, ContentPath()));
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeletePhoto(string trainerId)
+        {
+            return ActionResultInstance(await _documentService.DeleteTrainerPhotoAsync(trainerId, ContentPath()));
+        }
 
 
     }

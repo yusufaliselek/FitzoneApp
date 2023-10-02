@@ -127,24 +127,6 @@ export class FitzoneApi {
             })
         })
     }
-
-    public static async UpdateUserPhoto(userId: string, photo: File) {
-        return new Promise<any>((resolve, reject) => {
-            const form = new FormData();
-            form.append('fileData', photo);
-            form.append('userId', userId);
-            ConfigService.FitzoneApi().post('/File/New', form, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }).then((response) => {
-                resolve(response.data)
-            }).catch((error) => {
-                reject(error.response.data)
-            })
-        })
-
-    }
     //// User - End ////
 
     //// Trainer Detail - Start ////
@@ -378,17 +360,42 @@ export class FitzoneApi {
             })
         })
     }
-    
+
     public static async CreateTrainerPhoto(trainerId: string, file: File) {
         return new Promise<any>((resolve, reject) => {
             const form = new FormData();
-            form.append('fileData', file);
-            form.append('trainerId', trainerId);
-            ConfigService.FitzoneApi().post('/File/New', form, {
+            form.append('file', file);
+            ConfigService.FitzoneApi().post(`/Trainer/CreatePhoto/${trainerId}`, form, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            }).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    public static async UpdateTrainerPhoto(trainerId: string, file: File) {
+        return new Promise<any>((resolve, reject) => {
+            const form = new FormData();
+            form.append('file', file);
+            ConfigService.FitzoneApi().put(`/Trainer/UpdatePhoto/${trainerId}`, form, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then((response) => {
+                resolve(response.data)
+            }).catch((error) => {
+                reject(error.response.data)
+            })
+        })
+    }
+
+    public static async DeleteTrainerPhoto(trainerId: string) {
+        return new Promise<any>((resolve, reject) => {
+            ConfigService.FitzoneApi().delete(`/Trainer/DeletePhoto/${trainerId}`).then((response) => {
                 resolve(response.data)
             }).catch((error) => {
                 reject(error.response.data)
@@ -458,16 +465,7 @@ export class FitzoneApi {
         })
     }
 
-    // File - Start
-    public static async GetFileById(id: string): Promise<any> {
-        return new Promise<any>((resolve, reject) => {
-            ConfigService.FitzoneApi().get('/File/GetFileById2?fileId=' + id).then((response) => {
-                resolve(response)
-            }).catch((error) => {
-                reject(error.response.data)
-            })
-        })
-    }
+
 
 
 }

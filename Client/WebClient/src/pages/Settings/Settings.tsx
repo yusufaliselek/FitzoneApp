@@ -23,6 +23,11 @@ import { motion } from 'framer-motion';
 import { cities } from '../../assets/Cities';
 import genders from '../../assets/Genders';
 import { AntTab, AntTabs } from '../../components/Tabs/Tabs';
+import { AiOutlineCloudSync, AiOutlineCloudUpload } from 'react-icons/ai';
+import { BsCheckCircleFill } from 'react-icons/bs';
+import { Tooltip } from '@mui/material';
+import { MdDeleteOutline } from 'react-icons/md';
+import Swal from 'sweetalert2';
 
 const trainerPermissionParamCheckboxes = [
     'canCreateUser', 'canEditUser', 'canDeleteUser', 'canCreateRole', 'canEditRole',
@@ -103,6 +108,8 @@ const Settings = () => {
     const [trainer, setTrainer] = useState(trainerParams);
 
     const [trainerDetails, setTrainerDetails] = useState(trainerDetailsParams);
+
+    const [selectedImage, setSelectedImage] = useState(null);
 
     const [detailsIsOpen, setDetailsIsOpen] = useState(false);
 
@@ -251,6 +258,81 @@ const Settings = () => {
         setPasswordParams({ ...passwordParams, [event.target.id]: event.target.value });
     }
 
+
+    const clearCache = () => {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker
+                .getRegistrations()
+                .then(function (registrations) {
+                    for (let registration of registrations) {
+                        registration.unregister()
+                    }
+                })
+        }
+        window.location.reload()
+    }
+
+    const createPhoto = () => {
+        if (!trainer.id || !selectedImage) {
+            Toast.fire({
+                title: 'Bilgiler eksik!',
+                icon: "error"
+            })
+            return;
+        }
+        FitzoneApi.CreateTrainerPhoto(trainer.id, selectedImage).then((response) => {
+            Toast.fire({
+                icon: 'success',
+                title: 'Fotoğraf yüklendi'
+            }).then(() => {
+                clearCache()
+            })
+        })
+    }
+
+
+    const updatePhoto = () => {
+
+        if (!trainer.id || !selectedImage) {
+            Toast.fire({
+                title: 'Bilgiler eksik!',
+                icon: "error"
+            })
+            return;
+        }
+
+        FitzoneApi.UpdateTrainerPhoto(trainer.id, selectedImage).then((response) => {
+            Toast.fire({
+                icon: 'success',
+                title: 'Fotoğraf güncellendi'
+            }).then(() => {
+                clearCache()
+            })
+        })
+    }
+
+    const deletePhoto = () => {
+        Swal.fire({
+            title: 'Silmek istediğinizden misiniz?',
+            text: "Fotoğrafınızı silmek istediğinizden emin misiniz?",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: "Hayır",
+            confirmButtonText: 'Evet, sil!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                FitzoneApi.DeleteTrainerPhoto(trainer.id).then((response) => {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Fotoğraf silindi'
+                    }).then(() => {
+                        clearCache()
+                    })
+                })
+            }
+        })
+    }
+
     useEffect(() => {
         RefreshToken();
         Promise.all([
@@ -286,66 +368,149 @@ const Settings = () => {
                         <AntTab label="Yetkilerim" {...a11yProps(2)} />
                     </AntTabs>
                     <TabPanel value={value} index={0}>
-                        <div className='w-full h-[calc(100vh-112px)] overflow-y-auto flex flex-col gap-2 items-center'>
-                            {/* FORM SIDE */}
-                            <motion.div
-                                className={`w-2/5 gap-4 mt-[3%] p-5 ${!detailsIsOpen ? "flex flex-col" : "hidden"}`}
-                            >
-                                <div className='mt-3 flex items-center justify-center'>
-                                    {
-                                        trainer.photoId === null ?
-                                            <BsPersonCircle size={40} color='lightgray' /> :
-                                            <img src={"https://localhost:7045/api/Trainer/TrainerPhoto/" + trainer.id} alt='user' className=' w-20 h-20 bg-cover bg-center rounded-3xl' />
-                                    }
+                        {
+                            trainer.id == "" ?
+                                <div className='w-full h-[calc(100vh-112px)]'>
+                                    <div className='flex flex-col w-full h-full items-center justify-center'>
+                                        <div className='flex flex-col gap-3 items-center'>
+                                            <BsPersonCircle size={80} color='lightgray' />
+                                            <span className='font-medium'>Kullanıcı bilgileriniz yükleniyor...</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className='flex gap-3'>
-                                    <TextInput id='firstName' label='Ad' value={trainer.firstName} onChange={handleChangeForm} />
-                                    <TextInput id='lastName' label='Soyad' value={trainer.lastName} onChange={handleChangeForm} />
-                                </div>
-                                <div className='flex gap-3'>
-                                    <TextInput id='email' label='E-Posta' value={trainer.email} onChange={handleChangeForm} disabled />
-                                    <TextInput id='userName' label='Kullanıcı Adı' value={trainer.userName} onChange={handleChangeForm} disabled />
-                                </div>
-                                <div className='flex gap-3'>
-                                    <TextInput id='phoneNumber' label='Telefon Numarası' value={trainer.phoneNumber} onChange={handleChangeForm} />
-                                    <TextInput id='tckno' label='TCKNO' value={trainer.tckno} onChange={handleChangeForm} />
-                                </div>
-                                <div className='flex gap-3'>
-                                    <SelectInput id='gender' label='Cinsiyet' value={trainer.gender} onChange={(e) => setTrainer({ ...trainer, gender: e.target.value })} options={genders} />
-                                    <TextInput id='birthdayDate' label='Doğum Tarihi' value={trainer.birthdayDate} onChange={handleChangeForm} type='date' />
-                                </div>
-                                {/* SUBMIT */}
-                                <div className='flex mt-3 flex-col gap-3'>
-                                    <FButton text='Kaydet' onClick={updateUser} />
-                                    <FButton text='Detayları Göster' theme='dark' onClick={() => setDetailsIsOpen(true)} />
-                                </div>
-                            </motion.div>
-                            <motion.div className={`w-2/5 gap-4 mt-[3%] p-5 ${detailsIsOpen ? "flex flex-col" : "hidden"}`}
-                            >
-                                <div className='mt-3 flex items-center justify-center'>
-                                    <TbListDetails size={40} color='lightgray' />
-                                </div>
-                                <div className='w-full text-blue-700'> <label
-                                    htmlFor={"biography"}
-                                    className="block mb-2 text-sm font-medium pl-1">
-                                    Biyografi
-                                </label>
-                                    <textarea id='biography' aria-label='Biyografi' value={trainerDetails.biography} className="bg-gray-50 border focus:border-blue-500  text-sm rounded-lg  w-full p-2.5 outline-0  focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                        onChange={(e) => setTrainerDetails({ ...trainerDetails, biography: e.target.value })} />
-                                </div>
+                                :
+                                <div className='w-full h-[calc(100vh-112px)] overflow-y-auto flex flex-col gap-2 items-center'>
+                                    {/* FORM SIDE */}
+                                    <motion.div
+                                        className={`w-2/5 gap-4 mt-[3%] p-5 ${!detailsIsOpen ? "flex flex-col" : "hidden"}`}
+                                    >
+                                        <div className='mt-3 flex items-center justify-center'>
+                                            <div className='rounded-full flex flex-col justify-center items-center'>
+                                                {
+                                                    trainer.photoId == null ?
+                                                        <>
+                                                            {
+                                                                selectedImage !== null ?
+                                                                    <img src={URL.createObjectURL(selectedImage)} alt='user' className='w-20 h-20 bg-center rounded-full' />
+                                                                    :
+                                                                    <BsPersonCircle size={80} color='lightgray' />
+                                                            }
+                                                        </>
+                                                        :
+                                                        <>
+                                                            {
+                                                                selectedImage != null ?
+                                                                    <img src={URL.createObjectURL(selectedImage)} alt='user' className='w-20 h-20 bg-center rounded-full' />
+                                                                    :
+                                                                    <img src={"https://localhost:7045/api/Trainer/Photo/" + trainer.id} alt='user' className='w-20 h-20 bg-center rounded-full' />
+                                                            }
+                                                        </>
 
-                                <TextInput id='profession' label='Uzmanlık' value={trainerDetails.profession} onChange={handleDetailChangeForm} />
-                                <TextInput id='qualification' label='Nitelik' value={trainerDetails.qualification} onChange={handleDetailChangeForm} />
-                                <SelectInput value={trainerDetails.location} id='location' label='Şehir Seçiniz' options={cities.map((item) => ({ value: String(item.plaka), text: item.il_adi }))}
-                                    onChange={(e) => setTrainerDetails({ ...trainerDetails, location: e.target.value })}
-                                />
-                                {/* SUBMIT */}
-                                <div className='flex mt-3 flex-col gap-3'>
-                                    <FButton text='Detayları Kaydet' onClick={createOrUpdateTrainerDetail(trainerDetailAction)} />
-                                    <FButton text='Detayları Gizle' theme='dark' onClick={() => setDetailsIsOpen(false)} />
+                                                }
+                                                {
+                                                    trainer.photoId == null ?
+                                                        <div className='flex gap-4 mt-2 items-center'>
+                                                            <label htmlFor="createPersonalPhoto">
+                                                                <AiOutlineCloudUpload size={30} color='blue' cursor={"pointer"} />
+                                                            </label>
+                                                            <input id="createPersonalPhoto" type="file" className="sr-only" accept=".png, .jpeg, .jpg"
+                                                                onChange={(e: any) => {
+                                                                    // check file type
+                                                                    if (e.target.files[0].type !== "image/png" && e.target.files[0].type !== "image/jpeg") {
+                                                                        Toast.fire({
+                                                                            icon: 'error',
+                                                                            title: 'Dosya türü desteklenmiyor'
+                                                                        })
+                                                                        return;
+                                                                    }
+                                                                    setSelectedImage(e.target.files[0]);
+                                                                }}
+                                                            />
+                                                            {
+                                                                selectedImage !== null &&
+                                                                <BsCheckCircleFill size={25} color='green' cursor={"pointer"} onClick={createPhoto} />
+                                                            }
+                                                            <MdDeleteOutline cursor={"pointer"} size={25} color='red' onClick={deletePhoto} />
+                                                        </div>
+                                                        :
+                                                        <div className='flex gap-4 mt-2 items-center'>
+                                                            <label htmlFor="updatePersonalPhoto">
+                                                                <AiOutlineCloudSync size={30} color='blue' cursor={"pointer"} />
+                                                            </label>
+                                                            <input id="updatePersonalPhoto" type="file" className="sr-only" accept=".png, .jpeg, .jpg"
+                                                                onChange={(e: any) => {
+                                                                    // check file type
+                                                                    if (e.target.files[0].type !== "image/png" && e.target.files[0].type !== "image/jpeg") {
+                                                                        Toast.fire({
+                                                                            icon: 'error',
+                                                                            title: 'Dosya türü desteklenmiyor'
+                                                                        })
+                                                                        return;
+                                                                    }
+                                                                    setSelectedImage(e.target.files[0]);
+                                                                }}
+                                                            />
+                                                            {
+                                                                selectedImage !== null &&
+                                                                <BsCheckCircleFill size={25} color='green' cursor={"pointer"} onClick={updatePhoto} />
+                                                            }
+                                                            <MdDeleteOutline cursor={"pointer"} size={25} color='red' onClick={deletePhoto} />
+                                                        </div>
+
+                                                }
+                                            </div>
+
+                                        </div>
+                                        <div className='flex gap-3'>
+                                            <TextInput id='firstName' label='Ad' value={trainer.firstName} onChange={handleChangeForm} />
+                                            <TextInput id='lastName' label='Soyad' value={trainer.lastName} onChange={handleChangeForm} />
+                                        </div>
+                                        <div className='flex gap-3'>
+                                            <TextInput id='email' label='E-Posta' value={trainer.email} onChange={handleChangeForm} disabled />
+                                            <TextInput id='userName' label='Kullanıcı Adı' value={trainer.userName} onChange={handleChangeForm} disabled />
+                                        </div>
+                                        <div className='flex gap-3'>
+                                            <TextInput id='phoneNumber' label='Telefon Numarası' value={trainer.phoneNumber} onChange={handleChangeForm} />
+                                            <TextInput id='tckno' label='TCKNO' value={trainer.tckno} onChange={handleChangeForm} />
+                                        </div>
+                                        <div className='flex gap-3'>
+                                            <SelectInput id='gender' label='Cinsiyet' value={trainer.gender} onChange={(e) => setTrainer({ ...trainer, gender: e.target.value })} options={genders} />
+                                            <TextInput id='birthdayDate' label='Doğum Tarihi' value={trainer.birthdayDate} onChange={handleChangeForm} type='date' />
+                                        </div>
+                                        {/* SUBMIT */}
+                                        <div className='flex mt-3 flex-col gap-3'>
+                                            <FButton text='Kaydet' onClick={updateUser} />
+                                            <FButton text='Detayları Göster' theme='dark' onClick={() => setDetailsIsOpen(true)} />
+                                        </div>
+                                    </motion.div>
+                                    <motion.div className={`w-2/5 gap-4 mt-[3%] p-5 ${detailsIsOpen ? "flex flex-col" : "hidden"}`}
+                                    >
+                                        <div className='mt-3 flex items-center justify-center'>
+                                            <TbListDetails size={40} color='lightgray' />
+                                        </div>
+                                        <div className='w-full text-blue-700'> <label
+                                            htmlFor={"biography"}
+                                            className="block mb-2 text-sm font-medium pl-1">
+                                            Biyografi
+                                        </label>
+                                            <textarea id='biography' aria-label='Biyografi' value={trainerDetails.biography} className="bg-gray-50 border focus:border-blue-500  text-sm rounded-lg  w-full p-2.5 outline-0  focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                                onChange={(e) => setTrainerDetails({ ...trainerDetails, biography: e.target.value })} />
+                                        </div>
+
+                                        <TextInput id='profession' label='Uzmanlık' value={trainerDetails.profession} onChange={handleDetailChangeForm} />
+                                        <TextInput id='qualification' label='Nitelik' value={trainerDetails.qualification} onChange={handleDetailChangeForm} />
+                                        <SelectInput value={trainerDetails.location} id='location' label='Şehir Seçiniz' options={cities.map((item) => ({ value: String(item.plaka), text: item.il_adi }))}
+                                            onChange={(e) => setTrainerDetails({ ...trainerDetails, location: e.target.value })}
+                                        />
+                                        {/* SUBMIT */}
+                                        <div className='flex mt-3 flex-col gap-3'>
+                                            <FButton text='Detayları Kaydet' onClick={createOrUpdateTrainerDetail(trainerDetailAction)} />
+                                            <FButton text='Detayları Gizle' theme='dark' onClick={() => setDetailsIsOpen(false)} />
+                                        </div>
+                                    </motion.div>
                                 </div>
-                            </motion.div>
-                        </div>
+                        }
+
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                         <div className='w-full h-[calc(100vh-112px)] overflow-y-auto flex flex-col gap-2 items-center'>

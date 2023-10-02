@@ -115,18 +115,18 @@ const TrainerDetail = () => {
     }
 
     const updateUserPhoto = () => {
-        if (!trainerPhoto) { alert("Fotoğraf seçiniz!"); return }
-        Toast.fire({
-            icon: 'info',
-            title: 'Güncelleniyor...'
-        })
-        FitzoneApi.UpdateUserPhoto(trainer.id, trainerPhoto).then((res) => {
-            Toast.fire({
-                icon: 'success',
-                title: 'Fotoğraf güncellendi.'
-            })
-            setIsPhotoChanged(false);
-        })
+        // if (!trainerPhoto) { alert("Fotoğraf seçiniz!"); return }
+        // Toast.fire({
+        //     icon: 'info',
+        //     title: 'Güncelleniyor...'
+        // })
+        // FitzoneApi.UpdateUserPhoto(trainer.id, trainerPhoto).then((res) => {
+        //     Toast.fire({
+        //         icon: 'success',
+        //         title: 'Fotoğraf güncellendi.'
+        //     })
+        //     setIsPhotoChanged(false);
+        // })
     }
 
     return (
