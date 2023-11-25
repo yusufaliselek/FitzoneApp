@@ -9,6 +9,7 @@ const TextInput = ({
     disabled = false,
     value,
     onChange,
+    pattern
 }: {
     label?: string;
     placeholder?: string;
@@ -18,6 +19,7 @@ const TextInput = ({
     disabled?: boolean;
     value: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    pattern?: string;
 }) => {
     return (
         <div className='w-full text-blue-700'>
@@ -30,7 +32,7 @@ const TextInput = ({
             }
             <input type={type} id={id}
                 value={value} onChange={onChange}
-                placeholder={placeholder} required={required} disabled={disabled}
+                placeholder={placeholder} required={required} disabled={disabled} {...(pattern && { pattern })}
                 className="bg-gray-50 border focus:border-blue-500  text-sm rounded-lg  w-full p-2.5 outline-0  focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
         </div>
     )

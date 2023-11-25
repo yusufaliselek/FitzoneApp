@@ -10,6 +10,7 @@
 /Server/Server.Data/obj
 /Server/Server.Data/Migrations
 /Server/Server.Service/bin
+/Server/API/Uploads/
 /Server/Server.Service/obj
 *.swp
 *.*~

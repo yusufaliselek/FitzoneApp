@@ -23,10 +23,6 @@ import { motion } from 'framer-motion';
 import { cities } from '../../assets/Cities';
 import genders from '../../assets/Genders';
 import { AntTab, AntTabs } from '../../components/Tabs/Tabs';
-import { AiOutlineCloudSync, AiOutlineCloudUpload } from 'react-icons/ai';
-import { BsCheckCircleFill } from 'react-icons/bs';
-import { Tooltip } from '@mui/material';
-import { MdDeleteOutline } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import API_LINK from '../../utils/constants/apiLink';
 
@@ -147,9 +143,25 @@ const Settings = () => {
 
     // User Update
     const handleChangeForm = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(event.target.id, event.target.value)
-        setTrainer({ ...trainer, [event.target.id]: event.target.value });
-    }
+        const { id, value } = event.target;
+
+        const maxLengths: { [key: string]: number } = {
+            tckno: 11,
+            phoneNumber: 11,
+            firstName: 50,
+            lastName: 50,
+        };
+
+        if (value.length > maxLengths[id]) {
+            const label = document.querySelector(`label[for=${id}]`) as HTMLLabelElement;
+            Toast.fire({
+                icon: 'error',
+                title: `${label.textContent} ${maxLengths[id]} karakterden fazla olamaz`,
+            });
+        } else {
+            setTrainer({ ...trainer, [id]: value });
+        }
+    };
 
 
     const updateUser = () => {
@@ -370,7 +382,7 @@ const Settings = () => {
                     </AntTabs>
                     <TabPanel value={value} index={0}>
                         {
-                            trainer.id == "" ?
+                            trainer.id === "" ?
                                 <div className='w-full h-[calc(100vh-112px)]'>
                                     <div className='flex flex-col w-full h-full items-center justify-center'>
                                         <div className='flex flex-col gap-3 items-center'>
@@ -401,18 +413,18 @@ const Settings = () => {
                                                         <>
                                                             {
                                                                 selectedImage != null ?
-                                                                    <img src={URL.createObjectURL(selectedImage)} alt='user' className='w-20 h-20 bg-center rounded-full' />
+                                                                    <img src={URL.createObjectURL(selectedImage)} alt='user' className='w-20 h-20 bg-center rounded-full object-cover' />
                                                                     :
-                                                                    <img src={API_LINK + "/Trainer/Photo/" + trainer.id} alt='user' className='w-20 h-20 bg-center rounded-full' />
+                                                                    <img src={API_LINK + "/Trainer/Photo/" + trainer.id} alt='user' className='w-20 h-20 bg-center rounded-full object-cover' />
                                                             }
                                                         </>
-
                                                 }
                                                 {
                                                     trainer.photoId == null ?
                                                         <div className='flex gap-4 mt-2 items-center'>
-                                                            <label htmlFor="createPersonalPhoto">
-                                                                <AiOutlineCloudUpload size={30} color='blue' cursor={"pointer"} />
+                                                            <label htmlFor="createPersonalPhoto"
+                                                                className='text-[10px] cursor-pointer bg-blue-500 text-white py-1 px-2 rounded-md transition-all hover:bg-blue-600'>
+                                                                Fotoğraf Seç
                                                             </label>
                                                             <input id="createPersonalPhoto" type="file" className="sr-only" accept=".png, .jpeg, .jpg"
                                                                 onChange={(e: any) => {
@@ -429,14 +441,17 @@ const Settings = () => {
                                                             />
                                                             {
                                                                 selectedImage !== null &&
-                                                                <BsCheckCircleFill size={25} color='green' cursor={"pointer"} onClick={createPhoto} />
+                                                                <label onClick={createPhoto}
+                                                                    className='text-[10px] cursor-pointer bg-green-500 text-white py-1 px-2 rounded-md transition-all hover:bg-green-600'>
+                                                                    Fotoğrafı Yükle
+                                                                </label>
                                                             }
-                                                            <MdDeleteOutline cursor={"pointer"} size={25} color='red' onClick={deletePhoto} />
                                                         </div>
                                                         :
                                                         <div className='flex gap-4 mt-2 items-center'>
-                                                            <label htmlFor="updatePersonalPhoto">
-                                                                <AiOutlineCloudSync size={30} color='blue' cursor={"pointer"} />
+                                                            <label htmlFor="updatePersonalPhoto"
+                                                                className='text-[10px] cursor-pointer bg-blue-500 text-white py-1 px-2 rounded-md transition-all hover:bg-blue-600'>
+                                                                Yeni Fotoğraf Seç
                                                             </label>
                                                             <input id="updatePersonalPhoto" type="file" className="sr-only" accept=".png, .jpeg, .jpg"
                                                                 onChange={(e: any) => {
@@ -453,9 +468,15 @@ const Settings = () => {
                                                             />
                                                             {
                                                                 selectedImage !== null &&
-                                                                <BsCheckCircleFill size={25} color='green' cursor={"pointer"} onClick={updatePhoto} />
+                                                                <label onClick={updatePhoto}
+                                                                    className='text-[10px] cursor-pointer bg-green-500 text-white py-1 px-2 rounded-md transition-all hover:bg-green-600'>
+                                                                    Fotoğrafı Yükle
+                                                                </label>
                                                             }
-                                                            <MdDeleteOutline cursor={"pointer"} size={25} color='red' onClick={deletePhoto} />
+                                                            <label onClick={deletePhoto}
+                                                                className='text-[10px] cursor-pointer bg-red-400 text-white py-1 px-2 rounded-md transition-all hover:bg-red-600'>
+                                                                Fotoğrafı Sil
+                                                            </label>
                                                         </div>
 
                                                 }
@@ -471,8 +492,8 @@ const Settings = () => {
                                             <TextInput id='userName' label='Kullanıcı Adı' value={trainer.userName} onChange={handleChangeForm} disabled />
                                         </div>
                                         <div className='flex gap-3'>
-                                            <TextInput id='phoneNumber' label='Telefon Numarası' value={trainer.phoneNumber} onChange={handleChangeForm} />
-                                            <TextInput id='tckno' label='TCKNO' value={trainer.tckno} onChange={handleChangeForm} />
+                                            <TextInput id='phoneNumber' label='Telefon Numarası' value={trainer.phoneNumber} onChange={handleChangeForm} type='number' />
+                                            <TextInput id='tckno' label='TCKNO' value={trainer.tckno} onChange={handleChangeForm} type='number' />
                                         </div>
                                         <div className='flex gap-3'>
                                             <SelectInput id='gender' label='Cinsiyet' value={trainer.gender} onChange={(e) => setTrainer({ ...trainer, gender: e.target.value })} options={genders} />
