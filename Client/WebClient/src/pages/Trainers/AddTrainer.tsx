@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 import { decodeJwt } from 'jose';
 import { FitzoneApi } from '../../services/fitzoneApi';
 import Toast from '../../components/Toast/Toast';
+import clearTokens from '../../utils/funcs/ClearTokens';
 
 const addTrainerProps = {
   userName: '',
@@ -27,7 +28,7 @@ const AddTrainer = () => {
     RefreshToken();
     const role = decodeJwt(Cookies.get('token')!).typ;
     if (role !== 'admin') { // TODO: Trainer için değiştirilecek -> Yetki kontrolü
-      clearToken();
+      clearTokens();
     }
   }, [])
 
@@ -95,13 +96,6 @@ const AddTrainer = () => {
     })
   }
 
-  const goLogin = () => navigate('/login')
-
-  const clearToken = () => {
-    Cookies.remove('token');
-    Cookies.remove('refreshToken');
-    goLogin();
-  }
 
   const RefreshToken = () => {
     if (!Cookies.get('token')) {
@@ -111,7 +105,7 @@ const AddTrainer = () => {
         console.log("Token yenilendi");
       }).catch((error) => {
         console.log(error)
-        clearToken()
+        clearTokens()
       });
     }
   }

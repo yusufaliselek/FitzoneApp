@@ -14,6 +14,7 @@ import genders from '../../assets/Genders';
 import Cookies from 'js-cookie';
 import { decodeJwt } from 'jose';
 import Toast from '../../components/Toast/Toast';
+import clearTokens from '../../utils/funcs/ClearTokens';
 
 const trainerParams = {
     birthdayDate: "",
@@ -53,14 +54,6 @@ const TrainerDetail = () => {
     const [detailsIsOpen, setDetailsIsOpen] = useState<boolean>(false);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
-    const goLogin = () => navigate('/login')
-
-    const clearToken = () => {
-        Cookies.remove('token');
-        Cookies.remove('refreshToken');
-        goLogin();
-    }
-
     const RefreshToken = () => {
         if (!Cookies.get('token')) {
             return FitzoneApi.ResfreshAccessTokenByRefreshToken().then((response) => {
@@ -69,7 +62,7 @@ const TrainerDetail = () => {
                 console.log("Token yenilendi");
             }).catch((error) => {
                 console.log(error)
-                clearToken()
+                clearTokens()
             });
         }
     }

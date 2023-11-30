@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import { BsPersonBadgeFill } from 'react-icons/bs';
 import Content from '../../components/Content/Content';
 import StyledDataGrid from '../../components/StyledDataGrid/StyledDataGrid';
+import clearTokens from '../../utils/funcs/ClearTokens';
 
 const Trainers = () => {
 
@@ -81,14 +82,6 @@ const Trainers = () => {
     }
   ]
 
-  const goLogin = () => navigate('/login')
-
-  const clearToken = () => {
-    Cookies.remove('token');
-    Cookies.remove('refreshToken');
-    goLogin();
-  }
-
   const RefreshToken = () => {
     if (!Cookies.get('token')) {
       return FitzoneApi.ResfreshAccessTokenByRefreshToken().then((response) => {
@@ -97,7 +90,7 @@ const Trainers = () => {
         console.log("Token yenilendi");
       }).catch((error) => {
         console.log(error)
-        clearToken()
+        clearTokens()
       });
     }
   }

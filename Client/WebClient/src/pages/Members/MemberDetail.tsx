@@ -11,6 +11,7 @@ import genders from '../../assets/Genders'
 import SelectInput from '../../components/SelectInput/SelectInput'
 import Cookies from 'js-cookie'
 import { decodeJwt } from 'jose'
+import RefreshToken from '../../utils/funcs/RefreshToken'
 
 const memberParams = {
   birthdayDate: "",
@@ -35,26 +36,6 @@ const MemberDetail = () => {
 
   const [isAdmin, setIsAdmin] = useState<boolean>(false)
 
-  const goLogin = () => navigate('/login')
-
-  const clearToken = () => {
-    Cookies.remove('token');
-    Cookies.remove('refreshToken');
-    goLogin();
-  }
-
-  const RefreshToken = () => {
-    if (!Cookies.get('token')) {
-      return FitzoneApi.ResfreshAccessTokenByRefreshToken().then((response) => {
-        Cookies.set('token', response.data.accessToken, { expires: new Date(response.data.accessTokenExpiration) });
-        Cookies.set('refreshToken', response.data.refreshToken, { expires: new Date(response.data.refreshTokenExpiration) });
-        console.log("Token yenilendi");
-      }).catch((error) => {
-        console.log(error)
-        clearToken()
-      });
-    }
-  }
 
   useEffect(() => {
     RefreshToken()
@@ -70,7 +51,7 @@ const MemberDetail = () => {
     setIsAdmin(decodeJwt(String(Cookies.get('token')))?.typ === 'admin');
   }, [])
 
-  const updateUser = (e:any) => {
+  const updateUser = (e: any) => {
     Toast.fire({
       icon: 'info',
       title: 'Güncelleniyor...'
@@ -86,7 +67,7 @@ const MemberDetail = () => {
 
   const handleChangeForm = (e: any) => {
     setMember({ ...member, [e.target.id]: e.target.value })
-   }
+  }
 
   return (
     <div className='flex w-screen h-screen'>

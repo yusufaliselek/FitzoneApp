@@ -12,6 +12,8 @@ import TrainerPermissions from './TrainerPermissions';
 import PassiveMembers from './PassiveMembers';
 import RegisterUsers from './RegisterUsers';
 import { AntTab, AntTabs } from '../../components/Tabs/Tabs';
+import RefreshToken from '../../utils/funcs/RefreshToken';
+import clearTokens from '../../utils/funcs/ClearTokens';
 
 const AdminPanel = () => {
 
@@ -24,33 +26,11 @@ const AdminPanel = () => {
         setValue(newValue);
     };
 
-    const goLogin = () => navigate('/login');
-
-    const clearToken = () => {
-        Cookies.remove('token');
-        Cookies.remove('refreshToken');
-        goLogin();
-    };
-
-    const RefreshToken = async () => {
-        if (!Cookies.get('token')) {
-            FitzoneApi.ResfreshAccessTokenByRefreshToken().then(response => {
-                Cookies.set('token', response.data.accessToken, { expires: new Date(response.data.accessTokenExpiration) });
-                Cookies.set('refreshToken', response.data.refreshToken, { expires: new Date(response.data.refreshTokenExpiration) });
-                console.log("Token yenilendi");
-            }
-            ).catch(error => {
-                console.log(error);
-                clearToken();
-            });
-        }
-    };
-
     useEffect(() => {
         RefreshToken();
         const role = decodeJwt(Cookies.get('token')!).typ;
         if (role !== 'admin') {
-            clearToken();
+            clearTokens();
         }
     }, []);
 

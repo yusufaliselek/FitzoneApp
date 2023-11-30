@@ -9,6 +9,8 @@ import { decodeJwt } from 'jose';
 import { FitzoneApi } from '../../services/fitzoneApi';
 import Toast from '../../components/Toast/Toast';
 import { RiAccountCircleLine } from 'react-icons/ri';
+import RefreshToken from '../../utils/funcs/RefreshToken';
+import clearTokens from '../../utils/funcs/ClearTokens';
 
 const addMemberProps = {
   userName: '',
@@ -27,7 +29,7 @@ const AddMember = () => {
     RefreshToken();
     const role = decodeJwt(Cookies.get('token')!).typ;
     if (role !== 'admin') { // TODO: Trainer için değiştirilecek -> Yetki kontrolü
-      clearToken();
+      clearTokens();
     }
   }, [])
 
@@ -95,30 +97,6 @@ const AddMember = () => {
       })
     })
   }
-
-  const goLogin = () => navigate('/login')
-
-  const clearToken = () => {
-    Cookies.remove('token');
-    Cookies.remove('refreshToken');
-    goLogin();
-  }
-
-  const RefreshToken = () => {
-    if (!Cookies.get('token')) {
-      return FitzoneApi.ResfreshAccessTokenByRefreshToken().then((response) => {
-        Cookies.set('token', response.data.accessToken, { expires: new Date(response.data.accessTokenExpiration) });
-        Cookies.set('refreshToken', response.data.refreshToken, { expires: new Date(response.data.refreshTokenExpiration) });
-        console.log("Token yenilendi");
-      }).catch((error) => {
-        console.log(error)
-        clearToken()
-      });
-    }
-  }
-
-
-
 
 
   return (

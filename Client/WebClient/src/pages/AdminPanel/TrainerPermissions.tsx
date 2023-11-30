@@ -16,6 +16,7 @@ import { TrainerPermissionParamCheckboxes } from '../../utils/constants/TrainerP
 import { TrainerPermissionParamLabels } from '../../utils/constants/TrainerPermissionParamLabels';
 import { TrainerPermissionParams } from '../../utils/constants/TrainerPermissionParams';
 import StyledDataGrid from '../../components/StyledDataGrid/StyledDataGrid';
+import clearTokens from '../../utils/funcs/ClearTokens';
 
 
 const TrainerPermissions = () => {
@@ -59,12 +60,8 @@ const TrainerPermissions = () => {
             title: title
         });
 
-    const goLogin = () => navigate('/login');
-
     const clearToken = () => {
-        Cookies.remove('token');
-        Cookies.remove('refreshToken');
-        goLogin();
+        clearTokens();
     };
 
     const RefreshToken = async () => {

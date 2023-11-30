@@ -25,6 +25,8 @@ import genders from '../../assets/Genders';
 import { AntTab, AntTabs } from '../../components/Tabs/Tabs';
 import Swal from 'sweetalert2';
 import API_LINK from '../../utils/constants/apiLink';
+import RefreshToken from '../../utils/funcs/RefreshToken';
+import clearTokens from '../../utils/funcs/ClearTokens';
 
 const trainerPermissionParamCheckboxes = [
     'canCreateUser', 'canEditUser', 'canDeleteUser', 'canCreateRole', 'canEditRole',
@@ -119,27 +121,6 @@ const Settings = () => {
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
-
-    const goLogin = () => navigate('/login')
-
-    const clearToken = () => {
-        Cookies.remove('token');
-        Cookies.remove('refreshToken');
-        goLogin();
-    }
-
-    const RefreshToken = () => {
-        if (!Cookies.get('token')) {
-            return FitzoneApi.ResfreshAccessTokenByRefreshToken().then((response) => {
-                Cookies.set('token', response.data.accessToken, { expires: new Date(response.data.accessTokenExpiration) });
-                Cookies.set('refreshToken', response.data.refreshToken, { expires: new Date(response.data.refreshTokenExpiration) });
-                console.log("Token yenilendi");
-            }).catch((error) => {
-                console.log(error)
-                clearToken()
-            });
-        }
-    }
 
     // User Update
     const handleChangeForm = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -250,7 +231,7 @@ const Settings = () => {
                 title: 'Şifre güncellendi'
             })
             setPasswordParams(passwordForm);
-            clearToken();
+            clearTokens();
         }).catch((error) => {
             if (error.errors[0] === "Incorrect password.") {
                 Toast.fire({
@@ -313,7 +294,6 @@ const Settings = () => {
             })
             return;
         }
-
         FitzoneApi.UpdateTrainerPhoto(trainer.id, selectedImage).then((response) => {
             Toast.fire({
                 icon: 'success',
@@ -367,6 +347,8 @@ const Settings = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const trainerPhoto = API_LINK + "/Trainer/Photo/" + trainer.id + "?" + Math.random().toString(36);
+
     return (
         <div className='flex w-screen h-screen'>
             {/* Navbar */}
@@ -415,7 +397,7 @@ const Settings = () => {
                                                                 selectedImage != null ?
                                                                     <img src={URL.createObjectURL(selectedImage)} alt='user' className='w-20 h-20 bg-center rounded-full object-cover' />
                                                                     :
-                                                                    <img src={API_LINK + "/Trainer/Photo/" + trainer.id} alt='user' className='w-20 h-20 bg-center rounded-full object-cover' />
+                                                                    <img src={trainerPhoto} alt='user' className='w-20 h-20 bg-center rounded-full object-cover' />
                                                             }
                                                         </>
                                                 }

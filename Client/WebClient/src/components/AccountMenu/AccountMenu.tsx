@@ -12,6 +12,7 @@ import { RiSettings4Line } from 'react-icons/ri';
 import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { decodeJwt } from 'jose';
+import clearTokens from '../../utils/funcs/ClearTokens';
 
 const PaperProps = {
     elevation: 0,
@@ -55,9 +56,7 @@ export const AccountMenu = ({ accountName }: { accountName: string }) => {
 
     const handleNavigate = (path: string) => {
         if (path === "/logout") {
-            Cookies.remove('token');
-            Cookies.remove('refreshToken');
-            localStorage.clear();
+            clearTokens();
         }
         handleClose();
         navigate(path);

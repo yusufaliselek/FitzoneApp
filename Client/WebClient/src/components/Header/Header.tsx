@@ -2,37 +2,22 @@ import React, { useEffect } from 'react';
 import AccountMenu from '../AccountMenu/AccountMenu';
 import { decodeJwt } from 'jose';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
-import { FitzoneApi } from '../../services/fitzoneApi';
 import FButton from '../Button/FButton';
 
 const Header = ({
   pageName, addContent, addContentIcon, addContentAction }
   :
   { pageName: string, addContent?: string, addContentIcon?: JSX.Element, addContentAction?: any }) => {
-  const navigate = useNavigate()
-  const goLogin = () => navigate('/login')
 
-  const clearToken = () => {
-    Cookies.remove('token');
-    Cookies.remove('refreshToken');
-    goLogin();
-  }
+  const [name, setName] = React.useState('');
 
-  const RefreshToken = () => {
-    if (!Cookies.get('token')) {
-      return FitzoneApi.ResfreshAccessTokenByRefreshToken().then((response) => {
-        Cookies.set('token', response.data.accessToken, { expires: new Date(response.data.accessTokenExpiration) });
-        Cookies.set('refreshToken', response.data.refreshToken, { expires: new Date(response.data.refreshTokenExpiration) });
-        console.log("Token yenilendi");
-      }).catch((error) => {
-        console.log(error)
-        clearToken()
-      });
+  useEffect(() => {
+    const token = Cookies.get('token');
+    if (token) {
+      const decodedToken = decodeJwt(token);
+      setName(String(decodedToken.unique_name));
     }
-  }
-
-  useEffect(() => { }, [RefreshToken()])
+  }, []);
 
   return (
     <div className='px-5 items-start'>
@@ -47,7 +32,7 @@ const Header = ({
           <div className='flex text-blue-800 px-1 md:px-5 py-1 items-center space-x-1 md:space-x-4 rounded-md '>
             {
               AccountMenu({
-                accountName: String(decodeJwt(String(Cookies.get("token"))).unique_name)
+                accountName: name
               })
             }
           </div>

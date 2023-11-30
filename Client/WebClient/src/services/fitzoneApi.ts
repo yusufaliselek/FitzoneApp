@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import { IGetTrainerPermissionById, ILoginResponse, ITrainerDetails } from "../types/Types";
 import { ConfigService } from "./configService"
 import { resolve } from "path";
+import { useNavigate } from "react-router-dom";
 
 export interface IGetData {
     date: string;
@@ -29,8 +30,13 @@ export class FitzoneApi {
 
     public static async ResfreshAccessTokenByRefreshToken(): Promise<ILoginResponse> {
         return new Promise<any>((resolve, reject) => {
+            const refreshToken = String(Cookies.get('refreshToken'));
+            if (refreshToken === "undefined" || refreshToken === undefined || refreshToken === null || refreshToken === "") {
+                reject("Refresh Token bulunamadı")
+                return window.location.href = "/login"
+            }
             const form = new FormData();
-            form.append('token', String(Cookies.get('refreshToken')));
+            form.append('token', String(refreshToken));
             ConfigService.FitzoneApi().post('/Auth/CreateTokenByRefreshToken', form).then((response) => {
                 resolve(response.data)
             }).catch((error) => {

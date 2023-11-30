@@ -2,7 +2,6 @@ import { GridColDef, trTR } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { RiAccountCircleLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
-
 import AddContentHeader from '../../components/Header/Header';
 import Nav from '../../components/Nav/Nav';
 import { Tooltip } from '@mui/material';
@@ -14,6 +13,7 @@ import { decodeJwt } from 'jose';
 import Toast from '../../components/Toast/Toast';
 import Swal from 'sweetalert2';
 import StyledDataGrid from '../../components/StyledDataGrid/StyledDataGrid';
+import RefreshToken from '../../utils/funcs/RefreshToken';
 
 const Members = () => {
     const navigate = useNavigate()
@@ -22,29 +22,9 @@ const Members = () => {
 
     const [rows, setRows] = useState([]);
 
-    const goLogin = () => navigate('/login')
-
-    const clearToken = () => {
-        Cookies.remove('token');
-        Cookies.remove('refreshToken');
-        goLogin();
-    }
-
-    const RefreshToken = () => {
-        if (!Cookies.get('token')) {
-            return FitzoneApi.ResfreshAccessTokenByRefreshToken().then((response) => {
-                Cookies.set('token', response.data.accessToken, { expires: new Date(response.data.accessTokenExpiration) });
-                Cookies.set('refreshToken', response.data.refreshToken, { expires: new Date(response.data.refreshTokenExpiration) });
-                console.log("Token yenilendi");
-            }).catch((error) => {
-                console.log(error)
-                clearToken()
-            });
-        }
-    }
 
     useEffect(() => {
-        RefreshToken()
+        RefreshToken();
         FitzoneApi.GetAllActiveMembers().then((res) => {
             setRows(res.data);
         })
@@ -54,7 +34,7 @@ const Members = () => {
         }
     }, [])
 
-    
+
     const columns: GridColDef[] = [
         {
             field: 'userName',
@@ -126,7 +106,7 @@ const Members = () => {
             cancelButtonColor: '#3085d6',
             confirmButtonText: 'Evet, dondur!',
             cancelButtonText: 'Hayır'
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
                 FitzoneApi.FreezeMember(id).then((res) => {
                     Toast.fire({
@@ -144,7 +124,7 @@ const Members = () => {
                     })
                 })
             }
-          })
+        })
     }
 
 
